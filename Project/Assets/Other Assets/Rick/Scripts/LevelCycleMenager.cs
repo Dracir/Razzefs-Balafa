@@ -14,60 +14,48 @@ public class LevelCycleMenager : MonoBehaviour {
 	
 	public string mapPrefabFolder;
 	public string endOfCycleMapName;
-	public string inGameMapName;
 	
 	
 	[Disable] public MapData[] currentMapPack;
-	[Disable] public int currentMapIndex = -1;
+	public int currentMapIndex = -1;
 	
 	[Disable] public GameObject currentMapGO;
 	[Disable] public MapData currentMapData;
 	
-	public void loadMap(){
+	public static LevelCycleMenager instance;
+	void Awake(){
+		LevelCycleMenager.instance = this;
+		DontDestroyOnLoad(this);
+	}
+	
+	[Button("Load Map Pack", "loadMapPack")]
+	public bool loadMapPackBtn;
+	
+	public void loadMapPack(){
 		currentMapPack = Resources.LoadAll<MapData>(mapPrefabFolder);
 	}
 	
 	
-	/*
-	  This is made to be sure that the level is loaded before doing stuff.
-	  Used when your not in the right Level
-	  Because the loadLevel is not a blocking method :(.
-	  
-	 **/
-	bool nextLevelOnLevelWasLoaded = false;
-    void OnLevelWasLoaded(int iLevel){
-		if(nextLevelOnLevelWasLoaded){
-			nextMap();
-			nextLevelOnLevelWasLoaded = false;
-		}
-    }
 	
 	[Button("Load Next Map", "nextMap")]
 	public bool loadNextMapBtn;
 	
 	public void nextMap(){
-		if(Application.loadedLevelName != inGameMapName){
-			Application.LoadLevel(inGameMapName);
-		}else{
+		if(hasNextMap()){
 			loadNextMap();
+		}else{
+			endMapPack();
 		}
 	}
 
+	public bool hasNextMap() {
+		return currentMapPack.Length != 0 && currentMapIndex + 1 < currentMapPack.Length;
+	}
+	
 	void loadNextMap() {
-		if(currentMapPack.Length == 0) {
-			endMapPack();
-		}
-		
-		currentMapIndex++;
-		
+		currentMapIndex++;	
 		setCurrentMapIndexInPlayerPref();
-		
-		if(currentMapIndex == currentMapPack.Length){
-			endMapPack();
-		}else{
-			loadMap(currentMapPack[currentMapIndex]);
-		}
-		
+		loadMap(currentMapPack[currentMapIndex]);		
 	}
 
 	void setCurrentMapIndexInPlayerPref() {
@@ -82,14 +70,14 @@ public class LevelCycleMenager : MonoBehaviour {
 	
 	
 	void endMapPack() {
+		clearCurrentMap();
 		Application.LoadLevel(endOfCycleMapName);
 	}
 
 	
 	void loadMap(MapData mapData) {
 		if(currentMapGO != null){
-			currentMapGO.Remove();
-			currentMapData = null;
+			clearCurrentMap();
 		}
 		
 		currentMapGO = GameObjectExtend.createClone(mapData.gameObject);
@@ -97,4 +85,8 @@ public class LevelCycleMenager : MonoBehaviour {
 		
 	}
 	
+	void clearCurrentMap() {
+		currentMapGO.Remove();
+		currentMapData = null;
+	}
 }
