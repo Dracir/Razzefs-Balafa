@@ -30,7 +30,10 @@ public class EnemisBuzzboyActive : State {
 	
 	public override void TriggerEnter2D(Collider2D collision){
 		if(collision.tag == "Player"){
-			
+			collision.gameObject.GetComponent<StateMachine>().GetLayer<CharacterStatus>().SwitchState<CharacterStatusDying>();
+			if(!Layer.stationnary){
+				SwitchState<EnemisBuzzboyHitting>();
+			}
 		}
 	}
 	

@@ -9,6 +9,18 @@ public class EnemisBuzzboy : StateLayer {
     	get { return ((StateMachine)machine); }
     }
 	
+	
+	[SerializeField, PropertyField]
+	bool rotating = true;
+	public bool Rotating{
+		set{
+			rotating = value;
+			GetComponent<SmoothMove>().enabled = rotating;
+			GetComponent<SmoothOscillate>().enabled = rotating;
+		}
+		get{return rotating;}
+	}
+	
 	public bool stationnary;
 	
 	public override void OnEnter() {

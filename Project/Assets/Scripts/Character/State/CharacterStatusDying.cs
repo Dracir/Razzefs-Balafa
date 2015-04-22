@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class CharacterStatusDying : State {
+ public class CharacterStatusDying : State {
 	
     CharacterStatus Layer {
     	get { return ((CharacterStatus)layer); }
@@ -15,7 +15,7 @@ public class CharacterStatusDying : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		Debug.Log("DIE !!!");
 	}
 	
 	public override void OnExit() {
