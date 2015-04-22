@@ -9,6 +9,11 @@ public class Game : StateLayer {
     	get { return ((StateMachine)machine); }
     }
 	
+	public GameObject player1Prefab;
+	public GameObject player2Prefab;
+	public GameObject player3Prefab;
+	public GameObject player4Prefab;
+	
 	public override void OnEnter() {
 		base.OnEnter();
 		
