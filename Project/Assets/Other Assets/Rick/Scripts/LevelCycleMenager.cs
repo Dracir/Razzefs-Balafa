@@ -14,7 +14,6 @@ public class LevelCycleMenager : MonoBehaviour {
 	
 	public string mapPrefabFolder;
 	public string endOfCycleMapName;
-	public string inGameMapName;
 	
 	
 	[Disable] public MapData[] currentMapPack;
@@ -38,49 +37,25 @@ public class LevelCycleMenager : MonoBehaviour {
 	
 	
 	
-	/*
-	  This is made to be sure that the level is loaded before doing stuff.
-	  Used when your not in the right Level
-	  Because the loadLevel is not a blocking method :(.
-	  
-	 **/
-	bool onLevelWasLoaded_loadNextMap;
-    void OnLevelWasLoaded(int iLevel){
-		if(onLevelWasLoaded_loadNextMap){
-			nextMap();
-			onLevelWasLoaded_loadNextMap = false;
-		}
-    }
-	
-	
-	
 	[Button("Load Next Map", "nextMap")]
 	public bool loadNextMapBtn;
 	
 	public void nextMap(){
-		if(Application.loadedLevelName != inGameMapName){
-			onLevelWasLoaded_loadNextMap = true;
-			Application.LoadLevel(inGameMapName);
-		}else{
+		if(hasNextMap()){
 			loadNextMap();
+		}else{
+			endMapPack();
 		}
 	}
 
+	public bool hasNextMap() {
+		return currentMapPack.Length != 0 && currentMapIndex + 1 < currentMapPack.Length;
+	}
+	
 	void loadNextMap() {
-		if(currentMapPack.Length == 0) {
-			endMapPack();
-			
-		}else{
-			currentMapIndex++;
-			
-			setCurrentMapIndexInPlayerPref();
-			
-			if(currentMapIndex == currentMapPack.Length){
-				endMapPack();
-			}else{
-				loadMap(currentMapPack[currentMapIndex]);
-			}
-		}
+		currentMapIndex++;	
+		setCurrentMapIndexInPlayerPref();
+		loadMap(currentMapPack[currentMapIndex]);		
 	}
 
 	void setCurrentMapIndexInPlayerPref() {
