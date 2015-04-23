@@ -28,12 +28,6 @@ public class CharacterTemperature : StateLayer {
 		}
 	}
 	
-	public float CurrentTemperature {
-		get {
-			return temperature.temperature;
-		}
-	}
-	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}
