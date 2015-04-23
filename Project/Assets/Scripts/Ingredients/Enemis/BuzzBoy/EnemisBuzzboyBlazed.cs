@@ -26,7 +26,7 @@ public class EnemisBuzzboyBlazed : State {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		if( Layer.temperature.IsBlazing ){
-			if(Layer.temperature.temperature >= 1){
+			if(Layer.temperature.wasBlazed){
 				SwitchState<EnemisBuzzboyDying>();
 			}
 		}else{

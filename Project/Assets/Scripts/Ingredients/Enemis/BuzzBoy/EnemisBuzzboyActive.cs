@@ -29,15 +29,8 @@ public class EnemisBuzzboyActive : State {
 		
 		if (status != null) {
 			status.Die();
-		}
-		
-		if (collision.tag == "Player") {
-			collision.gameObject.GetComponent<StateMachine>().GetLayer<CharacterStatus>().SwitchState<CharacterStatusDying>();
-			if (!Layer.stationnary) {
-				SwitchState<EnemisBuzzboyHitting>();
-			}
-		}
-		else if (collision.gameObject.layer == LayerMask.NameToLayer("Tile")) {
+			
+		}else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) {
 			transform.parent.Rotate(0, 0, 180);
 		}
 	}

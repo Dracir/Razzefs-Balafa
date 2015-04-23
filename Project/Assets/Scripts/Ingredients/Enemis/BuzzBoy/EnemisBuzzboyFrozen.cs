@@ -26,7 +26,7 @@ public class EnemisBuzzboyFrozen : State {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		if( Layer.temperature.IsFreezing ){
-			if(Layer.temperature.temperature <= - 1){
+			if(Layer.temperature.wasFrozen){
 				SwitchState<EnemisBuzzboyDying>();
 			}
 		}else{
