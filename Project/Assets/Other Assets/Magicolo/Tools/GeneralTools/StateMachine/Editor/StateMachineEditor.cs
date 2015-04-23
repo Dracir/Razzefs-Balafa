@@ -343,6 +343,10 @@ namespace Magicolo.GeneralTools {
 		}
 
 		void ReorderComponents() {
+			if (PrefabUtility.GetPrefabType(machine) == PrefabType.Prefab) {
+				return;
+			}
+			
 			int firstStateOrLayerIndex = 0;
 			
 			Component[] components = machine.GetComponents<Component>();
