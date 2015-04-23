@@ -24,7 +24,7 @@ public class CharacterMoveMoving : State {
 	}
 	
 	public override void OnFixedUpdate() {
-		currentSpeed = Layer.HorizontalAxis.PowSign(inputPower) * speed * (1F / Mathf.Sqrt(Layer.Friction));
+		currentSpeed = Layer.HorizontalAxis.PowSign(inputPower) * speed * (1F / Mathf.Max(Mathf.Sqrt(Layer.Friction), 0.0001F));
 		currentAcceleration = Mathf.Max(Layer.Friction, 0.001F) * acceleration;
 		
 		if (Layer.Gravity.Angle == 90) {

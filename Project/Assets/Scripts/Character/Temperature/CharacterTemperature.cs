@@ -5,8 +5,7 @@ using Magicolo;
 
 public class CharacterTemperature : StateLayer {
 	
-	[Range(-1, 0)] public float freezingThreshold = -0.75F;
-	[Range(0, 1)] public float blazingThreshold = 0.75F;
+	[Min] public float fadeSpeed = 5;
 	
 	bool _temperatureCached;
 	Temperature _temperature;

@@ -80,7 +80,7 @@ public class CharacterMotion : StateLayer {
 	}
 	
 	[SerializeField, Disable]
-	float friction;
+	float friction = 1;
 	public float  Friction {
 		get {
 			return friction;
