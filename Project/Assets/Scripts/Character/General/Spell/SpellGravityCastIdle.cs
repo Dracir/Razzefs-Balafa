@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class HarryCastIdle : State, IInputKeyListener {
+public class SpellGravityCastIdle : State, IInputKeyListener {
 	
-	HarryCast Layer {
-		get { return ((HarryCast)layer); }
+	SpellGravityCast Layer {
+		get { return ((SpellGravityCast)layer); }
 	}
     
 	StateMachine Machine {
@@ -16,24 +16,18 @@ public class HarryCastIdle : State, IInputKeyListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.inputSystem.GetKeyInfo("Cast").AddListener(this);
+		Layer.InputSystem.GetKeyInfo("Cast").AddListener(this);
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.inputSystem.GetKeyInfo("Cast").RemoveListener(this);
-	}
-	
-	public override void OnUpdate() {
-		base.OnUpdate();
-		
-		Layer.UpdateCursor();
+		Layer.InputSystem.GetKeyInfo("Cast").RemoveListener(this);
 	}
 	
 	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
 		if (keyState == KeyStates.Down) {
-			SwitchState<HarryCastCasting>();
+			SwitchState<SpellGravityCastCasting>();
 		}
 	}
 }

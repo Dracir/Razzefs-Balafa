@@ -65,7 +65,7 @@ namespace Magicolo {
 		}
 		
 		public static int Sign(this float f) {
-			return f == 0 ? 0 : f < 0 ? -1 : 1;
+			return f < 0 ? -1 : 1;
 		}
 	}
 }

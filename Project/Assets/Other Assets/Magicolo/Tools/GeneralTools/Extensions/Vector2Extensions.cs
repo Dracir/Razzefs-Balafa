@@ -151,5 +151,9 @@ namespace Magicolo {
 		public static float Average(this Vector2 vector) {
 			return ((Vector4)vector).Average(Axis.XY);
 		}
+	
+		public static float Angle(this Vector2 vector) {
+			return (Vector2.Angle(Vector2.right, vector) * -vector.y.Sign()).Wrap(360);
+		}
 	}
 }
