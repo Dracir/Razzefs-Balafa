@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class EnemisBuzzboyFrozen : State {
+public class EnemisBuzzboyBlazed : State {
 	
     EnemisBuzzboy Layer {
     	get { return ((EnemisBuzzboy)layer); }
@@ -25,8 +25,8 @@ public class EnemisBuzzboyFrozen : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		if( Layer.temperature.IsFreezing ){
-			if(Layer.temperature.wasFrozen){
+		if( Layer.temperature.IsBlazing ){
+			if(Layer.temperature.wasBlazed){
 				SwitchState<EnemisBuzzboyDying>();
 			}
 		}else{
