@@ -66,7 +66,7 @@ namespace Magicolo {
 		}
 		
 		public static int Sign(this double d) {
-			return d == 0 ? 0 : d < 0 ? -1 : 1;
+			return d < 0 ? -1 : 1;
 		}
 	}
 }
