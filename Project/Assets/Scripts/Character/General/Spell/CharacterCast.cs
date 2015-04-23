@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class HarryCast : StateLayer, IInputAxisListener {
-
+public class CharacterCast : StateLayer, IInputAxisListener {
+	
 	public Transform cursor;
-	public float cursorSpeed = 10;
 	public float sensibility = 0.1F;
+	public float smooth = 10;
 	
 	[Disable] public Vector2 currentAxis;
 	[Disable] public Vector2 targetPosition;
@@ -22,13 +22,9 @@ public class HarryCast : StateLayer, IInputAxisListener {
 		}
 	}
 	
-	CharacterLive Layer {
-		get { return (CharacterLive)layer; }
-	}
-	
-	StateMachine Machine {
-		get { return (StateMachine)machine; }
-	}
+    StateMachine Machine {
+    	get { return (StateMachine)machine; }
+    }
 	
 	public override void OnEnter() {
 		base.OnEnter();
@@ -59,6 +55,7 @@ public class HarryCast : StateLayer, IInputAxisListener {
 	
 	public void UpdateCursor() {
 		targetPosition += currentAxis * sensibility;
-		cursor.TranslateLocalTowards(targetPosition, cursorSpeed, Axis.XY);
+		targetPosition = Camera.main.ClampToScreen((Vector3)targetPosition + transform.position) - transform.position;
+		cursor.TranslateLocalTowards(targetPosition, smooth, Axis.XY);
 	}
 }
