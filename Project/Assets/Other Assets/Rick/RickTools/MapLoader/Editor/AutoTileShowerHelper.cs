@@ -61,10 +61,10 @@ namespace RickTools.MapLoader{
 			
 			addSingleTile(texture, EMPTY					, sprites[TILE_EMPTY]);
 			if(currentAutotile != null){
-				tryAddSingleTile(currentAutotile.center, CENTER);
-				tryAddRotationTiles(currentAutotile.cornerInside, CORNER_INSIDE_NW);
-				tryAddRotationTiles(currentAutotile.side, SIDE_NORTH);
-				tryAddRotationTiles(currentAutotile.cornerOutside, CORNER_OUTSIDE_NW);
+				tryAddSingleTile(currentAutotile.center[0], CENTER);
+				tryAddRotationTiles(currentAutotile.cornerInside[0], CORNER_INSIDE_NW);
+				tryAddRotationTiles(currentAutotile.side[0], SIDE_NORTH);
+				tryAddRotationTiles(currentAutotile.cornerOutside[0], CORNER_OUTSIDE_NW);
 			}
 		}
 
