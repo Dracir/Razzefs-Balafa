@@ -29,6 +29,7 @@ public class EnemisBuzzboyActive : State {
 		if(!Layer.stationnary){
 			transform.parent.position += transform.parent.right * Time.deltaTime * Layer.movementSpeed;
 		}
+		
 	}
 	
 	public override void TriggerEnter2D(Collider2D collision){

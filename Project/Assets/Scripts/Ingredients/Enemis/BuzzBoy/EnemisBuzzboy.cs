@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
+using Magicolo.GeneralTools;
 
 public class EnemisBuzzboy : StateLayer {
 	
@@ -24,9 +25,12 @@ public class EnemisBuzzboy : StateLayer {
 	public bool stationnary;
 	
 	public float movementSpeed;
+	[Disable] public Temperature temperature;
+	[Disable] public string lastStateTypeName;
 	
 	public override void OnEnter() {
 		base.OnEnter();
+		temperature = GetComponent<Temperature>();
 		
 	}
 	
@@ -37,6 +41,12 @@ public class EnemisBuzzboy : StateLayer {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
+		if(temperature.IsFreezing && !StateIsActive<EnemisBuzzboyFrozen>()){
+			lastStateTypeName = GetActiveState().GetType().Name;
+			SwitchState<EnemisBuzzboyFrozen>();
+		}else if(temperature.IsBlazing && !StateIsActive<EnemisBuzzboyBlazed>()){
+			lastStateTypeName = GetActiveState().GetType().Name;
+			SwitchState<EnemisBuzzboyBlazed>();
+		}
 	}
 }
