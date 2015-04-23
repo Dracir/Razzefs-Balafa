@@ -16,7 +16,7 @@ public class CharacterTemperatureBlazing : State {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		if (Layer.CurrentTemperature < Layer.blazingThreshold) {
+		if (!Layer.temperature.IsBlazing){
 			SwitchState<CharacterTemperatureIdle>();
 			return;
 		}
