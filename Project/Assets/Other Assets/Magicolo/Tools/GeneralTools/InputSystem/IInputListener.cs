@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Magicolo;
 
 namespace Magicolo {
-	public interface IInputListener : IInputKeyListener, IInputAxisListener {
+	public interface IInputListener : IInputAxisListener, IInputKeyListener {
 		
 	}
 }

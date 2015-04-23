@@ -269,14 +269,14 @@ namespace Magicolo.EditorTools {
 			}
 			
 			script.Add("    " + layerName + " Layer {");
-			script.Add("    	get { return ((" + layerName + ")layer); }");
+			script.Add("    	get { return (" + layerName + ")layer; }");
 			script.Add("    }");
 			script.Add("    ");
 		}
 		
 		void AddMachine(List<string> script) {
 			script.Add("    StateMachine Machine {");
-			script.Add("    	get { return ((StateMachine)machine); }");
+			script.Add("    	get { return (StateMachine)machine; }");
 			script.Add("    }");
 			script.Add("	");
 		}

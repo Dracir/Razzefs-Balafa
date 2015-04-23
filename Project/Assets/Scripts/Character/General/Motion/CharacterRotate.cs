@@ -12,7 +12,7 @@ public class CharacterRotate : StateLayer {
 	[Disable] public float currentFacingDirection;
 	[Disable] public float targetFacingDirection;
 	
-	new public Rigidbody2D rigidbody {
+	public Rigidbody2D Rigidbody {
 		get {
 			return Layer.rigidbody;
 		}
