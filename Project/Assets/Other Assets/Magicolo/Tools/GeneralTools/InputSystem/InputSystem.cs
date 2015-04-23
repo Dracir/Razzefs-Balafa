@@ -214,5 +214,9 @@ namespace Magicolo {
 				axisInfoValueDict[axisInfo] = 0;
 			}
 		}
+		
+		void Reset() {
+			this.SetExecutionOrder(-13);
+		}
 	}
 }

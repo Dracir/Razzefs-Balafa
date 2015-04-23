@@ -23,6 +23,8 @@ public class EnemisBuzzboy : StateLayer {
 	
 	public bool stationnary;
 	
+	public float movementSpeed;
+	
 	public override void OnEnter() {
 		base.OnEnter();
 		

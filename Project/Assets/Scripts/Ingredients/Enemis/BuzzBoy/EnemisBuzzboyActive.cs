@@ -12,6 +12,7 @@ public class EnemisBuzzboyActive : State {
     StateMachine Machine {
     	get { return ((StateMachine)machine); }
     }
+
 	
 	public override void OnEnter() {
 		base.OnEnter();
@@ -25,7 +26,9 @@ public class EnemisBuzzboyActive : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
+		if(!Layer.stationnary){
+			transform.parent.position += transform.parent.right * Time.deltaTime * Layer.movementSpeed;
+		}
 	}
 	
 	public override void TriggerEnter2D(Collider2D collision){
@@ -34,6 +37,8 @@ public class EnemisBuzzboyActive : State {
 			if(!Layer.stationnary){
 				SwitchState<EnemisBuzzboyHitting>();
 			}
+		}else if(collision.gameObject.layer == LayerMask.NameToLayer("Tile")){
+			transform.parent.Rotate(0,0,180);
 		}
 	}
 	

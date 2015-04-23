@@ -8,6 +8,7 @@ namespace Magicolo {
 		public static char Pop(this string s, int index, out string remaining) {
 			char c = s[0];
 			remaining = s.Remove(index, 1);
+			
 			return c;
 		}
 	
@@ -16,7 +17,7 @@ namespace Magicolo {
 		}
 	
 		public static char PopRandom(this string s, out string remaining) {
-			return s.Pop(UnityEngine.Random.Range(0, s.Length), out remaining);
+			return s.Pop(Random.Range(0, s.Length), out remaining);
 		}
 	
 		public static string PopRange(this string s, int startIndex, char stopCharacter, out string remaining) {
@@ -33,6 +34,7 @@ namespace Magicolo {
 			}
 		
 			remaining = s;
+			
 			return popped;
 		}
 	
@@ -48,6 +50,7 @@ namespace Magicolo {
 			}
 		
 			remaining = s;
+			
 			return popped;
 		}
 	
@@ -65,6 +68,7 @@ namespace Magicolo {
 				}
 				substring += c;
 			}
+			
 			return substring;
 		}
 			
@@ -75,6 +79,7 @@ namespace Magicolo {
 				char c = s[i + startIndex];
 				substring += c;
 			}
+			
 			return substring;
 		}
 	
@@ -87,6 +92,7 @@ namespace Magicolo {
 			for (int i = s.Length - 1; i >= 0; i--) {
 				reversed += s[i];
 			}
+			
 			return reversed;
 		}
 	
@@ -176,6 +182,7 @@ namespace Magicolo {
 	
 		public static GUIContent ToGUIContent(this string s, char labelTooltipSeparator) {
 			string[] split = s.Split(labelTooltipSeparator);
+			
 			return new GUIContent(split[0], split[1]);
 		}
 	
@@ -208,6 +215,7 @@ namespace Magicolo {
 			for (int i = 0; i < labels.Count; i++) {
 				guiContents[i] = new GUIContent(labels[i], tooltips[i]);
 			}
+			
 			return guiContents;
 		}
 	}
