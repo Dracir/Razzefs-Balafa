@@ -20,5 +20,7 @@ public class CharacterTemperatureFreezing : State {
 			SwitchState<CharacterTemperatureIdle>();
 			return;
 		}
+		
+		Layer.spriteRenderer.color = Layer.spriteRenderer.color.Lerp(Color.blue, Time.deltaTime * Layer.fadeSpeed, Channels.RGB);
 	}
 }

@@ -25,5 +25,7 @@ public class CharacterTemperatureIdle : State {
 			SwitchState<CharacterTemperatureBlazing>();
 			return;
 		}
+		
+		Layer.spriteRenderer.color = Layer.spriteRenderer.color.Lerp(Color.white, Time.deltaTime * Layer.fadeSpeed, Channels.RGB);
 	}
 }
