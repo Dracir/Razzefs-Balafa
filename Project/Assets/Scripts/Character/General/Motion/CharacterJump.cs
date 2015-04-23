@@ -5,12 +5,9 @@ using Magicolo;
 
 public class CharacterJump : StateLayer {
 	
-	public GroundCastSettings2D raySettings;
-	[Disable] public Collider2D ground;
-	
 	public Force2 Gravity {
 		get {
-			return Layer.Gravity;
+			return Layer.gravity;
 		}
 	}
 	
@@ -32,25 +29,25 @@ public class CharacterJump : StateLayer {
 		}
 	}
 	
-	public int jumpingHash {
+	public int JumpingHash {
 		get {
 			return Layer.jumpingHash;
 		}
 	}
 	
-	public Animator animator { 
+	public Animator Animator { 
 		get { 
 			return Layer.animator;
 		}
 	}
 	
-	new public Rigidbody2D rigidbody { 
+	public Rigidbody2D Rigidbody { 
 		get { 
 			return Layer.rigidbody;
 		}
 	}
 	
-	public InputSystem inputSystem {
+	public InputSystem InputSystem {
 		get {
 			return Layer.inputSystem;
 		}
@@ -62,20 +59,5 @@ public class CharacterJump : StateLayer {
 	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
-	}
-	
-	public override void OnUpdate() {
-		base.OnUpdate();
-		
-		raySettings.angle = Gravity.Angle - 90;
-		ground = raySettings.GetGround(transform.position, Vector3.down, Machine.Debug);
-		
-		if (ground == null) {
-			Grounded = false;
-		}
-		else {
-			Grounded = true;
-			Layer.Friction = ground.sharedMaterial == null ? 1 : ground.sharedMaterial.friction;
-		}
 	}
 }

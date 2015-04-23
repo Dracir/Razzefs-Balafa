@@ -24,35 +24,35 @@ public class CharacterJumpJumping : State, IInputKeyListener {
 		increment = (maxHeight - minHeight) / duration;
 		direction = -Layer.Gravity.Direction;
 		
-		Layer.inputSystem.GetKeyInfo("Jump").AddListener(this);
+		Layer.InputSystem.GetKeyInfo("Jump").AddListener(this);
 		Layer.Jumping = true;
-		Layer.animator.Play(Layer.jumpingHash, 1);
+		Layer.Animator.Play(Layer.JumpingHash, 1);
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.rigidbody.SetVelocity(minHeight, Axis.Y);
+			Layer.Rigidbody.SetVelocity(minHeight, Axis.Y);
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.rigidbody.SetVelocity(minHeight, Axis.X);
+			Layer.Rigidbody.SetVelocity(minHeight, Axis.X);
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.rigidbody.SetVelocity(-minHeight, Axis.Y);
+			Layer.Rigidbody.SetVelocity(-minHeight, Axis.Y);
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.rigidbody.SetVelocity(-minHeight, Axis.X);
+			Layer.Rigidbody.SetVelocity(-minHeight, Axis.X);
 		}
 		else {
-			Vector3 velocity = Layer.rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
+			Vector3 velocity = Layer.Rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
 			velocity.y = minHeight;
 			velocity = velocity.Rotate(Layer.Gravity.Angle - 90);
 			
-			Layer.rigidbody.SetVelocity(velocity);
+			Layer.Rigidbody.SetVelocity(velocity);
 		}
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.inputSystem.GetKeyInfo("Jump").RemoveListener(this);
+		Layer.InputSystem.GetKeyInfo("Jump").RemoveListener(this);
 		Layer.Jumping = false;
 	}
 
@@ -62,7 +62,7 @@ public class CharacterJumpJumping : State, IInputKeyListener {
 		counter -= Time.fixedDeltaTime;
 		
 		if (counter > 0) {
-			Layer.rigidbody.Accelerate(direction * increment * (counter / duration), Axis.XY);
+			Layer.Rigidbody.Accelerate(direction * increment * (counter / duration), Axis.XY);
 		}
 		else {
 			SwitchState("Falling");

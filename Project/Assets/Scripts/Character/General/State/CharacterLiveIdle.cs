@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
- public class CharacterStatusDying : State {
+public class CharacterLiveIdle : State {
 	
-    CharacterStatus Layer {
-    	get { return ((CharacterStatus)layer); }
+    CharacterLive Layer {
+    	get { return ((CharacterLive)layer); }
     }
     
     StateMachine Machine {
@@ -15,7 +15,7 @@ using Magicolo;
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		Debug.Log("DIE !!!");
+		
 	}
 	
 	public override void OnExit() {

@@ -6,17 +6,11 @@ using Magicolo;
 [RequireComponent(typeof(InputSystem), typeof(Animator), typeof(Rigidbody2D))]
 public class CharacterMotion : StateLayer {
 	
-	[SerializeField, PropertyField]
-	Force2 gravity;
-	public Force2 Gravity {
-		get {
-			return gravity;
-		}
-		set {
-			gravity = value;
-		}
-	}
-
+	public Force2 gravity;
+	public GroundCastSettings2D raySettings;
+	
+	[Disable] public Collider2D ground;
+	
 	[SerializeField, Disable] float horizontalAxis;
 	public float HorizontalAxis {
 		get {
@@ -129,9 +123,24 @@ public class CharacterMotion : StateLayer {
 		get { return ((StateMachine)machine); }
 	}
 	
+	public override void OnUpdate() {
+		base.OnUpdate();
+
+		raySettings.angle = gravity.Angle - 90;
+		ground = raySettings.GetGround(transform.position, Vector3.down, Machine.Debug);
+		
+		if (ground == null) {
+			Grounded = false;
+		}
+		else {
+			Grounded = true;
+			Friction = ground.sharedMaterial == null ? 1 : ground.sharedMaterial.friction;
+		}
+	}
+	
 	public override void OnFixedUpdate() {
 		base.OnFixedUpdate();
 
-		rigidbody.AddForce(Gravity);
+		rigidbody.AddForce(gravity);
 	}
 }

@@ -12,13 +12,13 @@ public class CharacterJumpIdle : State, IInputKeyListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.inputSystem.GetKeyInfo("Jump").AddListener(this);
+		Layer.InputSystem.GetKeyInfo("Jump").AddListener(this);
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.inputSystem.GetKeyInfo("Jump").RemoveListener(this);
+		Layer.InputSystem.GetKeyInfo("Jump").RemoveListener(this);
 	}
 	
 	public override void OnUpdate() {

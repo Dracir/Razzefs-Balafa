@@ -166,7 +166,7 @@ namespace Magicolo {
 			return vector.Div((Vector4)otherVector, Axis.XYZW);
 		}
 	
-		public static Vector4 Pow(this Vector4 vector, double power, Axis axis) {
+		public static Vector4 Pow(this Vector4 vector, float power, Axis axis) {
 			vector.x = axis.Contains(Axis.X) ? vector.x.Pow(power) : vector.x;
 			vector.y = axis.Contains(Axis.Y) ? vector.y.Pow(power) : vector.y;
 			vector.z = axis.Contains(Axis.Z) ? vector.z.Pow(power) : vector.z;
@@ -175,11 +175,11 @@ namespace Magicolo {
 			return vector;
 		}
 	
-		public static Vector4 Pow(this Vector4 vector, double power) {
+		public static Vector4 Pow(this Vector4 vector, float power) {
 			return vector.Pow(power, Axis.XYZW);
 		}
 	
-		public static Vector4 Round(this Vector4 vector, double step, Axis axis) {
+		public static Vector4 Round(this Vector4 vector, float step, Axis axis) {
 			vector.x = axis.Contains(Axis.X) ? vector.x.Round(step) : vector.x;
 			vector.y = axis.Contains(Axis.Y) ? vector.y.Round(step) : vector.y;
 			vector.z = axis.Contains(Axis.Z) ? vector.z.Round(step) : vector.z;
@@ -188,7 +188,7 @@ namespace Magicolo {
 			return vector;
 		}
 	
-		public static Vector4 Round(this Vector4 vector, double step) {
+		public static Vector4 Round(this Vector4 vector, float step) {
 			return vector.Round(step, Axis.XYZW);
 		}
 	

@@ -31,7 +31,7 @@ public class EnemisBuzzboyActive : State {
 		}
 		
 		if (collision.tag == "Player") {
-			collision.gameObject.GetComponent<StateMachine>().GetLayer<CharacterStatus>().SwitchState<CharacterStatusDying>();
+			collision.gameObject.GetComponent<StateMachine>().GetLayer<CharacterStatus>().SwitchState<CharacterDie>();
 			if (!Layer.stationnary) {
 				SwitchState<EnemisBuzzboyHitting>();
 			}

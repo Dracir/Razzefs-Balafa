@@ -1,22 +1,35 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 namespace Magicolo {
 	public static class DoubleExtensions {
 
-		public static float PowSign(this double d, double power) {
-			return double.IsNaN(d) ? 0 : Mathf.Pow(Mathf.Abs((float)d), (float)power) * d.Sign();
+		public static double PowSign(this double d, double power) {
+			return Math.Abs(d).Pow(power) * d.Sign();
 		}
 	
-		public static float PowSign(this double d) {
+		public static double PowSign(this double d) {
 			return d.PowSign(2);
 		}
 	
-		public static float Pow(this double d, double power) {
-			return double.IsNaN(d) ? 0 : Mathf.Pow((float)d, (float)power);
+		public static double Pow(this double d, double power) {
+			if (double.IsNaN(d)) {
+				return 0;
+			}
+			
+			if (power == 0) {
+				return 1;
+			}
+			
+			if (power == 1) {
+				return d;
+			}
+			
+			return Math.Pow(d, power);
 		}
 	
-		public static float Pow(this double d) {
+		public static double Pow(this double d) {
 			return d.Pow(2);
 		}
 	
@@ -29,7 +42,7 @@ namespace Magicolo {
 				return d;
 			}
 		
-			return (double)(Mathf.Round((float)(d * (1D / step))) / (1D / step));
+			return Math.Round(d * (1D / step)) / (1D / step);
 		}
 	
 		public static double Round(this double d) {

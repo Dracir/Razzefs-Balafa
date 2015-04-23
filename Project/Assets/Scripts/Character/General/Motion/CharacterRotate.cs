@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class CharacterMoveRotating : State {
+public class CharacterRotate : StateLayer {
 	
 	public bool invert;
-	[Min] public float speed = 20;
+	
 	[Disable] public float currentAngle;
 	[Disable] public float targetAngle;
 	[Disable] public float currentFacingDirection;
 	[Disable] public float targetFacingDirection;
+	
+	new public Rigidbody2D rigidbody {
+		get {
+			return Layer.rigidbody;
+		}
+	}
 	
 	bool _spriteTransformCached;
 	Transform _spriteTransform;
@@ -22,32 +28,24 @@ public class CharacterMoveRotating : State {
 		}
 	}
 	
-	CharacterMove Layer {
-		get { return ((CharacterMove)layer); }
+	CharacterMotion Layer {
+		get { return ((CharacterMotion)layer); }
+	}
+    
+	StateMachine Machine {
+		get { return ((StateMachine)machine); }
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		targetAngle = -Layer.Gravity.Angle + 90;
+		targetAngle = -Layer.gravity.Angle + 90;
 		
 		if (Layer.HorizontalAxis > 0) {
 			targetFacingDirection = invert ? -1 : 1;
 		}
 		else if (Layer.HorizontalAxis < 0) {
 			targetFacingDirection = invert ? 1 : -1;
-		}
-		
-		if (Mathf.Abs(currentFacingDirection - targetFacingDirection) > 0.0001F) {
-			currentFacingDirection = Mathf.Lerp(spriteTransform.localScale.x, targetFacingDirection, speed * Time.deltaTime);
-			spriteTransform.ScaleLocalTowards(currentFacingDirection, speed, Axis.X);
-		}
-	}
-	
-	public override void OnFixedUpdate() {
-		if (Mathf.Abs(currentAngle - targetAngle) > 0.0001F) {
-			currentAngle = Mathf.LerpAngle(transform.localEulerAngles.z, targetAngle, speed * Time.fixedDeltaTime);
-			Layer.rigidbody.RotateTowards(currentAngle, speed);
 		}
 	}
 }

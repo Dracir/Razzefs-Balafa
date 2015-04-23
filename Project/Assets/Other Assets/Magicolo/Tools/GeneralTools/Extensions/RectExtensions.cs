@@ -4,12 +4,16 @@ using System.Collections;
 namespace Magicolo {
 	public static class RectExtensions {
 
-		public static Rect Round(this Rect rect, double step) {
-			if (step <= 0) return rect;
-			rect.x = (float)(Mathf.Round((float)(rect.x * (1D / step))) / (1D / step));
-			rect.y = (float)(Mathf.Round((float)(rect.y * (1D / step))) / (1D / step));
-			rect.width = (float)(Mathf.Round((float)(rect.width * (1D / step))) / (1D / step));
-			rect.height = (float)(Mathf.Round((float)(rect.height * (1D / step))) / (1D / step));
+		public static Rect Round(this Rect rect, float step) {
+			if (step <= 0) {
+				return rect;
+			}
+			
+			rect.x = rect.x.Round(step);
+			rect.y = rect.y.Round(step);
+			rect.width = rect.width.Round(step);
+			rect.height = rect.height.Round(step);
+			
 			return rect;
 		}
 	

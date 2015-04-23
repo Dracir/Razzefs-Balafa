@@ -28,28 +28,28 @@ public class CharacterMoveMoving : State {
 		currentAcceleration = Mathf.Max(Layer.Friction, 0.001F) * acceleration;
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.X);
-			Layer.MoveVelocity = Layer.rigidbody.velocity.x;
+			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.X);
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.x;
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axis.Y);
-			Layer.MoveVelocity = Layer.rigidbody.velocity.y;
+			Layer.Rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axis.Y);
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.y;
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axis.X);
-			Layer.MoveVelocity = Layer.rigidbody.velocity.x;
+			Layer.Rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axis.X);
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.x;
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.Y);
-			Layer.MoveVelocity = Layer.rigidbody.velocity.y;
+			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.Y);
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.y;
 		}
 		else {
-			Vector3 velocity = Layer.rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
+			Vector3 velocity = Layer.Rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
 			velocity.x = Mathf.Lerp(velocity.x, currentSpeed, Time.fixedDeltaTime * speed * currentAcceleration);
 			Layer.MoveVelocity = velocity.x;
 			velocity = velocity.Rotate(Layer.Gravity.Angle - 90);
 			
-			Layer.rigidbody.SetVelocity(velocity);
+			Layer.Rigidbody.SetVelocity(velocity);
 		}
 	}
 }

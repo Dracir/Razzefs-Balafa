@@ -11,7 +11,7 @@ public class CharacterMove : StateLayer, IInputAxisListener {
 	
 	public Force2 Gravity {
 		get {
-			return Layer.Gravity;
+			return Layer.gravity;
 		}
 	}
 	
@@ -51,19 +51,19 @@ public class CharacterMove : StateLayer, IInputAxisListener {
 		}
 	}
 	
-	public Animator animator { 
+	public Animator Animator { 
 		get { 
 			return Layer.animator;
 		}
 	}
 	
-	new public Rigidbody2D rigidbody { 
+	public Rigidbody2D Rigidbody { 
 		get { 
 			return Layer.rigidbody;
 		}
 	}
 
-	public InputSystem inputSystem {
+	public InputSystem InputSystem {
 		get {
 			return Layer.inputSystem;
 		}
@@ -80,13 +80,13 @@ public class CharacterMove : StateLayer, IInputAxisListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		inputSystem.GetAxisInfo("MotionX").AddListener(this);
+		InputSystem.GetAxisInfo("MotionX").AddListener(this);
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
 		
-		inputSystem.GetAxisInfo("MotionX").RemoveListener(this);
+		InputSystem.GetAxisInfo("MotionX").RemoveListener(this);
 	}
 	
 	public void OnAxisInput(AxisInfo axisInfo, float axisValue) {

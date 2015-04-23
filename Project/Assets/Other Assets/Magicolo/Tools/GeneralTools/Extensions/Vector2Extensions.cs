@@ -124,19 +124,19 @@ namespace Magicolo {
 			return vector.Div((Vector2)otherVector, Axis.XY);
 		}
 	
-		public static Vector2 Pow(this Vector2 vector, double power, Axis axis) {
+		public static Vector2 Pow(this Vector2 vector, float power, Axis axis) {
 			return ((Vector4)vector).Pow(power, axis);
 		}
 	
-		public static Vector2 Pow(this Vector2 vector, double power) {
+		public static Vector2 Pow(this Vector2 vector, float power) {
 			return vector.Pow(power, Axis.XY);
 		}
 	
-		public static Vector2 Round(this Vector2 vector, double step, Axis axis) {
+		public static Vector2 Round(this Vector2 vector, float step, Axis axis) {
 			return ((Vector4)vector).Round(step, axis);
 		}
 	
-		public static Vector2 Round(this Vector2 vector, double step) {
+		public static Vector2 Round(this Vector2 vector, float step) {
 			return vector.Round(step, Axis.XY);
 		}
 	

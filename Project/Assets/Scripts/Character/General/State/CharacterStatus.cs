@@ -10,6 +10,6 @@ public class CharacterStatus : StateLayer {
 	}
 	
 	public void Die() {
-		SwitchState<CharacterStatusDying>();
+		SwitchState<CharacterDie>();
 	}
 }

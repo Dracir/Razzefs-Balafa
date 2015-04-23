@@ -18,19 +18,19 @@ public class CharacterMoveIdle : State {
 		}
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.MoveVelocity = Layer.rigidbody.velocity.x;
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.x;
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.MoveVelocity = Layer.rigidbody.velocity.y;
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.y;
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.MoveVelocity = Layer.rigidbody.velocity.x;
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.x;
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.MoveVelocity = Layer.rigidbody.velocity.y;
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.y;
 		}
 		else {
-			Layer.MoveVelocity = Layer.rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90).x;
+			Layer.MoveVelocity = Layer.Rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90).x;
 		}
 	}
 }
