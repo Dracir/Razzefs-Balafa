@@ -4,23 +4,35 @@ using System.Collections;
 namespace Magicolo {
 	public static class FloatExtensions {
 
-		public static float PowSign(this float f, double power) {
-			return float.IsNaN(f) ? 0 : Mathf.Pow(Mathf.Abs(f), (float)power) * f.Sign();
+		public static float PowSign(this float f, float power) {
+			return Mathf.Abs(f).Pow(power) * f.Sign();
 		}
 	
 		public static float PowSign(this float f) {
 			return f.PowSign(2);
 		}
 	
-		public static float Pow(this float f, double power) {
-			return float.IsNaN(f) ? 0 : Mathf.Pow(f, (float)power);
+		public static float Pow(this float f, float power) {
+			if (float.IsNaN(f)){
+				return 0;
+			}
+			
+			if (power == 0) {
+				return 1;
+			}
+			
+			if (power == 1) {
+				return f;
+			}
+			
+			return Mathf.Pow(f, power);
 		}
 	
 		public static float Pow(this float f) {
 			return f.Pow(2);
 		}
 	
-		public static float Round(this float f, double step) {
+		public static float Round(this float f, float step) {
 			if (float.IsNaN(f)) {
 				return 0;
 			}
@@ -29,7 +41,7 @@ namespace Magicolo {
 				return f;
 			}
 		
-			return (float)(Mathf.Round((float)(f * (1D / step))) / (1D / step));
+			return Mathf.Round(f * (1F / step)) / (1F / step);
 		}
 	
 		public static float Round(this float f) {
@@ -53,7 +65,7 @@ namespace Magicolo {
 		}
 		
 		public static int Sign(this float f) {
-			return f < 0 ? -1 : 1;
+			return f == 0 ? 0 : f < 0 ? -1 : 1;
 		}
 	}
 }

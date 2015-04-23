@@ -60,19 +60,19 @@ namespace Magicolo {
 			return color.Div(otherColor, Channels.RGBA);
 		}
 	
-		public static Color Pow(this Color color, double power, Channels channels) {
+		public static Color Pow(this Color color, float power, Channels channels) {
 			return ((Vector4)color).Pow(power, (Axis)channels);
 		}
 	
-		public static Color Pow(this Color color, double power) {
+		public static Color Pow(this Color color, float power) {
 			return color.Pow(power, Channels.RGBA);
 		}
 	
-		public static Color Round(this Color color, double step, Channels channels) {
+		public static Color Round(this Color color, float step, Channels channels) {
 			return ((Vector4)color).Round(step, (Axis)channels);
 		}
 	
-		public static Color Round(this Color color, double step) {
+		public static Color Round(this Color color, float step) {
 			return color.Round(step, Channels.RGBA);
 		}
 	

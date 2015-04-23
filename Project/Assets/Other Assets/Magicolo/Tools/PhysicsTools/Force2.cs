@@ -15,7 +15,7 @@ namespace Magicolo {
 			}
 			set {
 				angle = value % 360;
-				force = (Vector2.right.Rotate(angle) * strength).Round(0.0001);
+				force = (Vector2.right.Rotate(angle) * strength).Round(0.0001F);
 				direction = force.normalized;
 
 				hasChanged = true;
@@ -30,7 +30,7 @@ namespace Magicolo {
 			}
 			set {
 				strength = value;
-				force = (Vector2.right.Rotate(angle) * strength).Round(0.0001);
+				force = (Vector2.right.Rotate(angle) * strength).Round(0.0001F);
 				direction = force.normalized;
 
 				hasChanged = true;
@@ -44,7 +44,7 @@ namespace Magicolo {
 				return direction;
 			}
 			set {
-				direction = value.normalized.Round(0.0001);
+				direction = value.normalized.Round(0.0001F);
 				force = direction * strength;
 				angle = (Vector2.Angle(Vector2.right, direction) * -direction.y.Sign()).Wrap(360);
 
