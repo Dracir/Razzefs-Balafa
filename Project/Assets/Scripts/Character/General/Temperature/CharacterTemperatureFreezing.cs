@@ -7,7 +7,6 @@ public class CharacterTemperatureFreezing : State {
 	
 	public float freezeDuration = 1;
 	
-	[Disable] public bool frozen;
 	[Disable] public float freezeCounter;
 	
 	CharacterTemperature Layer {
@@ -21,7 +20,7 @@ public class CharacterTemperatureFreezing : State {
 	public override void OnExit() {
 		base.OnExit();
 		
-		Unfreeze();
+		Layer.Frozen = false;
 	}
 	
 	public override void OnUpdate() {
@@ -32,35 +31,18 @@ public class CharacterTemperatureFreezing : State {
 			return;
 		}
 		
-		Layer.spriteRenderer.color = Layer.spriteRenderer.color.Lerp(new Color(1 - Layer.temperatureInfo.Coldness, 1 - Layer.temperatureInfo.Coldness, 1), Time.deltaTime * Layer.fadeSpeed, Channels.RGB);
+		Color targetColor = Layer.Frozen ? Color.blue : new Color(1 - Layer.temperatureInfo.Coldness, 1 - Layer.temperatureInfo.Coldness, 1);
+		Layer.spriteRenderer.color = Layer.spriteRenderer.color.Lerp(targetColor, Time.deltaTime * Layer.fadeSpeed, Channels.RGB);
 	
-		freezeCounter -= frozen ? Time.deltaTime : 0;
-			
-		if (freezeCounter <= 0) {
-			Unfreeze();
-		}
-		
 		if (Layer.temperatureInfo.wasFrozen) {
 			Freeze();
 		}
 	}
 	
 	void Freeze() {
-		if (!frozen) {
-			Layer.Freeze();
-		}
-			
-		frozen = true;
+		Layer.Frozen = true;
 		freezeCounter = freezeDuration;
 		
 		Layer.temperatureInfo.wasFrozen = false;
-	}
-	
-	void Unfreeze() {
-		frozen = false;
-		
-		if (frozen) {
-			Layer.Unfreeze();
-		}
 	}
 }

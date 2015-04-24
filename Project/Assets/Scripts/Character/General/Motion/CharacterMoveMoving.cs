@@ -25,7 +25,7 @@ public class CharacterMoveMoving : State {
 	
 	public override void OnFixedUpdate() {
 		currentSpeed = Layer.HorizontalAxis.PowSign(inputPower) * speed * (1F / Mathf.Max(Mathf.Sqrt(Layer.Friction), 0.0001F));
-		currentAcceleration = Mathf.Max(Layer.Friction, 0.001F) * acceleration;
+		currentAcceleration = Mathf.Max(Layer.Friction, 0.0001F) * acceleration;
 		
 		if (Layer.Gravity.Angle == 90) {
 			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.X);
@@ -45,7 +45,7 @@ public class CharacterMoveMoving : State {
 		}
 		else {
 			Vector3 velocity = Layer.Rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
-			velocity.x = Mathf.Lerp(velocity.x, currentSpeed, Time.fixedDeltaTime * speed * currentAcceleration);
+			velocity.x = Mathf.Lerp(velocity.x, currentSpeed, Time.fixedDeltaTime * currentSpeed * currentAcceleration);
 			Layer.MoveVelocity = velocity.x;
 			velocity = velocity.Rotate(Layer.Gravity.Angle - 90);
 			

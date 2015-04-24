@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-namespace Magicolo.GeneralTools {
+namespace Magicolo {
 	public interface IStateLayer : IState {
 		
 		IState[] GetStates();
