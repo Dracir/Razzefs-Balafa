@@ -5,12 +5,12 @@ using Magicolo;
 
 public class SpellBlockCastCasting : State, IInputKeyListener {
 	
-	public int maxSize = 3;
-	public int maxArea = 10;
-	public float margin = 0.25F;
+	[Min] public int maxSize = 3;
+	[Min] public int maxArea = 10;
+	[Range(0, 0.5F)] public float margin = 0.25F;
 	public LayerMask layerMask;
-	public Color validColor = Color.green;
-	public Color invalidColor = Color.red;
+	public Color validColor = new Color(0, 1, 0, 0.125F);
+	public Color invalidColor = new Color(1, 0, 0, 0.125F);
 	
 	[Disable] public Vector2 startPosition;
 	[Disable] public Vector2 endPosition;

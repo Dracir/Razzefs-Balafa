@@ -16,11 +16,11 @@ public class EnemisBobber : StateLayer {
 	public LayerMask activationLayers;
 	public float maxHeatDamage = 1;
 	
-	[HideInInspector] public Temperature temperature;
+	[HideInInspector] public TemperatureInfo temperature;
 	
 	public override void OnAwake() {
 		base.OnAwake();
-		temperature = GetComponent<Temperature>();
+		temperature = GetComponent<TemperatureInfo>();
 	}
 	
 	public override void OnEnter() {

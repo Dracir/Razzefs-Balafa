@@ -20,7 +20,7 @@ public class EnemisBobberExplosing : State {
 		Collider2D [] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.activationLayers.value );
 		foreach (var otherCollider in colliders) {
 			Transform otherTranform = otherCollider.transform.parent;
-			Temperature otherTemperature = otherTranform.GetComponent<Temperature>();
+			TemperatureInfo otherTemperature = otherTranform.GetComponent<TemperatureInfo>();
 			if(otherTemperature){
 				float distance = (otherTranform.position - transform.parent.position).magnitude;
 				if(distance <= Layer.explosionRadius){
