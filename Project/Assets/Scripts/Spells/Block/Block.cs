@@ -5,7 +5,7 @@ using Magicolo;
 
 public class Block : MonoBehaviourExtended {
 
-	[Disable] int size;
+	[SerializeField, Disable] int size;
 	public int Size {
 		get {
 			return size;

@@ -121,21 +121,21 @@ namespace Magicolo {
 		#endregion
 		
 		#region Rotation
-		public static void SetEulerAngles(this Rigidbody2D rigidbody, float angle) {
+		public static void SetEulerAngle(this Rigidbody2D rigidbody, float angle) {
 			rigidbody.MoveRotation(angle);
 		}
 		
 		public static void Rotate(this Rigidbody2D rigidbody, float rotation) {
-			rigidbody.SetEulerAngles(rigidbody.transform.eulerAngles.z + rotation * Time.fixedDeltaTime);
+			rigidbody.SetEulerAngle(rigidbody.transform.eulerAngles.z + rotation * Time.fixedDeltaTime);
 		}
 			
 		public static void RotateTowards(this Rigidbody2D rigidbody, float targetAngle, float speed, InterpolationModes interpolation) {
 			switch (interpolation) {
 				case InterpolationModes.Quadratic:
-					rigidbody.SetEulerAngles(rigidbody.transform.eulerAngles.LerpAngles(new Vector3(targetAngle, targetAngle, targetAngle), Time.fixedDeltaTime * speed, Axis.Z).z);
+					rigidbody.SetEulerAngle(rigidbody.transform.eulerAngles.LerpAngles(new Vector3(targetAngle, targetAngle, targetAngle), Time.fixedDeltaTime * speed, Axis.Z).z);
 					break;
 				case InterpolationModes.Linear:
-					rigidbody.SetEulerAngles(rigidbody.transform.eulerAngles.LerpAnglesLinear(new Vector3(targetAngle, targetAngle, targetAngle), Time.fixedDeltaTime * speed, Axis.Z).z);
+					rigidbody.SetEulerAngle(rigidbody.transform.eulerAngles.LerpAnglesLinear(new Vector3(targetAngle, targetAngle, targetAngle), Time.fixedDeltaTime * speed, Axis.Z).z);
 					break;
 			}
 		}
@@ -145,7 +145,7 @@ namespace Magicolo {
 		}
 
 		public static void OscillateEulerAngles(this Rigidbody2D rigidbody, float frequency, float amplitude, float center) {
-			rigidbody.SetEulerAngles(rigidbody.transform.eulerAngles.Oscillate(new Vector3(frequency, frequency, frequency), new Vector3(amplitude, amplitude, amplitude), new Vector3(center, center, center), rigidbody.GetInstanceID() / 1000, Axis.Z).z);
+			rigidbody.SetEulerAngle(rigidbody.transform.eulerAngles.Oscillate(new Vector3(frequency, frequency, frequency), new Vector3(amplitude, amplitude, amplitude), new Vector3(center, center, center), rigidbody.GetInstanceID() / 1000, Axis.Z).z);
 		}
 		
 		public static void OscillateEulerAngles(this Rigidbody2D rigidbody, float frequency, float amplitude) {
