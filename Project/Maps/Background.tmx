@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="32" tileheight="32" nextobjectid="1">
+ <properties>
+  <property name="AutomappingRadius" value="5"/>
+  <property name="NoOverlappingRules" value="false"/>
+ </properties>
+ <tileset firstgid="1" source="Tiles.tsx"/>
+ <layer name="regions" width="1" height="1">
+  <data encoding="csv">
+69
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+12
+</data>
+ </layer>
+ <layer name="output1_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output2_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output3_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output4_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output5_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output6_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+12
+</data>
+ </layer>
+ <layer name="output7_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+13
+</data>
+ </layer>
+ <layer name="output8_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+12
+</data>
+ </layer>
+ <layer name="output9_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+2684354573
+</data>
+ </layer>
+ <layer name="output10_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+3221225485
+</data>
+ </layer>
+ <layer name="output11_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+1610612749
+</data>
+ </layer>
+ <layer name="output12_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+2684354572
+</data>
+ </layer>
+ <layer name="output13_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output14_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output15_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output16_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output17_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output18_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="output1_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+13
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+16
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+17
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+2684354573
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+3221225485
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+1610612749
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+2684354572
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+3221225484
+</data>
+ </layer>
+ <layer name="input_Tiles" width="1" height="1">
+  <data encoding="csv">
+1610612748
+</data>
+ </layer>
+ 
+  <layer name="output19_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+  <layer name="output20_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+  <layer name="output21_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+  <layer name="output22_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+  <layer name="output23_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+  <layer name="output24_Tiles" width="1" height="1" visible="0">
+  <data encoding="csv">
+11
+</data>
+ </layer>
+</map>

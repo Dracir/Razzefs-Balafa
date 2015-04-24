@@ -15,7 +15,6 @@ public class GamePlaying : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
 	}
 	
 	public override void OnExit() {

@@ -17,56 +17,37 @@ public class GameNextLevel : State {
 	[Disable] GameObject player3;
 	[Disable] GameObject player4;
 	
-	LevelCycleMenager levelCycle;
+	public LevelCycleMenager levelCycle;
 	
 	public override void OnAwake() {
 		base.OnAwake();
+		DontDestroyOnLoad(this);
 		levelCycle = GetComponent<LevelCycleMenager>();
 		levelCycle.loadMapPack();
-		DontDestroyOnLoad(this);
-		checkPlayerExist();
-	}
-
-	void checkPlayerExist() {
-		if(player1 == null){
-			player1 = GameObjectExtend.createClone(Layer.player1Prefab);
-		}
-	}
-	
-	public override void OnEnter() {
-		base.OnEnter();
-		if(levelCycle.hasNextMap()){
-			levelCycle.nextMap();
-			setPlayerPosition();
-			SwitchState<GamePlaying>();
-		}
 		
-		
-	}
-
-	void setPlayerPosition() {
-		if(player1 != null){
-			player1.transform.position = levelCycle.currentMapGO.FindChildRecursive("P1Start").transform.position;
-		}
-		if(player2 != null){
-			player2.transform.position = levelCycle.currentMapGO.FindChildRecursive("P2Start").transform.position;
-		}
-		if(player3 != null){
-			player3.transform.position = levelCycle.currentMapGO.FindChildRecursive("P3Start").transform.position;
-		}
-		if(player4 != null){
-			player4.transform.position = levelCycle.currentMapGO.FindChildRecursive("P4Start").transform.position;
-		}
-	}
-	
-	
-	public override void OnExit() {
-		base.OnExit();
-		
+		levelCycle.nextMap();
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
+		if(levelCycle.levelLoaded){
+			makePlayers();
+			makeCamera();
+			SwitchState<GamePlaying>();
+		}
+	}
+	
+	void makePlayers() {
+		//TODO select nb player comme faut
+		if(player1 == null){
+			player1 = GameObjectExtend.createClone(Layer.player1Prefab);
+			player1.transform.position = levelCycle.currentMapGO.FindChildRecursive("P1Start").transform.position;
+		}
+	}
+
+	void makeCamera() {
+		CameraDudes follow = Camera.main.GetOrAddComponent<CameraDudes>();
+		GameObject flag = levelCycle.currentMapGO.FindChildRecursive("EndFlag");
+		follow.SetFollowing(new [] { flag, player1, player2, player3, player4 });
 	}
 }
