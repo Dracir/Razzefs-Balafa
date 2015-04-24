@@ -10,7 +10,7 @@ namespace FMG
 		//the array of buttons.
 		public Button[] buttons;
 
-
+		public GameObject selectCursor;
 		//the selected button
 		public Button selectedButton;
 
@@ -22,9 +22,11 @@ namespace FMG
 
 
 		private int m_selectedIndex=0;
+		private bool m_isAxisInUse;
 
 		private RectTransform m_rectTransform;
 		private Vector3 m_orgPos;
+		private Image cursor;
 
 		//use the button toggle.
 		public bool useButtonToggle = true;
@@ -38,6 +40,11 @@ namespace FMG
 			}else{
 				init ();
 			}
+
+			Transform cursorObject = Instantiate(selectCursor).transform;
+			cursor = cursorObject.GetComponent<Image>();
+			cursor.transform.parent = this.transform;
+			ResetCursor();
 		}
 		void init()
 		{
@@ -71,13 +78,38 @@ namespace FMG
 			}
 		}
 
-
 		void Update () {
-			if(m_rectTransform==null || m_rectTransform.position != m_orgPos)
+			//this is dumb because it apparently sets its own position somewhere in the script making m_orgPos totally dumb
+			if(m_rectTransform==null || )
 			{
 				return;
 			}
 			K_BUTTON_PRESS -= Time.deltaTime;
+
+			//get input for things
+			bool next = false;
+			bool prev = false;
+			float axis = Input.GetAxis("NextPrev");
+			Debug.Log ("axis is " + axis);
+			if(axis != 0)
+			{
+				if(m_isAxisInUse == false)
+				{
+					if (axis > 0){
+						prev = true;
+					} else {
+						next = true;
+					}
+					m_isAxisInUse = true;
+					Debug.Log ("Changing things!");
+				} else {
+					Debug.Log ("Not changing");
+				}
+			}
+			if(Input.GetAxisRaw("NextPrev") == 0)
+			{
+				m_isAxisInUse = false;
+			}    
 
 			if(Input.GetButtonDown("SelectButton"))
 			{
@@ -96,7 +128,7 @@ namespace FMG
 					Debug.Log ("m_buttonPress" + K_BUTTON_PRESS);
 				}
 			}
-			if(Input.GetButtonDown("PrevButton"))
+			if(prev)
 			{
 				m_selectedIndex--;
 				if(m_selectedIndex<0)
@@ -104,8 +136,9 @@ namespace FMG
 					m_selectedIndex=buttons.Length-1;
 				}
 				selectIndex(m_selectedIndex);
+				ResetCursor();
 			}
-			if(Input.GetButtonDown("NextButton"))
+			if(next)
 			{
 
 				m_selectedIndex++;
@@ -114,7 +147,15 @@ namespace FMG
 					m_selectedIndex=0;
 				}
 				selectIndex(m_selectedIndex);
+				ResetCursor();
 			}
+		}
+		
+		void ResetCursor () {
+			RectTransform select = selectedButton.GetComponent<RectTransform>();
+			RectTransform curs = cursor.rectTransform;
+			curs.position = select.position;
+			curs.position -= (Vector3)Vector2.right * (select.rect.width/2 + curs.rect.width/2);
 		}
 	}
 }

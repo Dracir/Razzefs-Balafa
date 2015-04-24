@@ -7,10 +7,8 @@ public class CameraDudes : MonoBehaviour {
 	public List<Transform> follow;
 	
 	GameObject flag;
-	float border = 5;
 	
 	Vector3 init;
-	float ignoreDistance = 5f;
 
 	float lerpAmount = 0.1f;
 	
