@@ -28,6 +28,12 @@ namespace FMG
 		private Vector3 m_orgPos;
 		private Image cursor;
 
+		Text myText {
+			get{
+				return GetComponentInChildren<Text>();
+			}
+		}
+
 		//use the button toggle.
 		public bool useButtonToggle = true;
 
@@ -80,7 +86,7 @@ namespace FMG
 
 		void Update () {
 			//this is dumb because it apparently sets its own position somewhere in the script making m_orgPos totally dumb
-			if(m_rectTransform==null || )
+			if(m_rectTransform==null || myText.color.a < 0.9)
 			{
 				return;
 			}

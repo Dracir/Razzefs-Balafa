@@ -13,18 +13,20 @@ public class EnemisBobberActivating : State {
     	get { return (StateMachine)machine; }
     }
 	
+	public float t;
+	
 	public override void OnEnter() {
 		base.OnEnter();
-		
-	}
-	
-	public override void OnExit() {
-		base.OnExit();
-		
+		t = Layer.activationTime;
+		GetComponent<Animator>().SetTrigger("Activating");
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
+		t -= Time.deltaTime;
+		if(t<=0){
+			SwitchState<EnemisBobberExplosing>();
+		}
 	}
 }

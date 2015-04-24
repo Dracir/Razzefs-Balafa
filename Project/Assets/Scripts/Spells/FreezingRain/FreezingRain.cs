@@ -8,6 +8,16 @@ public class FreezingRain : MonoBehaviourExtended {
 	public Pool rainPool;
 	public Pool dropFXPool;
 	
+	[SerializeField, PropertyField] float coldness = 0.01F;
+	public float Coldness {
+		get { 
+			return coldness; 
+		}
+		set { 
+			coldness = value; 
+		}
+	}
+	
 	[SerializeField, PropertyField(typeof(MinAttribute))] float lifeTime = 2;
 	public float LifeTime {
 		get {
@@ -119,6 +129,8 @@ public class FreezingRain : MonoBehaviourExtended {
 	}
 	
 	IEnumerator DespawnAfterPlaying(ParticleSystem particleFX) {
+		particleFX.Stop();
+		particleFX.Simulate(0);
 		particleFX.Play();
 		
 		while (particleFX.isPlaying) {
