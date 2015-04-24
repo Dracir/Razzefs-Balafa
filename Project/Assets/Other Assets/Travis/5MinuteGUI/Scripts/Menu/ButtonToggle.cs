@@ -80,7 +80,8 @@ namespace FMG
 
 		void Update () {
 			//this is dumb because it apparently sets its own position somewhere in the script making m_orgPos totally dumb
-			if(m_rectTransform==null || )
+			// It is also dumb because there was no condition on the right of the logicial or.
+			if(m_rectTransform==null || 1 > 2)
 			{
 				return;
 			}
