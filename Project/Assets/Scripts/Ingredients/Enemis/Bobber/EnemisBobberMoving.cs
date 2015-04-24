@@ -15,16 +15,16 @@ public class EnemisBobberMoving : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
-	}
-	
-	public override void OnExit() {
-		base.OnExit();
-		
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
+		transform.parent.position += Layer.movementSpeed * Time.deltaTime * transform.parent.right;
+	}
+	
+	public override void TriggerEnter2D(Collider2D collision) {
+		base.TriggerEnter2D(collision);
 		
+		SwitchState<EnemisBobberActivating>();
 	}
 }
