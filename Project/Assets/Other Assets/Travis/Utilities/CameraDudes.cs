@@ -27,14 +27,6 @@ public class CameraDudes : MonoBehaviour {
 		if (follow == null)
 			return;
 		
-		//see if there's a flag now
-		if (flag == null){
-			flag = GameObject.FindWithTag("EndFlag");
-			if (flag != null){
-				follow.Add(flag.transform);
-			}
-		}
-		
 		//determine new position based on follow things
 		float smallestX = Mathf.Infinity;
 		float largestX = Mathf.NegativeInfinity;
@@ -54,7 +46,6 @@ public class CameraDudes : MonoBehaviour {
 			largestY = Mathf.Max(largestY, Camera.main.WorldToScreenPoint(follow[i].position).y);
 			
 		}
-		Debug.Log(string.Format("My borders? are {0}, {1}, {2}, and {3}", smallestX, largestX, smallestY, largestY));
 		
 		if (largestX - smallestX > Screen.width * zoomMarginPercentage || largestY - smallestY > Screen.height * zoomMarginPercentage){
 			init -= Vector3.forward * zoomOutAmount;
