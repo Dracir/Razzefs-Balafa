@@ -28,6 +28,12 @@ public class SpellGravityCast : StateLayer {
 		get { return (StateMachine)machine; }
 	}
 
+	public override void OnExit() {
+		base.OnExit();
+		
+		SwitchState<SpellGravityCastIdle>();
+	}
+	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		

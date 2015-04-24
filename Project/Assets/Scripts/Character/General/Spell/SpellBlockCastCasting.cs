@@ -71,7 +71,7 @@ public class SpellBlockCastCasting : State, IInputKeyListener {
 				break;
 			case "CastAction":
 				if (keyState == KeyStates.Down) {
-					ToggleSize();
+					NextSize();
 				}
 				break;
 		}
@@ -93,7 +93,7 @@ public class SpellBlockCastCasting : State, IInputKeyListener {
 		}
 	}
 	
-	void ToggleSize() {
+	void NextSize() {
 		currentSize = (currentSize + 1).Wrap(maxSize + 1);
 		castZoneSprite.SetLocalScale(currentSize, Axis.XY);
 	}

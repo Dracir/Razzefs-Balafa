@@ -3,8 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class zTest : MonoBehaviourExtended, IInputAxisListener {
+public class zTest : MonoBehaviourExtended {
 
+	[Button("Test", "Test", NoPrefixLabel = true)] public bool test;
+	void Test() {
+	}
+	
 	[Toggle] public bool logPressedKeys;
 	
 	void Update() {
@@ -19,10 +23,6 @@ public class zTest : MonoBehaviourExtended, IInputAxisListener {
 		
 			Logger.Log(pressed);
 		}
-	}
-
-	public void OnAxisInput(AxisInfo axisInfo, float axisValue) {
-		Logger.Log(axisInfo, axisValue);
 	}
 }
 
