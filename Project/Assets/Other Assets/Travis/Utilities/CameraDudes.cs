@@ -15,7 +15,9 @@ public class CameraDudes : MonoBehaviour {
 	float lerpAmount = 0.1f;
 	
 	float zoomOutAmount = 0.1f;
-	float zoomOutTolerance = 12f;
+	
+	//how much of the screen do I want between the players and the flag?
+	float zoomMarginPercentage = 0.7f;
 	
 	void Start () {
 		init = transform.position;
@@ -47,22 +49,16 @@ public class CameraDudes : MonoBehaviour {
 				continue;
 			}
 			average += follow[i].position;
-			if (Camera.main.WorldToScreenPoint(follow[i].position).x < smallestX){
-				smallestX = follow[i].position.x;
-			}
-			if (Camera.main.WorldToScreenPoint(follow[i].position).x > largestX){
-				largestX = follow[i].position.x;
-			}
-			if (Camera.main.WorldToScreenPoint(follow[i].position).y < smallestY){
-				smallestY = follow[i].position.y;
-			}
-			if (Camera.main.WorldToScreenPoint(follow[i].position).y > largestY){
-				largestY = follow[i].position.y;
-			}
+			
+			smallestX = Mathf.Min(smallestX, Camera.main.WorldToScreenPoint(follow[i].position).x);
+			largestX = Mathf.Max(largestX, Camera.main.WorldToScreenPoint(follow[i].position).x);
+			smallestY = Mathf.Min(smallestY, Camera.main.WorldToScreenPoint(follow[i].position).y);
+			largestY = Mathf.Max(largestY, Camera.main.WorldToScreenPoint(follow[i].position).y);
 			
 		}
 		Debug.Log(string.Format("My borders? are {0}, {1}, {2}, and {3}", smallestX, largestX, smallestY, largestY));
-		if (largestX - smallestX > zoomOutTolerance || largestY - smallestY > zoomOutTolerance){
+		
+		if (largestX - smallestX > Screen.width * zoomMarginPercentage || largestY - smallestY > Screen.height * zoomMarginPercentage){
 			init -= Vector3.forward * zoomOutAmount;
 		}
 		average /= follow.Count;
