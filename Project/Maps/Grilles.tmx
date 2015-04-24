@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="2" height="5" tilewidth="32" tileheight="32" nextobjectid="1">
+ <properties>
+  <property name="AutomappingRadius" value="10"/>
+ </properties>
+ <tileset firstgid="1" source="Tiles.tsx"/>
+ <layer name="regions" width="2" height="5" visible="0">
+  <data encoding="csv">
+69,69,
+0,0,
+69,69,
+0,0,
+69,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+11,15,
+0,0,
+15,11,
+0,0,
+15,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+12,14,
+0,0,
+14,12,
+0,0,
+14,0
+</data>
+ </layer>
+ <layer name="output1_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+15,0,
+0,0,
+0,15,
+0,0,
+14,0
+</data>
+ </layer>
+ <layer name="output2_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+0,0,
+0,0,
+0,0,
+0,0,
+15,0
+</data>
+ </layer>
+ <layer name="output3_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+0,0,
+0,0,
+0,0,
+0,0,
+15,0
+</data>
+ </layer>
+ <layer name="output4_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+0,0,
+0,0,
+0,0,
+0,0,
+15,0
+</data>
+ </layer>
+ <layer name="output5_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+0,0,
+0,0,
+0,0,
+0,0,
+15,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5" visible="0">
+  <data encoding="csv">
+13,0,
+0,0,
+0,13,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5">
+  <data encoding="csv">
+2684354573,0,
+0,0,
+0,2684354573,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5">
+  <data encoding="csv">
+3221225485,0,
+0,0,
+0,3221225485,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5">
+  <data encoding="csv">
+1610612749,0,
+0,0,
+0,1610612749,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5">
+  <data encoding="csv">
+2684354572,0,
+0,0,
+0,2684354572,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5">
+  <data encoding="csv">
+3221225484,0,
+0,0,
+0,3221225484,
+0,0,
+0,0
+</data>
+ </layer>
+ <layer name="input_Tiles" width="2" height="5">
+  <data encoding="csv">
+1610612748,0,
+0,0,
+0,1610612748,
+0,0,
+0,0
+</data>
+ </layer>
+</map>

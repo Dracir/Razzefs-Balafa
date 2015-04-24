@@ -1,1 +1,3 @@
 ../autotile.tmx
+../Grilles.tmx
+../Background.tmx
