@@ -11,6 +11,6 @@ public class AnimatorRandomFloatSender : MonoBehaviour {
 	
 	
 	void Update () {
-		animator.SetFloat("Random", Random.Range(0,1));
+		animator.SetFloat("Random", Random.Range(0f,1f));
 	}
 }
