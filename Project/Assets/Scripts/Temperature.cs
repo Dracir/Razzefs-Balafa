@@ -6,6 +6,18 @@ using Magicolo;
 public class Temperature : MonoBehaviourExtended {
 
 	[Range(-1, 1)] public float temperature;
+	
+//	[SerializeField, PropertyField(typeof(RangeAttribute), -1, 1)]
+//	float temperature;
+//	public float Temperature {
+//		get {
+//			return temperature;
+//		}
+//		set {
+//			temperature = Mathf.Clamp(value, -1, 1);
+//		}
+//	}
+	
 	[Range(-1, 0)] public float freezingThreshold = -0.75F;
 	[Range(0, 1)] public float blazingThreshold = 0.75F;
 	[Min] public float resistance = 1;
