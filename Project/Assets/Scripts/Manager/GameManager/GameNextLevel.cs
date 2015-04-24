@@ -25,6 +25,9 @@ public class GameNextLevel : State {
 		levelCycle.loadMapPack();
 		DontDestroyOnLoad(this);
 		checkPlayerExist();
+		
+		CameraDudes follow = Camera.main.GetOrAddComponent<CameraDudes>();
+		follow.SetFollowing(new GameObject[] { player1, player2, player3, player4});
 	}
 
 	void checkPlayerExist() {
