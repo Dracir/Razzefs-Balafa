@@ -11,6 +11,8 @@ namespace RickTools.MapLoader{
 	public abstract class MapWindowBase : CustomWindowBase {
 	
 		public TiledToUnityLinker linker;
+		public SerializedObject linkerSO;
+		
 		public string linkerPath = "assets";
 		public bool dataChanged = true;
 	
@@ -47,12 +49,14 @@ namespace RickTools.MapLoader{
 			if(linker == null){
 				showLinkerSelectionPanel();
 			}else{
+				linkerSO = new SerializedObject(linker);
 				EditorGUI.BeginChangeCheck();
 				showGUI();
 				if (EditorGUI.EndChangeCheck() || dataChanged){
 					EditorUtility.SetDirty(linker);
 					dataChanged = false;
 				} 
+				linkerSO.ApplyModifiedProperties();
 			}
 		}
 

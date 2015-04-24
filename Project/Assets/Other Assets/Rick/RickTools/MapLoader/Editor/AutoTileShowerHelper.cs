@@ -67,16 +67,16 @@ namespace RickTools.MapLoader{
 				tryAddRotationTiles(currentAutotile.cornerOutside, CORNER_OUTSIDE_NW);
 			}
 		}
-
-		void tryAddRotationTiles(Sprite sprite, int index) {
-			if(sprite != null){
-				addRotationsTile(texture, index, sprite);
+		
+		void tryAddSingleTile(List<Sprite> spriteList, int index) {
+			if(spriteList.Count != 0){
+				addSingleTile(texture, index, spriteList[0]);
 			}
 		}
-		
-		void tryAddSingleTile(Sprite sprite, int index) {
-			if(sprite != null){
-				addSingleTile(texture, index, sprite);
+
+		void tryAddRotationTiles(List<Sprite> spriteList, int index) {
+			if(spriteList.Count != 0){
+				addRotationsTile(texture, index, spriteList[0]);
 			}
 		}
 
