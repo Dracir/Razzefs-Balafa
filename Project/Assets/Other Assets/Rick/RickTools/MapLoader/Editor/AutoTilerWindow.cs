@@ -221,15 +221,21 @@ namespace RickTools.MapLoader{
 				
 		void makeCopie() {
 			if(currentAutotile.basePrefab != null){
-				/*makeCloneFor("Center", currentAutotile.center);
+				makeCloneFor("Center", currentAutotile.center);
 				makeCloneFor("Side", currentAutotile.side);
 				makeCloneFor("Outside", currentAutotile.cornerOutside);
-				makeCloneFor("Inside", currentAutotile.cornerInside);*/
+				makeCloneFor("Inside", currentAutotile.cornerInside);
 			}
 		}
 
+		void makeCloneFor(string name, List<Sprite> sprite) {
+			for (int i = 0; i < sprite.Count; i++) {
+				makeCloneFor(name + i, sprite[i]);
+			}
+		}
+		
 		void makeCloneFor(string name, Sprite sprite) {
-			GameObject tileCenter = GameObjectExtend.createClone(currentAutotile.basePrefab);
+		GameObject tileCenter = GameObjectExtend.createClone(currentAutotile.basePrefab);
 			SpriteRenderer sr = tileCenter.GetComponentInChildren<SpriteRenderer>();
 			if(sr != null){
 				sr.sprite = sprite;
