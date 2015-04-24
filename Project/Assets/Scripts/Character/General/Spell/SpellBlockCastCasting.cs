@@ -85,11 +85,11 @@ public class SpellBlockCastCasting : State, IInputKeyListener {
 
 		if (Physics2D.OverlapArea(pointA, pointB, layerMask) != null) {
 			valid = false;
-			castZoneSpriteRenderer.SetColor(invalidColor, Channels.RGB);
+			castZoneSpriteRenderer.color = invalidColor;
 		}
 		else {
 			valid = true;
-			castZoneSpriteRenderer.SetColor(validColor, Channels.RGB);
+			castZoneSpriteRenderer.color = validColor;
 		}
 	}
 	
