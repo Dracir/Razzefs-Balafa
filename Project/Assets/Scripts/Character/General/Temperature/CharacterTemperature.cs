@@ -7,13 +7,13 @@ public class CharacterTemperature : StateLayer {
 	
 	[Min] public float fadeSpeed = 5;
 	
-	bool _temperatureCached;
-	TemperatureInfo _temperature;
-	public TemperatureInfo temperature { 
+	bool _temperatureInfoCached;
+	TemperatureInfo _temperatureInfo;
+	public TemperatureInfo temperatureInfo { 
 		get { 
-			_temperature = _temperatureCached ? _temperature : GetComponent<TemperatureInfo>();
-			_temperatureCached = true;
-			return _temperature;
+			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : GetComponent<TemperatureInfo>();
+			_temperatureInfoCached = true;
+			return _temperatureInfo;
 		}
 	}
 	
@@ -27,7 +27,19 @@ public class CharacterTemperature : StateLayer {
 		}
 	}
 	
+	CharacterLive Layer {
+		get { return ((CharacterLive)layer); }
+	}
+	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
+	}
+	
+	public void Freeze() {
+		Layer.SwitchState<CharacterLiveIdle>();
+	}
+	
+	public void Unfreeze() {
+		Layer.SwitchState<CharacterMotion>();
 	}
 }
