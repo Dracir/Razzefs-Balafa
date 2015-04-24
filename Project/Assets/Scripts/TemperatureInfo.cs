@@ -16,11 +16,24 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		}
 	}
 	
-	[Range(-1, 0)] public float freezingThreshold = -0.75F;
-	[Range(0, 1)] public float blazingThreshold = 0.75F;
+	[Range(-1, 0)] public float freezingThreshold = -0.5F;
+	[Range(0, 1)] public float blazingThreshold = 0.5F;
 	[Min] public float resistance = 1;
+	
 	[Disable] public bool wasFrozen;
 	[Disable] public bool wasBlazed;
+	
+	public float Coldness {
+		get {
+			return IsFreezing ? (Temperature - freezingThreshold) / (-1 - freezingThreshold) : 0;
+		}
+	}
+	
+	public float Hotness {
+		get {
+			return IsBlazing ? (Temperature - blazingThreshold) / (1 - blazingThreshold) : 0;
+		}
+	}
 	
 	public bool IsCool {
 		get {
