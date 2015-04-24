@@ -143,4 +143,16 @@ public class CharacterMotion : StateLayer {
 
 		rigidbody.AddForce(gravity);
 	}
+
+	public void Enable() {
+		foreach (IState states in GetActiveStates()) {
+			states.SwitchState("Idle");
+		}
+	}
+	
+	public void Disable() {
+		foreach (IState states in GetActiveStates()) {
+			states.SwitchState<EmptyState>();
+		}
+	}
 }
