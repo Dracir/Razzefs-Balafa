@@ -14,5 +14,7 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 			id = value;
 		}
 	}
+	
+	public Color color = Color.white;
 }
 

@@ -28,6 +28,12 @@ public class SpellBlockCast : StateLayer {
 		get { return (StateMachine)machine; }
 	}
 	
+	public override void OnExit() {
+		base.OnExit();
+		
+		SwitchState<SpellBlockCastIdle>();
+	}
+	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
