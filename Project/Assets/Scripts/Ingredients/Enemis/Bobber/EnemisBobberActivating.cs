@@ -18,7 +18,7 @@ public class EnemisBobberActivating : State {
 	public override void OnEnter() {
 		base.OnEnter();
 		t = Layer.activationTime;
-		GetComponent<Animator>().SetTrigger("Activation");
+		GetComponent<Animator>().SetTrigger("Activating");
 	}
 	
 	public override void OnUpdate() {

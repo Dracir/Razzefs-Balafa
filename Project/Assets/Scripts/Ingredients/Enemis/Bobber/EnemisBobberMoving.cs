@@ -19,12 +19,20 @@ public class EnemisBobberMoving : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		transform.parent.position += Layer.movementSpeed * Time.deltaTime * transform.parent.right;
+		if(Layer.temperature.IsFreezing){
+			SwitchState<EnemisBobberFrozen>();
+		}else if(Layer.temperature.IsFreezing){
+			SwitchState<EnemisBobberExplosing>();
+		}else{
+			transform.parent.position += Layer.movementSpeed * Time.deltaTime * transform.parent.right;	
+		}
 	}
 	
 	public override void TriggerEnter2D(Collider2D collision) {
 		base.TriggerEnter2D(collision);
-		
+	
 		SwitchState<EnemisBobberActivating>();
 	}
+	
+	
 }
