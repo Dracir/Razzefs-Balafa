@@ -11,8 +11,8 @@ public class LevelCycleMenager : MonoBehaviour {
 
 	public string playerPrefMapIndexKey;
 	
-	
 	public string mapPrefabFolder;
+	public string inGameMapName;
 	public string endOfCycleMapName;
 	
 	
@@ -23,6 +23,12 @@ public class LevelCycleMenager : MonoBehaviour {
 	[Disable] public MapData currentMapData;
 	
 	public static LevelCycleMenager instance;
+	
+	[Disable] public bool nextMapOnLevelWasLoaded = false;
+	[Disable] public bool refreshed = false;
+
+	public bool levelLoaded;
+	
 	void Awake(){
 		LevelCycleMenager.instance = this;
 		DontDestroyOnLoad(this);
@@ -42,12 +48,29 @@ public class LevelCycleMenager : MonoBehaviour {
 	
 	public void nextMap(){
 		if(hasNextMap()){
-			loadNextMap();
+			if(!refreshed){
+				loadNextMap();
+			}else{
+				Application.LoadLevel(inGameMapName);
+			}
 		}else{
 			endMapPack();
 		}
+		
 	}
 
+	void OnLevelWasLoaded(int level) {
+		if(Application.loadedLevelName == inGameMapName && nextMapOnLevelWasLoaded){
+			
+			print("Woohoo");
+			nextMap();
+			nextMapOnLevelWasLoaded = false;
+			refreshed = true;
+			/*setPlayerPosition();
+			SwitchState<GamePlaying>();*/
+		}
+    }
+	
 	public bool hasNextMap() {
 		return currentMapPack.Length != 0 && currentMapIndex + 1 < currentMapPack.Length;
 	}
@@ -69,7 +92,7 @@ public class LevelCycleMenager : MonoBehaviour {
 	}
 	
 	
-	void endMapPack() {
+	public void endMapPack() {
 		clearCurrentMap();
 		Application.LoadLevel(endOfCycleMapName);
 	}
@@ -83,6 +106,7 @@ public class LevelCycleMenager : MonoBehaviour {
 		currentMapGO = GameObjectExtend.createClone(mapData.gameObject);
 		currentMapData = currentMapGO.GetComponent<MapData>();
 		
+		levelLoaded = true;
 	}
 	
 	void clearCurrentMap() {

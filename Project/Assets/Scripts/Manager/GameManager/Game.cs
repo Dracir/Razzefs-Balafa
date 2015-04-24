@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
+using RickTools.MapLoader;
 
 public class Game : StateLayer {
 	
@@ -20,6 +21,10 @@ public class Game : StateLayer {
 		base.OnAwake();
 		
 		Game.instance = this;
+	}
+	
+	public MapData MapData{
+		get{return GetComponent<GameNextLevel>().levelCycle.currentMapData;}
 	}
 	
 	public override void OnEnter() {
