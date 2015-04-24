@@ -1,18 +1,27 @@
 fileFormatVersion: 2
-guid: 8eefcb6c8ca30614f89de2276bac182c
-timeCreated: 1429834903
+guid: 9c4b7e2f0b56f8e4f9218ede907da412
+timeCreated: 1429832330
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: spr_buzzboy_cover_0
-    21300002: spr_buzzboy_cover_1
-    21300004: spr_buzzboy_cover_2
-    21300006: spr_buzzboy_cover_3
-    21300008: spr_buzzboy_cover_4
-    21300010: spr_buzzboy_cover_5
-    21300012: spr_buzzboy_cover_6
-    21300014: spr_buzzboy_cover_7
-    21300016: spr_buzzboy_cover_8
+    21300000: Tileset_0
+    21300002: Tileset_1
+    21300004: Tileset_2
+    21300006: Tileset_3
+    21300008: Tileset_4
+    21300010: Tileset_5
+    21300012: Tileset_6
+    21300014: Tileset_7
+    21300016: Tileset_8
+    21300018: Tileset_9
+    21300020: Tileset_10
+    21300022: Tileset_11
+    21300024: Tileset_12
+    21300026: Tileset_13
+    21300028: Tileset_14
+    21300030: Tileset_15
+    21300032: Tileset_16
+    21300034: Tileset_17
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -28,7 +37,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: .25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
@@ -36,10 +45,10 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
-  maxTextureSize: 2048
+  maxTextureSize: 8192
   textureSettings:
     filterMode: 0
-    aniso: 16
+    aniso: -1
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -54,11 +63,11 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 32
   alphaIsTransparency: 1
-  textureType: 8
+  textureType: 5
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: spr_buzzboy_cover_0
+    - name: Tileset_0
       rect:
         serializedVersion: 2
         x: 0
@@ -68,7 +77,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_1
+    - name: Tileset_1
       rect:
         serializedVersion: 2
         x: 32
@@ -78,7 +87,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_2
+    - name: Tileset_2
       rect:
         serializedVersion: 2
         x: 64
@@ -88,7 +97,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_3
+    - name: Tileset_3
       rect:
         serializedVersion: 2
         x: 96
@@ -98,7 +107,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_4
+    - name: Tileset_4
       rect:
         serializedVersion: 2
         x: 128
@@ -108,7 +117,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_5
+    - name: Tileset_5
       rect:
         serializedVersion: 2
         x: 160
@@ -118,7 +127,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_6
+    - name: Tileset_6
       rect:
         serializedVersion: 2
         x: 192
@@ -128,7 +137,7 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_7
+    - name: Tileset_7
       rect:
         serializedVersion: 2
         x: 224
@@ -138,10 +147,100 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: spr_buzzboy_cover_8
+    - name: Tileset_8
       rect:
         serializedVersion: 2
         x: 256
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_9
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_10
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_11
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_12
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_13
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_14
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_15
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_16
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Tileset_17
+      rect:
+        serializedVersion: 2
+        x: 544
         y: 0
         width: 32
         height: 32
