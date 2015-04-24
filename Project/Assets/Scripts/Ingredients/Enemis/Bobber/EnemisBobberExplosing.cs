@@ -22,7 +22,7 @@ public class EnemisBobberExplosing : State {
 			Temperature otherTemperature = otherCollider.GetComponent<Temperature>();
 			if(otherTemperature){
 				float distance = (otherCollider.transform.position - transform.parent.position).magnitude;
-				Debug.Log(distance);
+				//Debug.Log( otherCollider.name + " - " + ( Layer.explosionRadius - distance ) / Layer.explosionRadius);
 				if(distance <= Layer.explosionRadius){
 					otherTemperature.temperature += ( Layer.explosionRadius - distance ) / Layer.explosionRadius * Layer.maxHeatDamage;
 				} 
