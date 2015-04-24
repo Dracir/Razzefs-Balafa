@@ -14,6 +14,14 @@ public class Game : StateLayer {
 	public GameObject player3Prefab;
 	public GameObject player4Prefab;
 	
+	public static Game instance;
+	
+	public override void OnAwake(){
+		base.OnAwake();
+		
+		Game.instance = this;
+	}
+	
 	public override void OnEnter() {
 		base.OnEnter();
 		
