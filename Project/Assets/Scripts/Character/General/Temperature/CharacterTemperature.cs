@@ -8,10 +8,10 @@ public class CharacterTemperature : StateLayer {
 	[Min] public float fadeSpeed = 5;
 	
 	bool _temperatureCached;
-	Temperature _temperature;
-	public Temperature temperature { 
+	TemperatureInfo _temperature;
+	public TemperatureInfo temperature { 
 		get { 
-			_temperature = _temperatureCached ? _temperature : GetComponent<Temperature>();
+			_temperature = _temperatureCached ? _temperature : GetComponent<TemperatureInfo>();
 			_temperatureCached = true;
 			return _temperature;
 		}

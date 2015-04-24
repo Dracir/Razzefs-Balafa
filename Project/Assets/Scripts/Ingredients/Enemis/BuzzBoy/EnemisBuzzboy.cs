@@ -25,12 +25,12 @@ public class EnemisBuzzboy : StateLayer {
 	public bool stationnary;
 	
 	public float movementSpeed;
-	[Disable] public Temperature temperature;
+	[Disable] public TemperatureInfo temperature;
 	[Disable] public string lastStateTypeName;
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		temperature = GetComponent<Temperature>();
+		temperature = GetComponent<TemperatureInfo>();
 		
 	}
 	

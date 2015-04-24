@@ -5,12 +5,12 @@ using Magicolo;
 
 public class SpellGravityCastCasting : State, IInputKeyListener {
 	
-	public int maxLength = 5;
+	[Min] public int maxSize = 8;
 	
 	[Disable] public Vector2 startPosition;
 	[Disable] public Vector2 endPosition;
 	[Disable] public float currentAngle;
-	[Disable] public float currentLength;
+	[Disable] public float currentSize;
 	[Disable] public Transform castZone;
 	[Disable] public Transform castZoneSprite;
 	[Disable] public GravityWell activeGravityWell;
@@ -59,11 +59,11 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 	void UpdateCastZone() {
 		Vector2 difference = endPosition - startPosition;
 		
-		currentLength = Mathf.Min(difference.magnitude, maxLength);
+		currentSize = Mathf.Min(difference.magnitude, maxSize);
 		currentAngle = -difference.Angle();
 		
 		castZone.SetLocalEulerAngles(currentAngle, Axis.Z);
-		castZoneSprite.SetLocalScale(currentLength, Axis.X);
+		castZoneSprite.SetLocalScale(currentSize, Axis.X);
 	}
 	
 	void Cast() {
@@ -71,12 +71,12 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 			activeGravityWell.gameObject.Remove();
 		}
 		
-		if (currentLength < 1) {
+		if (currentSize < 1) {
 			return;
 		}
 		
 		activeGravityWell = (Instantiate(Layer.gravityWell, startPosition, Quaternion.Euler(0, 0, currentAngle)) as GameObject).GetComponent<GravityWell>();
 		activeGravityWell.Angle = currentAngle;
-		activeGravityWell.Length = currentLength;
+		activeGravityWell.Length = currentSize;
 	}
 }
