@@ -21,6 +21,7 @@ namespace RickTools.MapLoader{
 		const int TILE_CORNER_OUTSIDE = 3;
 		
 		public AutotileData currentAutotile;
+		public int currentAutotileIndex;
 		
 		List<Texture2D> previewTextures;
 		
@@ -28,6 +29,7 @@ namespace RickTools.MapLoader{
 		
 		public int selectedAutoTileIndex;
 		public Vector2 scrollView;
+		
 		
 		
 		[MenuItem("Rick's Tools/Map Loader/AutoTiler")]
@@ -115,6 +117,7 @@ namespace RickTools.MapLoader{
 		void switchAutoTile(int index) {
 			AutotileData autotile = linker.autotiles[index];
 			currentAutotile = autotile;
+			currentAutotileIndex = index;
 			shower.setCurrentautoTile(autotile);
 		}		
 		
@@ -128,20 +131,20 @@ namespace RickTools.MapLoader{
 			RickEditorGUI.Label("Input","");
 			RickEditorGUI.Label("","Modes placeHolder");
 			GUI.changed = false;
-			currentAutotile.center 			= showInputLine("Center", 		 previewTextures[TILE_CENTER]		 , currentAutotile.center);
-			currentAutotile.cornerOutside 	= showInputLine("Outside Corner",previewTextures[TILE_CORNER_OUTSIDE], currentAutotile.cornerOutside);
-			currentAutotile.side 			= showInputLine("Side",			 previewTextures[TILE_STRAIGHT]		 , currentAutotile.side);
-			currentAutotile.cornerInside 	= showInputLine("Inside Corner", previewTextures[TILE_CORNER_INSIDE] , currentAutotile.cornerInside);
+			showInputLine("Center", 		 previewTextures[TILE_CENTER]		 , "center");
+			showInputLine("Outside Corner",previewTextures[TILE_CORNER_OUTSIDE], "cornerOutside");
+			showInputLine("Side",			 previewTextures[TILE_STRAIGHT]		 , "side");
+			showInputLine("Inside Corner", previewTextures[TILE_CORNER_INSIDE] , "cornerInside");
 			if(GUI.changed){
 				dataChanged = true;
 				shower.loadTextures();
 			}
-			if(GUILayout.Button("Autoload Based on Center")){
+			/*if(GUILayout.Button("Autoload Based on Center")){
 			   	autoLoadBasedOnCenter();
-			}
+			}*/
 		}
 
-		void autoLoadBasedOnCenter() {
+		/*void autoLoadBasedOnCenter() {
 			int index = Int32.Parse(currentAutotile.center.name.Split(new char[]{'_'})[1]);
 			var found = AssetDatabase.FindAssets("t:Texture2D " + currentAutotile.center.texture.name);
 			
@@ -152,24 +155,23 @@ namespace RickTools.MapLoader{
 				/*foreach (var f in assetsFound) {
 					Debug.Log(f.name);
 				}*/
-				currentAutotile.cornerOutside = (Sprite)assetsFound[index + 2];
+				/*currentAutotile.cornerOutside = (Sprite)assetsFound[index + 2];
 				currentAutotile.side = (Sprite)assetsFound[index + 3];
 				currentAutotile.cornerInside = (Sprite)assetsFound[index + 4];
 				dataChanged = true;
 				shower.loadTextures();
 			}
 			
-		}
+		}*/
 		
-		Sprite showInputLine(string labelName, Texture2D previewTexture, Sprite autotileTexture){
+		void showInputLine(string labelName, Texture2D previewTexture, string propertyName){
 			GUILayout.BeginHorizontal();
 			
 			EditorGUILayout.LabelField(labelName);
 			GUILayout.Label(new GUIContent(previewTexture), labelTextureIconStyle);
-			Sprite newSprite = (Sprite)EditorGUILayout.ObjectField(autotileTexture, typeof(Sprite), false);
+			EditorGUILayout.PropertyField(linkerSO.FindProperty("autotiles").GetArrayElementAtIndex(currentAutotileIndex).FindPropertyRelative(propertyName), new GUIContent(propertyName),true);
 			
 			GUILayout.EndHorizontal();
-			return newSprite;
 		}
 
 		void showPreviewSection() {
@@ -180,10 +182,10 @@ namespace RickTools.MapLoader{
 		
 		void showOutputSection() {
 			RickEditorGUI.Label("Output-Tiled AutoTiles","");
-			currentAutotile.tilesFileName = EditorGUILayout.TextField("TilesetName.tmx" , currentAutotile.tilesFileName);
+			currentAutotile.tilesFileName = EditorGUILayout.TextField("TilesetName" , currentAutotile.tilesFileName);
 			if(GUILayout.Button("Export")){
 			   //autoTileFilePath = EditorUtility.SaveFilePanel("Autotile file", RickEditorGUI.rootFolder, "autotile","tmx");
-			   currentAutotile.autoTileFilePath = "C:/Users/The User/Documents/Unity Games/jeux/ITT1_EndlessTowerClimber/autotile.tmx";
+			   currentAutotile.autoTileFilePath = "G:/Workspaces/unity/Razzefs-Balafa/Project/Maps/autotile.tmx";
 			   export();
 			}
 			
@@ -197,22 +199,32 @@ namespace RickTools.MapLoader{
 		}
 
 		void export() {
-			int idCenter = Int32.Parse(currentAutotile.center.name.Split('_')[1]);
-			int idSide = Int32.Parse(currentAutotile.side.name.Split('_')[1]);
-			int idCornerIn = Int32.Parse(currentAutotile.cornerInside.name.Split('_')[1]);
-			int idCornerOut = Int32.Parse(currentAutotile.cornerOutside.name.Split('_')[1]);
-			SimpleAutoTileExporter exporter = new SimpleAutoTileExporter(currentAutotile.tilesFileName, idCenter, idSide, idCornerIn, idCornerOut);
+			List<int> idsCenter = getIdsFrom(currentAutotile.center);
+			List<int> idsSide = getIdsFrom(currentAutotile.side);
+			List<int> idsCornerIn = getIdsFrom(currentAutotile.cornerInside);
+			List<int> idsCornerOut = getIdsFrom(currentAutotile.cornerOutside);
+			
+			SimpleAutoTileExporter exporter = new SimpleAutoTileExporter(currentAutotile.tilesFileName, idsCenter, idsSide, idsCornerIn, idsCornerOut);
 			
 			XmlDocument doc = exporter.generateDocument();
 			doc.Save(currentAutotile.autoTileFilePath);
 		}
 
+		List<int> getIdsFrom(List<Sprite> sprites) {
+			List<int> ids = new List<int>();
+			foreach (var sprite in sprites) {
+				int newId = Int32.Parse(sprite.name.Split('_')[1]);
+				ids.Add(newId);
+			}
+			return ids;
+		}
+				
 		void makeCopie() {
 			if(currentAutotile.basePrefab != null){
-				makeCloneFor("Center", currentAutotile.center);
+				/*makeCloneFor("Center", currentAutotile.center);
 				makeCloneFor("Side", currentAutotile.side);
 				makeCloneFor("Outside", currentAutotile.cornerOutside);
-				makeCloneFor("Inside", currentAutotile.cornerInside);
+				makeCloneFor("Inside", currentAutotile.cornerInside);*/
 			}
 		}
 

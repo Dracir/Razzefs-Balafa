@@ -47,7 +47,7 @@ public class Temperature : MonoBehaviourExtended {
 		wasBlazed |= temperature >= 1;
 			
 		float difference = AmbientTemperature - temperature;
-		float increment = difference.Sign() * Time.deltaTime / resistance;
+		float increment = difference == 0 ? 0 : difference.Sign() * Time.deltaTime / resistance;
 		
 		if (Mathf.Abs(difference) > Mathf.Abs(increment)) {
 			temperature += increment;

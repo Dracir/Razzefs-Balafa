@@ -18,38 +18,30 @@ namespace RickTools.MapLoader{
 		XmlNode map;
 		
 		string sourceTileset;
-		ulong center;
-		ulong sideNorth;
-		ulong sideSouth;
-		ulong sideWest;
-		ulong sideEst;
-		ulong cornerInNW;
-		ulong cornerInNE;
-		ulong cornerInSW;
-		ulong cornerInSE;
-		ulong cornerOutNW;
-		ulong cornerOutNE;
-		ulong cornerOutSW;
-		ulong cornerOutSE;
+		List<int> idsCenter;
+		List<int> idsSide;
+		List<int> idsCornerIn;
+		List<int> idsCornerOut;
+		List<List<int>> allLists;
 		
-		public SimpleAutoTileExporter(string sourceTileset, int idCenter, int idSide, int idCornerIn, int idCornerOut) {
+		int maxVariation = 0;
+		
+		public SimpleAutoTileExporter(string sourceTileset, List<int> idsCenter, List<int> idsSide, List<int> idsCornerIn, List<int> idsCornerOut) {
 			this.sourceTileset = sourceTileset;
-			this.center = (ulong)(idCenter + 1);
+			this.idsCenter = idsCenter;
+			this.idsSide = idsSide;
+			this.idsCornerIn = idsCornerIn;
+			this.idsCornerOut = idsCornerOut;
 			
-			this.sideNorth = (ulong)(idSide + 1);
-			this.sideEst = (ulong)(idSide + 1) + TiledMapLoader.ROTATION_90_FLAG;
-			this.sideSouth = (ulong)(idSide + 1) + TiledMapLoader.ROTATION_180_FLAG;
-			this.sideWest = (ulong)(idSide + 1) + TiledMapLoader.ROTATION_270_FLAG;
+			allLists = new List<List<int>>();
+			allLists.Add(idsCenter);
+			allLists.Add(idsSide);
+			allLists.Add(idsCornerIn);
+			allLists.Add(idsCornerOut);
 			
-			this.cornerInNW = (ulong)(idCornerIn + 1);
-			this.cornerInNE = (ulong)(idCornerIn + 1) + TiledMapLoader.ROTATION_90_FLAG;
-			this.cornerInSE = (ulong)(idCornerIn + 1) + TiledMapLoader.ROTATION_180_FLAG;
-			this.cornerInSW = (ulong)(idCornerIn + 1) + TiledMapLoader.ROTATION_270_FLAG;
-			
-			this.cornerOutNW = (ulong)(idCornerOut + 1);
-			this.cornerOutNE = (ulong)(idCornerOut + 1) + TiledMapLoader.ROTATION_90_FLAG;
-			this.cornerOutSE = (ulong)(idCornerOut + 1) + TiledMapLoader.ROTATION_180_FLAG;
-			this.cornerOutSW = (ulong)(idCornerOut + 1) + TiledMapLoader.ROTATION_270_FLAG;
+			foreach (var idList in allLists) {
+				maxVariation = Mathf.Max(maxVariation, idList.Count);	
+			}
 		}
 		
 		public XmlDocument generateDocument(){
@@ -60,11 +52,16 @@ namespace RickTools.MapLoader{
 			addTileset(sourceTileset);
 			
 			createAndAppendRegionsLayer();
-			createAndAppendInputCenter();
-			createAndAppendInputSides();
-			createAndAppendInputCornerOut();
-			createAndAppendInputCornerIn();
-			createAndAppendOutputLayer();
+			
+			for (int i = 0; i < maxVariation; i++) {
+				createAndAppendInputRegion(i);
+			}
+			for (int i = 0; i < maxVariation; i++) {
+				createAndAppendNotInputRegion(i);
+			}
+			for (int i = 0; i < maxVariation; i++) {
+				createAndAppendOutputRegion(i);
+			}
 			
 			return doc;
 		}
@@ -114,602 +111,456 @@ namespace RickTools.MapLoader{
 		void createAndAppendRegionsLayer() {
 			currentDataNode = createAndAppendLayerReturnDataNode("regions", "3", "43", "0");
 			
+			appendCurrentDataNodeLine(1, 0, 1);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(1, 0, 1);
+			appendEmptyLine();
+			
 			//CornerOUT
-			appendCurrentDataNodeLine(center,center, 0);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,0, 0);
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(0, 1, 1);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(1, 1, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(1, 1, 0);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 1, 1);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendEmptyLine();
 			
-			appendCurrentDataNodeLine(0,center, center);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,0, 0);
+			//CornerIn
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(0, 1, 1);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(1, 1, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(1, 1, 0);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 1, 1);
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendCurrentDataNodeLine(0, 1, 0);
+			appendEmptyLine();
 			
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(0,center, center);
-			appendCurrentDataNodeLine(0,0, 0);
+			//Sides
 			
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(center,center, 0);
-			appendCurrentDataNodeLine(0,0,0);
+			appendCurrentDataNodeLine(1, 0, 1);
+			appendCurrentDataNodeLine(1, 0, 1);
+			appendCurrentDataNodeLine(1, 0, 1);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(1, 1, 1);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(1, 1, 1);
 			
-			//CornerIN
-			appendCurrentDataNodeLine(center,center, 0);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,0, 0);
-			
-			appendCurrentDataNodeLine(0,center, center);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,0, 0);
-			
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(0,center, center);
-			appendCurrentDataNodeLine(0,0, 0);
-			
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(center,center, center);
-			appendCurrentDataNodeLine(center,center, 0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//SIDES
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,0, 0);
-			
-			appendCurrentDataNodeLine(center,center,center);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,center, 0);
-			appendCurrentDataNodeLine(0,0, 0);
-			
-			appendCurrentDataNodeLine(center,center,center);
 			
 			fixCurrentDataEndLine();
 		}
 
-		void createAndAppendInputCenter() {
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "43", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//Side
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			
-			fixCurrentDataEndLine();
-			
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "43", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,center);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(center,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(center,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,center);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,center);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(center,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(center,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,center);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//SIDES
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(center,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,center);
-			
-			fixCurrentDataEndLine();
-			
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "31", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,center,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			fixCurrentDataEndLine();
-		}
-		
-		void createAndAppendInputSides() {
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "43", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,sideNorth);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(sideNorth,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(sideSouth,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,sideSouth);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(sideNorth,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,sideNorth);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,sideSouth);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(sideSouth,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//SIDE
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideSouth,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(sideWest,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,sideNorth,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,sideEst);
-			
-			fixCurrentDataEndLine();
-			
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "31", "0");
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideWest,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideEst,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,sideEst,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,sideWest,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,sideWest,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,sideEst,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideEst,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideWest,0);
-			
-			fixCurrentDataEndLine();
-		}
-
-	
-		void createAndAppendInputCornerOut() {
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "31", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerOutNE);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerOutNW,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerOutSW,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerOutSE);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerOutNW,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerOutNE);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerOutSE);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerOutSW,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			fixCurrentDataEndLine();
-			
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "31", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutSW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutSE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,cornerOutNE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,cornerOutNW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,cornerOutNW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,cornerOutNE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutSE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutSW,0);
-			
-			fixCurrentDataEndLine();
-		}
-		
-		void createAndAppendInputCornerIn() {
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "31", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerInNW);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerInNE,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerInSE,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerInSW);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerInNE,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerInNW);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,cornerInSW);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(cornerInSE,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			fixCurrentDataEndLine();
-			
-			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "31", "0");
-			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInNW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInNE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,cornerInSE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,cornerInSW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,cornerInSW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,cornerInSE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInNE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInNW,0);
-			
-			fixCurrentDataEndLine();
-		}
-		
-		#region output
-		void createAndAppendOutputLayer() {
+		void createAndAppendOutputRegion(int i) {
 			currentDataNode = createAndAppendLayerReturnDataNode("output_Tiles", "3", "43", "0");
 			
-			//OUT
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutNW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
+			appendEmptyLines(4);
 			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutNE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
+			//CornerOUT
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerOut,i), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerOut,i,90), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerOut,i,180), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerOut,i,270), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
 			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutSE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
 			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerOutSW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			//IN
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInNW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInNE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInSE,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
-			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,cornerInSW,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
+			//CornerIn
+		
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerIn,i), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerIn,i,90), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerIn,i,180), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerIn,i,270), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
 			
 			//SIDE
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideNorth,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsSide,i,0), 0, format(idsSide,i,180));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsSide,i,90), 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsSide,i,270), 0);
+		
+			fixCurrentDataEndLine();
+		}	
+
+		void createAndAppendInputRegion(int index) {
+			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "43", "0");
 			
-			appendCurrentDataNodeLine(0,sideEst,0);
-			appendCurrentDataNodeLine(0,0,0);
+			appendEmptyLines(4);
 			
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,sideSouth,0);
-			appendCurrentDataNodeLine(0,0,0);
-			appendCurrentDataNodeLine(0,0,0);
+			ulong center = format(idsCenter,index);
 			
-			appendCurrentDataNodeLine(0,sideWest,0);
+			//CornerOUT
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, center, center);
+			appendCurrentDataNodeLine(0, center, center);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(center, center, 0);
+			appendCurrentDataNodeLine(center, center, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(center, center, 0);
+			appendCurrentDataNodeLine(center, center, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, center, center);
+			appendCurrentDataNodeLine(0, center, center);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			
+			//CornerIn
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,0), 0);
+			appendCurrentDataNodeLine(format(idsCornerOut,index,0), center, center);
+			appendCurrentDataNodeLine(0, center, center);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,90), 0);
+			appendCurrentDataNodeLine(center, center, format(idsCornerOut,index, 90));
+			appendCurrentDataNodeLine(center, center, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(center, center, 0);
+			appendCurrentDataNodeLine(center, center, format(idsCornerOut,index, 180));
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index, 180), 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, center, center);
+			appendCurrentDataNodeLine(format(idsCornerOut,index, 270), center, center);
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index, 270), 0);
+			appendEmptyLine();
+			
+			
+			appendCurrentDataNodeLine(0, 0, center);
+			appendCurrentDataNodeLine(center, 0, center);
+			appendCurrentDataNodeLine(center, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(center, center, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, center, center);
+			
+			fixCurrentDataEndLine();
+			
+			
+			
+			
+			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+		
+			//CornerOUT
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsCornerOut,index,0),0 , 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(format(idsCornerOut,index,0),format(idsCornerOut,index,90), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,0), format(idsCornerOut,index,90));
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index,180));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			
+			
+			//CornerIn
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,0), 0);
+			appendCurrentDataNodeLine(format(idsCornerOut,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,90), 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index, 90));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index, 180));
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index, 180), 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsCornerOut,index, 270), 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index, 270), 0);
+			appendEmptyLine();
+			
+			//Side
+			appendCurrentDataNodeLine(0, 0, format(idsSide,index,0));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, format(idsSide,index,90));
 			
 			fixCurrentDataEndLine();
 		}
-		#endregion
+		
+		void createAndAppendNotInputRegion(int index) {
+			currentDataNode = createAndAppendLayerReturnDataNode("inputnot_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+			
+			//CornerOUT
+			appendCurrentDataNodeLine(0, format(idsCenter,index,0), 0);
+			appendCurrentDataNodeLine(format(idsCenter,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsCenter,index,0), 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCenter,index,0));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCenter,index,0));
+			appendCurrentDataNodeLine(0, format(idsCenter,index,0), 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsCenter,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, format(idsCenter,index,0), 0);
+			appendEmptyLine();
+			
+			//CornerIn
+			appendEmptyLines(16);
+			//Side
+			appendCurrentDataNodeLine(format(idsCenter,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCenter,index,0));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, format(idsCenter,index,0));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(format(idsCenter,index,0), 0, 0);
+			
+			fixCurrentDataEndLine();
+			
+			
+			
+			currentDataNode = createAndAppendLayerReturnDataNode("inputnot_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+			
+			//CornerOUT
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,0), 0);
+			appendCurrentDataNodeLine(format(idsCornerOut,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsCornerOut,index,90), 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsCornerOut,index,270), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			
+			//CornerIn
+			appendEmptyLines(16);
+			//Side
+			appendCurrentDataNodeLine(format(idsCornerOut,index,90), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index,180));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, format(idsSide,index,90));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(format(idsSide,index,270), 0, 0);
+			
+			fixCurrentDataEndLine();
+			
+			
+			
+			
+			currentDataNode = createAndAppendLayerReturnDataNode("inputnot_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+			
+			//CornerOUT 
+			appendEmptyLines(16);
+			//Corner IN
+			appendCurrentDataNodeLine(0, format(idsSide,index,270), 0);
+			appendCurrentDataNodeLine(format(idsSide,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, format(idsSide,index,90), 0);
+			appendCurrentDataNodeLine(0, 0, format(idsSide,index,0));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsSide,index,180));
+			appendCurrentDataNodeLine(0, format(idsSide,index,0), 90);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsSide,index,180), 0, 0);
+			appendCurrentDataNodeLine(0, format(idsSide,index,270), 0);
+			appendEmptyLine();
+			
+			//Side
+			appendCurrentDataNodeLine(format(idsSide,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index,270));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index,180));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(format(idsSide,index,0), 0, 0);
+			
+			fixCurrentDataEndLine();
+			
+			
+			
+			
+			
+			currentDataNode = createAndAppendLayerReturnDataNode("inputnot_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+			
+			//CornerOUT 
+			appendEmptyLines(16);
+			//Corner IN
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerOut,index,180));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			
+			//Side
+			appendCurrentDataNodeLine(format(idsCornerOut,index,0), 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsSide,index,180));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			
+			fixCurrentDataEndLine();
+			
+			
+			
+			
+			currentDataNode = createAndAppendLayerReturnDataNode("inputnot_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+			
+			//CornerOUT AND IN
+			appendEmptyLines(32);
+			
+			//Side
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerIn,index,180));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, format(idsCornerIn,index,180));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			
+			fixCurrentDataEndLine();
+			
+			
+			currentDataNode = createAndAppendLayerReturnDataNode("inputnot_Tiles", "3", "43", "0");
+			
+			appendEmptyLines(4);
+			
+			//CornerOUT AND IN
+			appendEmptyLines(32);
+			
+			//Side
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(0, 0, format(idsCornerIn,index,270));
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendEmptyLine();
+			appendCurrentDataNodeLine(0, 0, 0);
+			
+			fixCurrentDataEndLine();
+		}	
+		
+		
+		void appendEmptyLines(int nb){
+			for (int i = 0; i < nb; i++) {
+				appendEmptyLine();
+			}
+		}
+		
+		void appendEmptyLine(){
+			appendCurrentDataNodeLine(0,0, 0);
+		}
 		
 		void appendCurrentDataNodeLine(params ulong[] tiles) {
 			foreach (var tile in tiles) {
 				currentDataNode.InnerText += tile + ",";
 			}
 			currentDataNode.InnerText += "\n";
+		}
+		
+		public ulong format(List<int> ids, int index, int rotation = 0){
+			if(index >= ids.Count){
+				return 0;
+			}else{
+				int id = ids[index];
+				switch(rotation){
+					case 90: return (ulong)(id + 1) + TiledMapLoader.ROTATION_90_FLAG;
+					case 180: return (ulong)(id + 1) + TiledMapLoader.ROTATION_180_FLAG;
+					case 270: return (ulong)(id + 1) + TiledMapLoader.ROTATION_270_FLAG;				
+					default : return (ulong)(id + 1);
+				}
+			}
+		}
+		
+		public ulong format(int id, int rotation = 0){
+			switch(rotation){
+				case 90: return (ulong)(id + 1) + TiledMapLoader.ROTATION_90_FLAG;
+				case 180: return (ulong)(id + 1) + TiledMapLoader.ROTATION_180_FLAG;
+				case 270: return (ulong)(id + 1) + TiledMapLoader.ROTATION_270_FLAG;				
+				default : return (ulong)(id + 1);
+			}
 		}
 
 		void fixCurrentDataEndLine() {
@@ -742,3 +593,4 @@ namespace RickTools.MapLoader{
 	
 }
 #endif
+
