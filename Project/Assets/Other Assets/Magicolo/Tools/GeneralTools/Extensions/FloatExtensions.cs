@@ -25,6 +25,10 @@ namespace Magicolo {
 				return f;
 			}
 			
+			if (power == 2) {
+				return f * f;
+			}
+			
 			return Mathf.Pow(f, power);
 		}
 	
@@ -57,7 +61,7 @@ namespace Magicolo {
 				f += wrap;
 			}
 			
-			while (f > wrap) {
+			while (f >= wrap) {
 				f -= wrap;
 			}
 			
