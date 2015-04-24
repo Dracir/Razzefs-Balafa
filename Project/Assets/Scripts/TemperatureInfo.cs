@@ -3,20 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class Temperature : MonoBehaviourExtended {
+public class TemperatureInfo : MonoBehaviourExtended {
 
-	[Range(-1, 1)] public float temperature;
-	
-//	[SerializeField, PropertyField(typeof(RangeAttribute), -1, 1)]
-//	float temperature;
-//	public float Temperature {
-//		get {
-//			return temperature;
-//		}
-//		set {
-//			temperature = Mathf.Clamp(value, -1, 1);
-//		}
-//	}
+	[SerializeField, PropertyField(typeof(RangeAttribute), -1, 1)]
+	float temperature;
+	public float Temperature {
+		get {
+			return temperature;
+		}
+		set {
+			temperature = Mathf.Clamp(value, -1, 1);
+		}
+	}
 	
 	[Range(-1, 0)] public float freezingThreshold = -0.75F;
 	[Range(0, 1)] public float blazingThreshold = 0.75F;
@@ -26,25 +24,25 @@ public class Temperature : MonoBehaviourExtended {
 	
 	public bool IsCool {
 		get {
-			return temperature < 0 && temperature > freezingThreshold;
+			return Temperature < 0 && Temperature > freezingThreshold;
 		}
 	}
 	
 	public bool IsWarm {
 		get {
-			return temperature > 0 && temperature < blazingThreshold;
+			return Temperature > 0 && Temperature < blazingThreshold;
 		}
 	}
 	
 	public bool IsFreezing {
 		get {
-			return temperature <= freezingThreshold;
+			return Temperature <= freezingThreshold;
 		}
 	}
 	
 	public bool IsBlazing {
 		get {
-			return temperature >= blazingThreshold;
+			return Temperature >= blazingThreshold;
 		}
 	}
 	
@@ -55,17 +53,17 @@ public class Temperature : MonoBehaviourExtended {
 	}
 	
 	void Update() {
-		wasFrozen |= temperature <= -1;
-		wasBlazed |= temperature >= 1;
+		wasFrozen |= Temperature <= -1;
+		wasBlazed |= Temperature >= 1;
 			
-		float difference = AmbientTemperature - temperature;
+		float difference = AmbientTemperature - Temperature;
 		float increment = difference == 0 ? 0 : difference.Sign() * Time.deltaTime / resistance;
 		
 		if (Mathf.Abs(difference) > Mathf.Abs(increment)) {
-			temperature += increment;
+			Temperature += increment;
 		}
 		else {
-			temperature = AmbientTemperature;
+			Temperature = AmbientTemperature;
 		}
 	}
 }
