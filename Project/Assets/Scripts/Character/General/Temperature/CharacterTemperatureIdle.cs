@@ -16,12 +16,12 @@ public class CharacterTemperatureIdle : State {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		if (Layer.temperature.IsFreezing){
+		if (Layer.temperatureInfo.IsFreezing){
 			SwitchState<CharacterTemperatureFreezing>();
 			return;
 		}
 		
-		if (Layer.temperature.IsBlazing){
+		if (Layer.temperatureInfo.IsBlazing){
 			SwitchState<CharacterTemperatureBlazing>();
 			return;
 		}

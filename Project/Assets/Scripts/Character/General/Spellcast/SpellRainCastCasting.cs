@@ -88,7 +88,7 @@ public class SpellRainCastCasting : State, IInputKeyListener {
 			return;
 		}
 		
-		Vector2 position = new Vector2(startPosition.x + currentSize / 2, startPosition.y);
+		Vector2 position = new Vector2(startPosition.x + currentSize / 2 - 0.5F, startPosition.y);
 		
 		activeRain = (Instantiate(Layer.rain, position, Quaternion.identity) as GameObject).GetComponent<FreezingRain>();
 		activeRain.Width = Mathf.Abs(currentSize);

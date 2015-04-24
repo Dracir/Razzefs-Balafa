@@ -109,11 +109,13 @@ namespace Magicolo {
 			
 			GameObject spawn = null;
 			
-			if (InactiveObjects.Count > 0) {
-				spawn = InactiveObjects.Dequeue();
-			}
-			else {
-				spawn = Create();
+			while (spawn == null) {
+				if (InactiveObjects.Count > 0) {
+					spawn = InactiveObjects.Dequeue();
+				}
+				else {
+					spawn = Create();
+				}
 			}
 			
 			spawn.SetActive(true);
