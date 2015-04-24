@@ -30,7 +30,6 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 		startPosition = Layer.Cursor.position.Round();
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
-		castZone.position = startPosition;
 		castZoneSprite = castZone.FindChild("Sprite");
 	}
 

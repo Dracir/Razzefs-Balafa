@@ -3,15 +3,15 @@
 namespace Magicolo {
 	public static class IntExtensions {
 
-		public static float PowSign(this int i, float power) {
+		public static int PowSign(this int i, int power) {
 			return Mathf.Abs(i).Pow(power) * i.Sign();
 		}
 	
-		public static float PowSign(this int i) {
+		public static int PowSign(this int i) {
 			return i.PowSign(2);
 		}
 	
-		public static float Pow(this int i, float power) {
+		public static int Pow(this int i, int power) {
 			if (power == 0) {
 				return 1;
 			}
@@ -20,14 +20,18 @@ namespace Magicolo {
 				return i;
 			}
 			
-			return Mathf.Pow(i, power);
+			if (power == 2) {
+				return i * i;
+			}
+			
+			return (int)Mathf.Pow(i, power);
 		}
 	
-		public static float Pow(this int i) {
+		public static int Pow(this int i) {
 			return i.Pow(2);
 		}
 	
-		public static int Round(this int i, float step) {
+		public static int Round(this int i, int step) {
 			if (step <= 0) {
 				return i;
 			}
@@ -48,7 +52,7 @@ namespace Magicolo {
 				i += wrap;
 			}
 			
-			while (i > wrap) {
+			while (i >= wrap) {
 				i -= wrap;
 			}
 			
