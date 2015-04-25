@@ -39,14 +39,14 @@ public class FreezingRain : MonoBehaviourExtended {
 		}
 	}
 	
-	[SerializeField, PropertyField] float frequency = 100;
-	public float Frequency {
+	[SerializeField, PropertyField] float emission = 100;
+	public float Emission {
 		get {
-			return frequency;
+			return emission;
 		}
 		set {
-			frequency = value;
-			delay = 1F / frequency;
+			emission = value;
+			delay = 1F / emission;
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class FreezingRain : MonoBehaviourExtended {
 	float halfWidth;
 	
 	void Awake() {
-		delay = 1F / Frequency;
+		delay = 1F / Emission;
 		halfWidth = Width / 2;
 	}
 	

@@ -46,7 +46,8 @@ public class CharacterCast : StateLayer, IInputListener {
 	System.Type[] spellTypes = {
 		typeof(SpellGravityCast),
 		typeof(SpellBlockCast), 
-		typeof(SpellRainCast)
+		typeof(SpellRainCast), 
+		typeof(SpellMirrorCast)
 	};
 	
 	StateMachine Machine {

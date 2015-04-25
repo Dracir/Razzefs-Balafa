@@ -19,9 +19,5 @@ public class CharacterDieIdle : State {
 		base.OnUpdate();
 		
 		Layer.spriteRenderer.FadeTowards(0, fadeSpeed, Channels.A);
-		
-		if (Layer.spriteRenderer.color.a <= 0) {
-			Destroy(gameObject);
-		}
 	}
 }

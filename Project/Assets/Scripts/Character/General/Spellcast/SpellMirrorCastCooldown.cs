@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class SpellGravityCastCooldown : State {
+public class SpellMirrorCastCooldown : State {
 	
 	public float cooldown;
 	
 	[Disable] public float counter;
 	
-	SpellGravityCast Layer {
-		get { return (SpellGravityCast)layer; }
-	}
+    SpellMirrorCast Layer {
+    	get { return (SpellMirrorCast)layer; }
+    }
     
-	StateMachine Machine {
-		get { return (StateMachine)machine; }
-	}
+    StateMachine Machine {
+    	get { return (StateMachine)machine; }
+    }
 	
 	public override void OnEnter() {
 		base.OnEnter();
@@ -29,7 +29,7 @@ public class SpellGravityCastCooldown : State {
 		counter -= Time.deltaTime;
 		
 		if (counter <= 0) {
-			SwitchState<SpellGravityCastIdle>();
+			SwitchState<SpellMirrorCastIdle>();
 		}
 	}
 }

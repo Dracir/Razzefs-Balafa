@@ -13,6 +13,7 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 	[Disable] public float currentSize;
 	[Disable] public Transform castZone;
 	[Disable] public Transform castZoneSprite;
+	[Disable] public Transform castZonePortal;
 	[Disable] public GravityWell activeGravityWell;
 	
 	SpellGravityCast Layer {
@@ -31,6 +32,7 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
+		castZonePortal = castZone.FindChild("Portal");
 	}
 
 	public override void OnExit() {
@@ -64,6 +66,7 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 		
 		castZone.SetLocalEulerAngles(currentAngle, Axis.Z);
 		castZoneSprite.SetLocalScale(currentSize, Axis.X);
+		castZonePortal.gameObject.SetActive(currentSize >= 1);
 	}
 	
 	void Cast() {
