@@ -55,12 +55,8 @@ public class Raindrop : MonoBehaviourExtended {
 	}
 	
 	void OnTriggerEnter2D(Collider2D collision) {
-		TemperatureInfo temperature = collision.GetComponent<TemperatureInfo>();
+		TemperatureInfo temperature = collision.FindComponent<TemperatureInfo>();
 		Effector2D effector = collision.GetComponent<Effector2D>();
-		
-		if (temperature == null && collision.transform.parent != null) {
-			temperature = collision.transform.parent.GetComponent<TemperatureInfo>();
-		}
 		
 		if (temperature != null) {
 			temperature.Temperature -= FreezingRain.Coldness;

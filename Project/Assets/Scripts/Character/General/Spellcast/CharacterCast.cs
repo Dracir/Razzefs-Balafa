@@ -106,4 +106,20 @@ public class CharacterCast : StateLayer, IInputListener {
 		targetPosition = Camera.main.ClampToScreen((Vector3)targetPosition + transform.position) - transform.position;
 		cursor.TranslateLocalTowards(targetPosition, smooth, Axis.XY);
 	}
+
+	public void Enable() {
+		inputSystem.GetKeyInfo("Cycle").AddListener(this);
+		
+		foreach (IState state in GetActiveStates()) {
+			state.SwitchState("Idle");
+		}
+	}
+	
+	public void Disable() {
+		inputSystem.GetKeyInfo("Cycle").RemoveListener(this);
+		
+		foreach (IState state in GetActiveStates()) {
+			state.SwitchState<EmptyState>();
+		}
+	}
 }

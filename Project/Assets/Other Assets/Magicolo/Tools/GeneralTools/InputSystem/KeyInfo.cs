@@ -75,7 +75,9 @@ namespace Magicolo {
 		}
 		
 		public void AddListener(IInputKeyListener listener) {
-			listeners.Add(listener);
+			if (!listeners.Contains(listener)) {
+				listeners.Add(listener);
+			}
 		}
 		
 		public void RemoveListener(IInputKeyListener listener) {

@@ -7,18 +7,22 @@ namespace Magicolo {
 	public static class GameObjectExtensions {
 
 		public static GameObject[] GetChildren(this GameObject parent) {
-			var children = new List<GameObject>();
-			foreach (var child in parent.transform.GetChildren()) {
+			List<GameObject> children = new List<GameObject>();
+			
+			foreach (Transform child in parent.transform.GetChildren()) {
 				children.Add(child.gameObject);
 			}
+			
 			return children.ToArray();
 		}
 	
 		public static GameObject[] GetChildrenRecursive(this GameObject parent) {
-			var children = new List<GameObject>();
-			foreach (var child in parent.transform.GetChildrenRecursive()) {
+			List<GameObject> children = new List<GameObject>();
+			
+			foreach (Transform child in parent.transform.GetChildrenRecursive()) {
 				children.Add(child.gameObject);
 			}
+			
 			return children.ToArray();
 		}
 	
@@ -36,6 +40,7 @@ namespace Magicolo {
 					return child.gameObject;
 				}
 			}
+			
 			return null;
 		}
 
@@ -45,6 +50,7 @@ namespace Magicolo {
 					return child.gameObject;
 				}
 			}
+			
 			return null;
 		}
 	
@@ -76,6 +82,50 @@ namespace Magicolo {
 			return gameObject.transform.GetHierarchyDepth();
 		}
 	
+		public static T FindComponent<T>(this GameObject gameObject) where T : Component {
+			return (T)gameObject.FindComponent(typeof(T));
+		}
+		
+		public static Component FindComponent(this GameObject gameObject, Type componentType) {
+			Component component = gameObject.GetComponentInParent(componentType);
+			
+			if (component == null) {
+				foreach (GameObject child in gameObject.GetChildrenRecursive()) {
+					component = child.GetComponent(componentType);
+				
+					if (component != null) {
+						break;
+					}
+				}
+			}
+			
+			return component;
+		}
+		
+		public static T[] FindComponents<T>(this GameObject gameObject) where T : Component {
+			List<T> components = new List<T>();
+			
+			components.AddRange(gameObject.GetComponentsInParent<T>());
+			
+			foreach (GameObject child in gameObject.GetChildrenRecursive()) {
+				components.AddRange(child.GetComponents<T>());
+			}
+			
+			return components.ToArray();
+		}
+		
+		public static Component[] FindComponents(this GameObject gameObject, Type componentType) {
+			List<Component> components = new List<Component>();
+			
+			components.AddRange(gameObject.GetComponentsInParent(componentType));
+			
+			foreach (GameObject child in gameObject.GetChildrenRecursive()) {
+				components.AddRange(child.GetComponents(componentType));
+			}
+			
+			return components.ToArray();
+		}
+		
 		public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component {
 			return (T)gameObject.GetOrAddComponent(typeof(T));
 		}
@@ -93,11 +143,12 @@ namespace Magicolo {
 		public static T AddCopiedComponent<T>(this GameObject copyTo, T copyFrom) where T : Component {
 			T component = copyTo.AddComponent<T>();
 			component.Copy((T)copyFrom);
+			
 			return component;
 		}
 
 		public static Component[] AddCopiedComponents(this GameObject copyTo, params Component[] copyFrom) {
-			var components = new List<Component>();
+			List<Component> components = new List<Component>();
 			
 			foreach (Component component in copyFrom) {
 				components.Add(copyTo.AddCopiedComponent(component));
@@ -107,15 +158,20 @@ namespace Magicolo {
 		}
 	
 		public static Component[] AddCopiedComponents(this GameObject copyTo, GameObject copyFrom, params Type[] typesToIgnore) {
-			var clonedComponents = new List<Component>();
+			List<Component> clonedComponents = new List<Component>();
 			Component[] dstComponents = copyFrom.GetComponents(typeof(Component));
 		
 			foreach (Component dstComponent in dstComponents) {
 				if (!typesToIgnore.Contains(dstComponent.GetType())) {
-					if (dstComponent is Transform || (dstComponent is ParticleSystemRenderer && dstComponents.Contains(typeof(ParticleSystem)))) copyTo.CopyComponent(dstComponent);
+					if (dstComponent is Transform || (dstComponent is ParticleSystemRenderer && dstComponents.Contains(typeof(ParticleSystem)))) {
+						copyTo.CopyComponent(dstComponent);
+					}
 					else {
 						Component clonedComponent = copyTo.AddCopiedComponent(dstComponent);
-						if (clonedComponent != null) clonedComponents.Add(clonedComponent);
+						
+						if (clonedComponent != null) {
+							clonedComponents.Add(clonedComponent);
+						}
 					}
 				}
 			}
@@ -168,13 +224,14 @@ namespace Magicolo {
 		
 		public static void RemoveComponent<T>(this GameObject gameObject) where T : Component {
 			T toRemove = gameObject.GetComponent<T>();
+			
 			if (toRemove != null) {
 				toRemove.Remove();
 			}
 		}
 	
 		public static T GetClosest<T>(this GameObject source, IList<T> targets) where T : Component {
-			float closestDistance = 1000000;
+			float closestDistance = float.MaxValue;
 			T closestTarget = default(T);
 
 			foreach (T target in targets) {
@@ -185,6 +242,7 @@ namespace Magicolo {
 					closestDistance = distance;
 				}
 			}
+			
 			return closestTarget;
 		}
 
@@ -194,6 +252,7 @@ namespace Magicolo {
 			for (int i = 0; i < gameObjects.Count; i++) {
 				componentArray[i] = gameObjects[i].GetComponent<T>();
 			}
+			
 			return componentArray;
 		}
 	}

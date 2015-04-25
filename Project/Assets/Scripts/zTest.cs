@@ -7,6 +7,7 @@ public class zTest : MonoBehaviourExtended {
 
 	[Button("Test", "Test", NoPrefixLabel = true)] public bool test;
 	void Test() {
+		Logger.Log(gameObject.FindComponents<Transform>());
 	}
 	
 	[Toggle] public bool logPressedKeys;
