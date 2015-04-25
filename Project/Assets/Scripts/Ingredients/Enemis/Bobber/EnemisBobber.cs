@@ -17,6 +17,7 @@ public class EnemisBobber : StateLayer {
 	public float maxHeatDamage = 1;
 	
 	[HideInInspector] public TemperatureInfo temperature;
+	public ParticleSystem explosion;
 	
 	public override void OnAwake() {
 		base.OnAwake();

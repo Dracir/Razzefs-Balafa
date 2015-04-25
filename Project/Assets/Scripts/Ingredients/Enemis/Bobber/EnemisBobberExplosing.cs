@@ -15,7 +15,7 @@ public class EnemisBobberExplosing : State {
 	
 	public override void OnEnter() {
 		GetComponent<SpriteRenderer>().enabled = false;
-		GetComponent<Animator>().SetTrigger("Activating");
+		//GetComponent<Animator>().SetTrigger("Activating");
 		
 		Collider2D [] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.activationLayers.value );
 		foreach (var otherCollider in colliders) {
@@ -30,15 +30,19 @@ public class EnemisBobberExplosing : State {
 				} 
 			}
 		}
+		
+		StartCoroutine(DespawnAfterPlaying(Layer.explosion));
 	}
 	
-	public override void OnExit() {
-		base.OnExit();
+	IEnumerator DespawnAfterPlaying(ParticleSystem particleFX) {
+		particleFX.Simulate(0);
+		particleFX.Play();
+		while(particleFX.isPlaying){
+			yield return new WaitForSeconds(0.1f);
+		}
 		
-	}
-	
-	public override void OnUpdate() {
-		base.OnUpdate();
+		transform.parent.Remove();
 		
+		//dropFXPool.Despawn(particleFX);
 	}
 }

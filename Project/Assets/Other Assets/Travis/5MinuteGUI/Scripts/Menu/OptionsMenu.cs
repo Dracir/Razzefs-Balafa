@@ -16,8 +16,8 @@ namespace FMG
 
 		public void Awake()
 		{
-			graphicsText.text = graphicsPrefix + QualitySettings.names[QualitySettings.GetQualityLevel()];
-			updateAudioText();
+			//graphicsText.text = graphicsPrefix + QualitySettings.names[QualitySettings.GetQualityLevel()];
+			//updateAudioText();
 		}
 
 		void updateAudioText()
@@ -65,6 +65,16 @@ namespace FMG
 
 				updateAudioText();
 			}
+		}
+
+		public void ChangeSFXVolume (float input) {
+			VolumeControl.sfxVolume = input;
+		}
+		public void ChangeMusicVolume (float input) {
+			VolumeControl.musicVolume = input;
+		}
+		public void ChangeVoiceVolume (float input) {
+			VolumeControl.voiceVolume = input;
 		}
 	}
 }
