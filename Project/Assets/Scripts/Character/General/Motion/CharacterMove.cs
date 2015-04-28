@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class CharacterMove : StateLayer, IInputAxisListener {
+public class CharacterMove : StateLayer, IInputListener {
 	
 	[Min] public float moveThreshold;
 	[Min] public float inputPower = 1;
@@ -80,16 +80,26 @@ public class CharacterMove : StateLayer, IInputAxisListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		InputSystem.GetAxisInfo("MotionX").AddListener(this);
+		InputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		InputSystem.GetJoystickInfo("Controller").AddListener(this);
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
 		
-		InputSystem.GetAxisInfo("MotionX").RemoveListener(this);
+		InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 	}
 	
-	public void OnAxisInput(AxisInfo axisInfo, float axisValue) {
-		HorizontalAxis = axisValue.PowSign(inputPower);
+	public void OnButtonInput(ButtonInput input) {
+		
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		switch (input.InputName) {
+			case "MotionX":
+				HorizontalAxis = input.Value.PowSign(inputPower);
+				break;
+		}
 	}
 }

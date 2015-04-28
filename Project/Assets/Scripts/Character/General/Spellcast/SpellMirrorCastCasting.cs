@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class SpellMirrorCastCasting : State, IInputKeyListener {
+public class SpellMirrorCastCasting : State, IInputListener {
 	
 	[Min] public float distance = 2;
 	[Min] public float fadeSpeed = 5;
@@ -35,7 +35,8 @@ public class SpellMirrorCastCasting : State, IInputKeyListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.InputSystem.GetKeyInfo("Cast").AddListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
 		
 		startPosition = Layer.Cursor.position.Round();
 		currentDirection = (startPosition - (Vector2)transform.position).normalized;
@@ -50,7 +51,8 @@ public class SpellMirrorCastCasting : State, IInputKeyListener {
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.InputSystem.GetKeyInfo("Cast").RemoveListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 		
 		castZone.gameObject.Remove();
 	}
@@ -63,11 +65,19 @@ public class SpellMirrorCastCasting : State, IInputKeyListener {
 		UpdateCastZone();
 	}
 
-	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
-		if (keyState == KeyStates.Up) {
-			Cast();
-			SwitchState<SpellMirrorCastCooldown>();
+	public void OnButtonInput(ButtonInput input) {
+		switch (input.InputName) {
+			case "Cast":
+				if (input.State == ButtonStates.Up) {
+					Cast();
+					SwitchState<SpellMirrorCastCooldown>();
+				}
+				break;
 		}
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		
 	}
 
 	void UpdateCastZone() {

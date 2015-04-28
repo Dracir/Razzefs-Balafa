@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class SpellBlockCastCasting : State, IInputKeyListener {
+public class SpellBlockCastCasting : State, IInputListener {
 	
 	[Min] public int maxSize = 3;
 	[Min] public int maxArea = 10;
@@ -34,8 +34,8 @@ public class SpellBlockCastCasting : State, IInputKeyListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.InputSystem.GetKeyInfo("Cast").AddListener(this);
-		Layer.InputSystem.GetKeyInfo("CastAction").AddListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
 		startPosition = Layer.Cursor.position.Round();
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
@@ -47,8 +47,8 @@ public class SpellBlockCastCasting : State, IInputKeyListener {
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.InputSystem.GetKeyInfo("Cast").RemoveListener(this);
-		Layer.InputSystem.GetKeyInfo("CastAction").RemoveListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 		
 		castZone.gameObject.Remove();
 	}
@@ -61,20 +61,24 @@ public class SpellBlockCastCasting : State, IInputKeyListener {
 		UpdateCastZone();
 	}
 
-	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
-		switch (keyInfo.Name) {
+	public void OnButtonInput(ButtonInput input) {
+		switch (input.InputName) {
 			case "Cast":
-				if (keyState == KeyStates.Up) {
+				if (input.State == ButtonStates.Up) {
 					Cast();
 					SwitchState<SpellBlockCastCooldown>();
 				}
 				break;
 			case "CastAction":
-				if (keyState == KeyStates.Down) {
+				if (input.State == ButtonStates.Down) {
 					NextSize();
 				}
 				break;
 		}
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		
 	}
 
 	void UpdateCastZone() {

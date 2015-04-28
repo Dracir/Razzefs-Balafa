@@ -57,9 +57,8 @@ public class CharacterCast : StateLayer, IInputListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		inputSystem.GetKeyInfo("Cycle").AddListener(this);
-		inputSystem.GetAxisInfo("AltMotionX").AddListener(this);
-		inputSystem.GetAxisInfo("AltMotionY").AddListener(this);
+		inputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		inputSystem.GetJoystickInfo("Controller").AddListener(this);
 		
 		targetPosition = cursor.localPosition;
 		currentSpell = System.Array.IndexOf(spellTypes, GetActiveState().GetType());
@@ -71,30 +70,33 @@ public class CharacterCast : StateLayer, IInputListener {
 	public override void OnExit() {
 		base.OnExit();
 		
-		inputSystem.GetKeyInfo("Cycle").RemoveListener(this);
-		inputSystem.GetAxisInfo("AltMotionX").RemoveListener(this);
-		inputSystem.GetAxisInfo("AltMotionY").RemoveListener(this);
+		inputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		inputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 		
 		cursor.gameObject.SetActive(false);
 	}
 
-	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
-		if (keyState == KeyStates.Down) {
-			NextSpell();
+	public void OnButtonInput(ButtonInput input) {
+		switch (input.InputName) {
+			case "Cycle":
+				if (input.State == ButtonStates.Down) {
+					NextSpell();
+				}
+				break;
 		}
 	}
 	
-	public void OnAxisInput(AxisInfo axisInfo, float axisValue) {
-		switch (axisInfo.Name) {
+	public void OnAxisInput(AxisInput input) {
+		switch (input.InputName) {
 			case "AltMotionX":
-				currentAxis.x = axisValue;
+				currentAxis.x = input.Value;
 				break;
 			case "AltMotionY":
-				currentAxis.y = axisValue;
+				currentAxis.y = input.Value;
 				break;
 		}
 	}
-
+	
 	public void NextSpell() {
 		currentSpell = (currentSpell + 1).Wrap(spellTypes.Length);
 		
@@ -108,7 +110,8 @@ public class CharacterCast : StateLayer, IInputListener {
 	}
 
 	public void Enable() {
-		inputSystem.GetKeyInfo("Cycle").AddListener(this);
+		inputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		inputSystem.GetJoystickInfo("Controller").AddListener(this);
 		
 		foreach (IState state in GetActiveStates()) {
 			state.SwitchState("Idle");
@@ -116,7 +119,8 @@ public class CharacterCast : StateLayer, IInputListener {
 	}
 	
 	public void Disable() {
-		inputSystem.GetKeyInfo("Cycle").RemoveListener(this);
+		inputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		inputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 		
 		foreach (IState state in GetActiveStates()) {
 			state.SwitchState<EmptyState>();

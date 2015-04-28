@@ -211,6 +211,7 @@ namespace Magicolo {
 			while (property.Next(true)) {
 				children.Add(property);
 			}
+			
 			property.Reset();
 		
 			return children.ToArray();
@@ -439,6 +440,21 @@ namespace Magicolo {
 			arrayProperty.ClearArray();
 			arrayProperty.serializedObject.ApplyModifiedProperties();
 			EditorUtility.SetDirty(arrayProperty.serializedObject.targetObject);
+		}
+	
+		public static SerializedProperty Find(this SerializedProperty arrayProperty, System.Predicate<SerializedProperty> match) {
+			SerializedProperty property = null;
+			
+			for (int i = 0; i < arrayProperty.arraySize; i++) {
+				SerializedProperty elementProperty = arrayProperty.GetArrayElementAtIndex(i);
+				
+				if (match(elementProperty)) {
+					property = elementProperty;
+					break;
+				}
+			}
+			
+			return property;
 		}
 	}
 }

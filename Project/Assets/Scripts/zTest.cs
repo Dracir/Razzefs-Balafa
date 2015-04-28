@@ -7,22 +7,25 @@ public class zTest : MonoBehaviourExtended {
 
 	[Button("Test", "Test", NoPrefixLabel = true)] public bool test;
 	void Test() {
-		Logger.Log(gameObject.FindComponents<Transform>());
+		Logger.Log(InputSystem.GetNonJoystickKeys());
 	}
 	
 	[Toggle] public bool logPressedKeys;
+	[Toggle] public bool setKey;
+	
+	bool _inputSystemCached;
+	InputSystem _inputSystem;
+	public InputSystem inputSystem { 
+		get { 
+			_inputSystem = _inputSystemCached ? _inputSystem : GetComponent<InputSystem>();
+			_inputSystemCached = true;
+			return _inputSystem;
+		}
+	}
 	
 	void Update() {
 		if (logPressedKeys) {
-			List<KeyCode> pressed = new List<KeyCode>();
-		
-			foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode))) {
-				if (Input.GetKey(key)) {
-					pressed.Add(key);
-				}
-			}
-		
-			Logger.Log(pressed);
+			Logger.Log(InputSystem.GetPressedKeys());
 		}
 	}
 }
