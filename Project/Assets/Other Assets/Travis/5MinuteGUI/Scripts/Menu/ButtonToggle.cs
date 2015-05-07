@@ -102,7 +102,7 @@ namespace FMG
 			bool next = false;
 			bool prev = false;
 			float axis = Input.GetAxis("NextPrev");
-			Debug.Log ("My axis is " + axis);
+			//Debug.Log ("My axis is " + axis);
 			if(axis != 0)
 			{
 				if(m_isAxisInUse == false)
