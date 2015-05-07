@@ -20,6 +20,7 @@ namespace Magicolo.GeneralTools {
 		public static string[] GetKeyboardAxes() {
 			List<string> axes = new List<string>();
 			
+			#if UNITY_EDITOR
 			UnityEditor.SerializedObject inputManagerSerialized = new UnityEditor.SerializedObject(UnityEditor.AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset"));
 			UnityEditor.SerializedProperty inputManagerAxesProperty = inputManagerSerialized.FindProperty("m_Axes");
 		
@@ -30,6 +31,7 @@ namespace Magicolo.GeneralTools {
 					axes.Add(axisName);
 				}
 			}
+			#endif
 			
 			return axes.ToArray();
 		}
