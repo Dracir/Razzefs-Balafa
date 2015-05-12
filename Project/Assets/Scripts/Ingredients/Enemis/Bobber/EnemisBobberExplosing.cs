@@ -41,7 +41,7 @@ public class EnemisBobberExplosing : State {
 			yield return new WaitForSeconds(0.1f);
 		}
 		
-		transform.parent.Remove();
+		transform.parent.gameObject.Remove();
 		
 		//dropFXPool.Despawn(particleFX);
 	}

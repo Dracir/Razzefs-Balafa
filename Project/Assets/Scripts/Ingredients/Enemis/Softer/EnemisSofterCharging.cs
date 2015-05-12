@@ -5,6 +5,9 @@ using Magicolo;
 
 public class EnemisSofterCharging : State {
 	
+	[Disable] public float t;
+	public ParticleSystem chargingAnimation;
+	
     EnemisSofter Layer {
     	get { return (EnemisSofter)layer; }
     }
@@ -15,7 +18,7 @@ public class EnemisSofterCharging : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		t = Layer.chargingTime;
 	}
 	
 	public override void OnExit() {
@@ -26,5 +29,9 @@ public class EnemisSofterCharging : State {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
+		t-= Time.deltaTime;
+		if(t <= 0){
+			SwitchState<EnemisSofterFiring>();
+		}
 	}
 }

@@ -24,6 +24,10 @@ public class GameNextLevel : State {
 		DontDestroyOnLoad(this);
 		levelCycle = GetComponent<LevelCycleMenager>();
 		levelCycle.loadMapPack();
+	}
+	
+	public override void OnEnter() {
+		base.OnEnter();
 		
 		levelCycle.nextMap();
 	}
@@ -41,8 +45,8 @@ public class GameNextLevel : State {
 		//TODO select nb player comme faut
 		if(player1 == null){
 			player1 = GameObjectExtend.createClone(Layer.player1Prefab);
-			player1.transform.position = levelCycle.currentMapGO.FindChildRecursive("P1Start").transform.position;
 		}
+		player1.transform.position = levelCycle.currentMapGO.FindChildRecursive("P1Start").transform.position;
 	}
 
 	void makeCamera() {

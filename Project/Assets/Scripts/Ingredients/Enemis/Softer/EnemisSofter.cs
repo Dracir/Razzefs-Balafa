@@ -5,6 +5,8 @@ using Magicolo;
 
 public class EnemisSofter : StateLayer {
 	
+	public float chargingTime;
+	
     StateMachine Machine {
     	get { return (StateMachine)machine; }
     }
