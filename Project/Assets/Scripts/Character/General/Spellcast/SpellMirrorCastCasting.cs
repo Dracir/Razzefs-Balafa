@@ -117,6 +117,10 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		}
 		
 		activeBall = (Instantiate(Layer.mirror, currentPosition, Quaternion.identity) as GameObject).GetComponent<MirrorBall>();
+		activeBall.MinBounce = currentChargeLevel.minBounce;
+		activeBall.MaxBounce = currentChargeLevel.maxBounce;
+		activeBall.VelocityInherit = currentChargeLevel.velocityInherit;
+		activeBall.Hotness = currentChargeLevel.hotness;
 		activeBall.Direction = currentDirection;
 		activeBall.Speed = currentChargeLevel.speed;
 		activeBall.Bounces = currentChargeLevel.bounces;
@@ -129,8 +133,12 @@ public class SpellMirrorCastCasting : State, IInputListener {
 [System.Serializable]
 public class SpellMirrorChargeLevel {
 	
+	[Min] public float minBounce;
+	[Min] public float maxBounce;
+	[Min] public float velocityInherit;
+	[Min] public float hotness;
 	[Min] public float threshold;
 	[Min] public float speed;
-	[Min] public int bounces;
+	public int bounces;
 	public Color color = Color.white;
 }
