@@ -22,7 +22,7 @@ public class WizardSelect : MonoBehaviour {
 			if (currentWizard == null){
 				return "nowizardplz";
 			}
-			return spellPrefix + currentWizard.spellName + spellSuffix;
+			return spellPrefix + currentWizard.spell+ spellSuffix;
 		}
 	}
 	
@@ -31,7 +31,7 @@ public class WizardSelect : MonoBehaviour {
 			if (currentWizard == null){
 				return "Stillnowizard";
 			}
-			return wizardPrefix + currentWizard.name + wizardSuffix;
+			return wizardPrefix + currentWizard.wizNum + wizardSuffix;
 		}
 	}
 	
@@ -40,7 +40,7 @@ public class WizardSelect : MonoBehaviour {
 	}
 	
 	void Update () {
-		//TODO add input detection: join game
+		//TODO add input detection: join game: Call WizardPlayerInfo.NewPlayer();
 		
 		//TODO add input detection: next/prev wizard
 	}

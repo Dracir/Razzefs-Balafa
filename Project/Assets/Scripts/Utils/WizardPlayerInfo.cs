@@ -79,10 +79,17 @@ public static class WizardPlayerInfo {
 	public static PlayerInfo NewPlayer (){
 		int index = playerCount;
 		WizardInfo wizard = GetWizardInfo(index);
+		int counter = 0;
 		
-		if (WizardIsTaken(wizard)){
+		while (WizardIsTaken(wizard)){
 			wizard = NextWizard(wizard);
+			counter ++;
+			if (counter > 5){
+				Debug.LogError("Way too many wizardz :S");
+				break;
+			}
 		}
+		
 		players[index] = new PlayerInfo(wizard, index);
 		
 		playerCount++;
@@ -94,12 +101,25 @@ public static class WizardPlayerInfo {
 	{
 		return wizard.chosen;
 	}
+	
+	public static PlayerInfo GetPlayerBasedOnWizard (Wizardz wizard){
+		foreach (PlayerInfo player in players){
+			if (player == null)
+				continue;
+			
+			if (player.wizard.wizNum == wizard){
+				return player;
+			}
+		}
+		
+		Debug.LogWarning("There's no wizards of that name!");
+		return null;
+	}
 }
 
 public class WizardInfo {
 	public int index;
-	public string name;
-	public string spellName;
+	public Wizardz wizNum;
 	public Spellz spell;
 	public string anim;
 	public bool chosen = false;
@@ -107,34 +127,27 @@ public class WizardInfo {
 	public WizardInfo (Wizardz wizard){
 		
 		index = (int) wizard;
-		anim = "Menu" + name;
+		anim = "Menu" + wizNum.ToString();
+		wizNum = wizard;
 		
 		switch (wizard){
 			case Wizardz.Harry:
-				name = "Harry";
-				spellName = "SummonBlock";
 				spell = Spellz.SummonBlock;
 				break;
 			case Wizardz.Rincewind:
-				name = "Rincewind";
-				spellName = "GravityWell";
 				spell = Spellz.GravityWell;
 				break;
 			case Wizardz.Gandalf:
-				name = "Gandalf";
-				spellName = "IceRain";
 				spell = Spellz.IceRain;
 				break;
 			case Wizardz.Mysterio:
-				name = "Mysterio";
-				spellName = "MirrorBall";
 				spell = Spellz.MirrorBall;
 				break;
 		}
 	}
 	public override string ToString()
 	{
-		return name;
+		return wizNum.ToString();
 	}
 }
 

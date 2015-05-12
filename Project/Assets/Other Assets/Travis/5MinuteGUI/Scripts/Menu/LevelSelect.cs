@@ -21,7 +21,7 @@ namespace FMG
 
 		private Button[] m_orgButtons;
 		void Awake () {
-
+			/*
 			int cellsPerPage = nomPerCol * nomPerRow;
 			int tmpNomLevels = Application.levelCount-1-Application.loadedLevel;
 
@@ -40,10 +40,10 @@ namespace FMG
 					m_pages[i].SetActive(false);
 				}
 				offset += cellsPerPage;
-			}
+			}*/
 			m_buttonToggle = gameObject.GetComponent<ButtonToggle>();
 			m_orgButtons = m_buttonToggle.buttons;
-			changePage(m_pages[0]);
+			//changePage(m_pages[0]);
 
 
 		}
@@ -141,6 +141,5 @@ namespace FMG
 			return newPage;
 		}
 		
-
 	}
 }
