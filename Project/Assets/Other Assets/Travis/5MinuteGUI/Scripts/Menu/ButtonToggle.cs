@@ -85,7 +85,7 @@ namespace FMG
 			{
 				selectedButton.image.color = selectedColor;
 			}
-
+			
 			slider = selectedButton.GetComponentInChildren<Slider>();
 
 		}
@@ -107,7 +107,7 @@ namespace FMG
 			{
 				if(m_isAxisInUse == false)
 				{
-					if (axis > 0){
+					if (axis < 0){
 						prev = true;
 					} else {
 						next = true;

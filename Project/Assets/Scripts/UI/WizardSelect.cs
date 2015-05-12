@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Magicolo.GeneralTools;
 
 public class WizardSelect : MonoBehaviour {
 	
@@ -18,34 +19,34 @@ public class WizardSelect : MonoBehaviour {
 	const string wizardSuffix = "{";
 	
 	string FormattedSpellName {
-		get{
-			if (currentWizard == null){
+		get {
+			if (currentWizard == null) {
 				return "nowizardplz";
 			}
-			return spellPrefix + currentWizard.spellName + spellSuffix;
+			return spellPrefix + currentWizard.spell + spellSuffix;
 		}
 	}
 	
 	string FormattedWizardName {
-		get{
-			if (currentWizard == null){
+		get {
+			if (currentWizard == null) {
 				return "Stillnowizard";
 			}
-			return wizardPrefix + currentWizard.name + wizardSuffix;
+			return wizardPrefix + currentWizard.wizNum + wizardSuffix;
 		}
 	}
 	
-	void Start () {
-		Join(0);
-	}
-	
-	void Update () {
-		//TODO add input detection: join game
+	void Update() {
+		ControllerInfo controller = InputManager.GetNewController();
 		
-		//TODO add input detection: next/prev wizard
+		if (controller != null) {
+			Join(0);
+			InputManager.AssignController(currentWizard.wizNum, controller);
+			Logger.Log("New playah added!", currentWizard.wizNum, controller);
+		}
 	}
 	
-	void Join (int playerIndex) {
+	void Join(int playerIndex) {
 		myPlayer = WizardPlayerInfo.NewPlayer();
 		currentWizard = myPlayer.wizard;
 		
