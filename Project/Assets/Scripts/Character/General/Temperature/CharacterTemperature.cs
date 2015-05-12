@@ -7,6 +7,11 @@ public class CharacterTemperature : StateLayer {
 	
 	[Min] public float fadeSpeed = 3;
 	[Min(0.001F)] public float frozenMassModifier = 10;
+
+	//To calculate temperature increase from collisions, we find the force of collision, subtract the forceTemperatureThreshold (to a minimum of 0), then divide by forceToTemperatureRatio.
+	public float forceTemperatureThreshold = 15f;
+	public float forceToTemperatureRatio = 50f;
+
 	
 	[SerializeField, Disable] bool frozen;
 	public bool Frozen {
@@ -88,5 +93,10 @@ public class CharacterTemperature : StateLayer {
 		
 		animator.enabled = true;
 		rigidbody.mass /= frozenMassModifier;
+	}
+
+	void OnCollisionEnter2D(Collision2D coll){
+		temperatureInfo.Temperature += Mathf.Max(coll.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
+		Debug.Log (this.gameObject.name + " has collided with force " + coll.relativeVelocity.magnitude + " and has reached temperature " + temperatureInfo.Temperature);
 	}
 }
