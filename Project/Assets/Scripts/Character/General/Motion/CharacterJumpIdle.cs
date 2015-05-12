@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class CharacterJumpIdle : State, IInputKeyListener {
+public class CharacterJumpIdle : State, IInputListener {
 	
 	CharacterJump Layer {
 		get { return ((CharacterJump)layer); }
@@ -12,13 +12,15 @@ public class CharacterJumpIdle : State, IInputKeyListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.InputSystem.GetKeyInfo("Jump").AddListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.InputSystem.GetKeyInfo("Jump").RemoveListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 	}
 	
 	public override void OnUpdate() {
@@ -30,9 +32,17 @@ public class CharacterJumpIdle : State, IInputKeyListener {
 		}
 	}
 	
-	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
-		if (keyState == KeyStates.Down) {
+	public void OnButtonInput(ButtonInput input) {
+		switch (input.InputName) {
+			case "Jump":
+				if (input.State == ButtonStates.Down) {
 			SwitchState("Jumping");
+				}
+				break;
 		}
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		
 	}
 }

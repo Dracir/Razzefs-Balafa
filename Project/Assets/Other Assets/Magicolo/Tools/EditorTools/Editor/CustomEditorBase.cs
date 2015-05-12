@@ -783,6 +783,7 @@ namespace Magicolo.EditorTools {
 							
 		public static string Popup(string currentOption, string[] displayedOptions, GUIContent label, GUIStyle style, params GUILayoutOption[] options) {
 			style = style ?? new GUIStyle("MiniPopup");
+			
 			int index = System.Array.IndexOf(displayedOptions, currentOption);
 			int currentIndex = EditorGUILayout.Popup(label, index, displayedOptions.ToGUIContents(), style, options);
 			
@@ -792,7 +793,11 @@ namespace Magicolo.EditorTools {
 		public static string Popup(string currentOption, string[] displayedOptions, GUIContent label, params GUILayoutOption[] options) {
 			return Popup(currentOption, displayedOptions, label, null, options);
 		}
-				
+
+		public static string Popup(string currentOption, string[] displayedOptions, params GUILayoutOption[] options) {
+			return Popup(currentOption, displayedOptions, GUIContent.none, options);
+		}
+		
 		public static void Popup(SerializedProperty stringProperty, string[] displayedOptions, GUIContent label, GUIStyle style, params GUILayoutOption[] options) {
 			label = label ?? stringProperty.ToGUIContent();
 			
