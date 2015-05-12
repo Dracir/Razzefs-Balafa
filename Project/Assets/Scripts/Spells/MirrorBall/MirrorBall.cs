@@ -5,13 +5,24 @@ using Magicolo;
 
 public class MirrorBall : MonoBehaviourExtended {
 
-	[SerializeField, PropertyField] float bounce = 25;
+	[SerializeField, PropertyField(typeof(MinAttribute))] float bounce = 25;
 	public float Bounce {
 		get { 
 			return bounce; 
 		}
 		set { 
 			bounce = value; 
+		}
+	}
+	
+	[SerializeField, PropertyField(typeof(MinAttribute))]
+	float velocityInherit = 5;
+	public float VelocityInherit {
+		get {
+			return velocityInherit;
+		}
+		set {
+			velocityInherit = value;
 		}
 	}
 	
@@ -98,7 +109,8 @@ public class MirrorBall : MonoBehaviourExtended {
 		TemperatureInfo collisionTemperature = collision.gameObject.FindComponent<TemperatureInfo>();
 		
 		if (collisionRigidbody != null) {
-			collisionRigidbody.SetVelocity((collision.transform.position - transform.position).normalized * Bounce);
+//			collisionRigidbody.SetVelocity((collision.transform.position - transform.position).normalized * Bounce + (Vector3)rigidbody2D.velocity * VelocityInherit);
+			collisionRigidbody.AddForce((collision.transform.position - transform.position).normalized * Bounce + (Vector3)rigidbody2D.velocity * VelocityInherit, ForceMode2D.Impulse);
 		}
 		
 		if (collisionTemperature != null) {
