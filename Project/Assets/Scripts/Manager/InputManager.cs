@@ -2,14 +2,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
+using Magicolo.GeneralTools;
 
 public class InputManager : MonoBehaviourExtended {
 
-	public InputSystem[] playerControllers;
-	[Disable] public bool keyboardDispatched;
-	[Disable] public int activePlayers;
+	static InputManager instance;
+	static InputManager Instance {
+		get {
+			if (instance == null) {
+				instance = FindObjectOfType<InputManager>();
+			}
+			
+			return instance;
+		}
+	}
+	
+	[Min] public int maxPlayers = 4;
+	
+	Dictionary<Wizardz, ControllerInfo> wizardControllerDict;
+	public Dictionary<Wizardz, ControllerInfo> WizardControllerDict {
+		get {
+			if (wizardControllerDict == null) {
+				wizardControllerDict = new Dictionary<Wizardz, ControllerInfo>();
+			}
+			
+			return wizardControllerDict;
+		}
+	}
+	
 	[Disable] public List<Joysticks> activeJoysticks = new List<Joysticks>();
-    
+	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
 	public InputSystem inputSystem { 
@@ -20,59 +42,45 @@ public class InputManager : MonoBehaviourExtended {
 		}
 	}
     
-	void Start() {
-		StartCoroutine(ListenToNewControllers());
-	}
-	
-	public void DispatchKeyboard(InputSystem system) {
-		system.GetKeyboardInfo("Controller").CopyInput(inputSystem.GetKeyboardInfo("Controller"));
+	public static void SetController(Wizardz wizard, InputSystem system) {
+		KeyboardInfo keyboard = Instance.WizardControllerDict[wizard] as KeyboardInfo;
 		
-		keyboardDispatched = true;
-		activePlayers += 1;
-	}
-	
-	public void DispatchJoystick(InputSystem system, Joysticks joystick) {
-		JoystickInfo info = system.GetJoystickInfo("Controller");
-		
-		info.CopyInput(inputSystem.GetJoystickInfo("Controller" + activePlayers));
-		info.Joystick = joystick;
-		
-		activeJoysticks.Add(joystick);
-		activePlayers += 1;
-	}
-	
-	IEnumerator ListenToNewControllers() {
-		while (activePlayers < playerControllers.Length) {
-			KeyCode[] pressedKeys;
-			
-			if (!keyboardDispatched) {
-				pressedKeys = InputSystem.GetPressedKeys(InputSystem.GetKeyboardKeys());
-			
-				if (pressedKeys.Length > 0) {
-					DispatchKeyboard(playerControllers[activePlayers]);
-					continue;
-				}
-			}
-			
-			for (int i = 1; i <= playerControllers.Length; i++) {
-				Joysticks joystick = (Joysticks)i;
-				
-				if (activeJoysticks.Contains(joystick)) {
-					continue;
-				}
-				
-				pressedKeys = InputSystem.GetPressedKeys(InputSystem.GetJoystickKeys(joystick));
-			
-				if (pressedKeys.Length > 0) {
-					if (!activeJoysticks.Contains(joystick)) {
-						DispatchJoystick(playerControllers[activePlayers], joystick);
-						continue;
-					}
-				}
-			}
-			
-			yield return new WaitForSeconds(0);
+		if (keyboard != null) {
+			system.GetKeyboardInfo("Controller").CopyInput(keyboard);
+			return;
 		}
+		
+		JoystickInfo joystick = Instance.WizardControllerDict[wizard] as JoystickInfo;
+		
+		if (joystick != null) {
+			system.GetJoystickInfo("Controller").CopyInput(joystick);
+			return;
+		}
+		
+		Logger.LogError("NOSEEE dat controller assigning wizbiz has failed...", wizard, system);
+	}
+	
+	public static void AssignController(Wizardz wizard, ControllerInfo controller) {
+		Instance.WizardControllerDict[wizard] = controller;
+	}
+	
+	public static ControllerInfo GetNewController() {
+		for (int i = 1; i <= Instance.maxPlayers; i++) {
+			Joysticks joystick = (Joysticks)i;
+				
+			if (Instance.activeJoysticks.Contains(joystick)) {
+				continue;
+			}
+				
+			KeyCode[] pressedKeys = InputSystem.GetPressedKeys(InputSystem.GetJoystickKeys(joystick));
+			
+			if (pressedKeys.Length > 0) {
+				Instance.activeJoysticks.Add(joystick);
+				return Instance.inputSystem.GetJoystickInfo("Controller" + i);
+			}
+		}
+		
+		return null;
 	}
 }
 
