@@ -85,7 +85,7 @@ namespace FMG
 			{
 				selectedButton.image.color = selectedColor;
 			}
-
+			
 			slider = selectedButton.GetComponentInChildren<Slider>();
 
 		}
