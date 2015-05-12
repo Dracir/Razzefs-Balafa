@@ -3,16 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class EnemisSofter : StateLayer {
+public class EnemisFlamesFrozen : State {
 	
-	public float chargingTime;
-	public float maxLazerLenght; 
-	public LayerMask lazerLayerMask;
-	public float temperatureChangePerSeconde;
+	TemperatureInfo temperatureInfo;
 	
+    EnemisFlames Layer {
+    	get { return (EnemisFlames)layer; }
+    }
+    
     StateMachine Machine {
     	get { return (StateMachine)machine; }
     }
+	
+	public override void OnAwake() {
+		base.OnAwake();
+		temperatureInfo = GetComponent<TemperatureInfo>();
+	}
 	
 	public override void OnEnter() {
 		base.OnEnter();
@@ -27,5 +33,8 @@ public class EnemisSofter : StateLayer {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
+		if(!temperatureInfo.IsFreezing){
+			SwitchState<EnemisFlamesAttacking>();
+		}
 	}
 }
