@@ -10,6 +10,17 @@ public class InputManager : MonoBehaviourExtended {
 	[Disable] public int activePlayers;
 	[Disable] public List<Joysticks> activeJoysticks = new List<Joysticks>();
     
+	Dictionary<int, InputSystem> idPlayerInputDict;
+	public Dictionary<int, InputSystem> IdPlayerInputDict {
+		get {
+			if (idPlayerInputDict == null) {
+				idPlayerInputDict = new Dictionary<int, InputSystem>();
+			}
+			
+			return idPlayerInputDict;
+		}
+	}
+	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
 	public InputSystem inputSystem { 
@@ -22,6 +33,14 @@ public class InputManager : MonoBehaviourExtended {
     
 	void Start() {
 		StartCoroutine(ListenToNewControllers());
+	}
+	
+	public void RegisterPlayerInput(int id, InputSystem input) {
+		IdPlayerInputDict[id] = input;
+	}
+	
+	public void UnregisterPlayerInput(int id, InputSystem input) {
+		IdPlayerInputDict[id] = input;
 	}
 	
 	public void DispatchKeyboard(InputSystem system) {

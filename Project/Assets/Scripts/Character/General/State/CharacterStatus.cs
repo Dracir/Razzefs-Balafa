@@ -5,11 +5,15 @@ using Magicolo;
 
 public class CharacterStatus : StateLayer {
 	
+	public bool invincible;
+	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}
 	
 	public void Die() {
-//		SwitchState<CharacterDie>();
+		if (!invincible) {
+			SwitchState<CharacterDie>();
+		}
 	}
 }

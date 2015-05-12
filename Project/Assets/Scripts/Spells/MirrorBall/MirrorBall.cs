@@ -5,18 +5,27 @@ using Magicolo;
 
 public class MirrorBall : MonoBehaviourExtended {
 
-	[SerializeField, PropertyField(typeof(MinAttribute))] float bounce = 25;
-	public float Bounce {
+	float minBounce;
+	public float MinBounce {
 		get { 
-			return bounce; 
+			return minBounce; 
 		}
 		set { 
-			bounce = value; 
+			minBounce = value; 
 		}
 	}
 	
-	[SerializeField, PropertyField(typeof(MinAttribute))]
-	float velocityInherit = 5;
+	float maxBounce;
+	public float MaxBounce {
+		get {
+			return maxBounce;
+		}
+		set {
+			maxBounce = value;
+		}
+	}
+	
+	float velocityInherit;
 	public float VelocityInherit {
 		get {
 			return velocityInherit;
@@ -26,7 +35,7 @@ public class MirrorBall : MonoBehaviourExtended {
 		}
 	}
 	
-	[SerializeField, PropertyField] float hotness = 0.1F;
+	float hotness;
 	public float Hotness {
 		get { 
 			return hotness; 
@@ -109,12 +118,19 @@ public class MirrorBall : MonoBehaviourExtended {
 		TemperatureInfo collisionTemperature = collision.gameObject.FindComponent<TemperatureInfo>();
 		
 		if (collisionRigidbody != null) {
-//			collisionRigidbody.SetVelocity((collision.transform.position - transform.position).normalized * Bounce + (Vector3)rigidbody2D.velocity * VelocityInherit);
-			collisionRigidbody.AddForce((collision.transform.position - transform.position).normalized * Bounce + (Vector3)rigidbody2D.velocity * VelocityInherit, ForceMode2D.Impulse);
+			collisionRigidbody.SetVelocity(collisionRigidbody.velocity.normalized * Mathf.Clamp(collisionRigidbody.velocity.magnitude + rigidbody2D.velocity.magnitude * VelocityInherit, MinBounce, MaxBounce));
 		}
 		
 		if (collisionTemperature != null) {
 			collisionTemperature.Temperature += Hotness;
+		}
+		
+		if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) {
+			Bounces -= 1;
+		}
+		
+		if (Bounces == 0) {
+			Explode();
 		}
 	}
 }

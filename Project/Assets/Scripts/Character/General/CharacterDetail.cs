@@ -5,6 +5,8 @@ using Magicolo;
 
 public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 	
+	public Wizardz wizard;
+	
 	[SerializeField, PropertyField] int id;
 	public int Id {
 		get {
