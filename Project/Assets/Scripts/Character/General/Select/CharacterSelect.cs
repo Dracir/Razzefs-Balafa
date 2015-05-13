@@ -21,9 +21,13 @@ public class CharacterSelect : StateLayer {
 		}
 	}
 	
+	public Color selectingColor = new Color(1, 1, 1, 1);
+	public Color readyColor = new Color(0, 1, 0, 1);
+	
 	public Animator wizardAnimator;
 	public Text wizardName;
 	public Text spellName;
+	public Image background;
 	public GameObject box;
 	public CharacterSelectMenu wizardSelect;
 	

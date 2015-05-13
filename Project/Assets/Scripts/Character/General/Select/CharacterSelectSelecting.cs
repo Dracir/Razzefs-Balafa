@@ -16,6 +16,9 @@ public class CharacterSelectSelecting : State, IInputListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
+		Layer.wizardSelect.skipUpdate = true;
+		Layer.background.color = Layer.selectingColor;
+		Layer.wizardAnimator.enabled = true;
 		Layer.inputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.inputSystem.GetJoystickInfo("Controller").AddListener(this);
 	}
@@ -41,6 +44,12 @@ public class CharacterSelectSelecting : State, IInputListener {
 				if (input.State == ButtonStates.Down) {
 					InputManager.ReleaseController(Layer.Wizard);
 					SwitchState<CharacterSelectIdle>();
+				}
+				
+				break;
+			case "Jump":
+				if (input.State == ButtonStates.Down) {
+					SwitchState<CharacterSelectReady>();
 				}
 				
 				break;
