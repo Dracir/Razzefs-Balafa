@@ -59,8 +59,8 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		}
 	}
 	
-	public bool IsHot{
-		get{
+	public bool IsHot {
+		get {
 			return Temperature > 0;
 		}
 	}

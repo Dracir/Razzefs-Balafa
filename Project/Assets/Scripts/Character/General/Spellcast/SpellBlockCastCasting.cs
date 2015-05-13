@@ -38,6 +38,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
 		startPosition = Layer.Cursor.position.Round();
 		
+		currentSize = 1;
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
 		castZoneSprite.SetLocalScale(currentSize, Axis.XY);

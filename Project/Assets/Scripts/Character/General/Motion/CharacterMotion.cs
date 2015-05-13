@@ -134,14 +134,15 @@ public class CharacterMotion : StateLayer {
 		}
 		else {
 			Grounded = true;
-			Friction = ground.sharedMaterial == null ? 1 : ground.sharedMaterial.friction;
+			TemperatureInfo temperatureInfo = ground.GetComponent<TemperatureInfo>();
+			Friction = temperatureInfo == null ? 1 : Mathf.Clamp((1 - temperatureInfo.Coldness).Pow(3), 0.025F, 1);
 		}
 	}
 	
 	public override void OnFixedUpdate() {
 		base.OnFixedUpdate();
 
-		rigidbody.AddForce(gravity);
+		rigidbody.AddForce(gravity.Force * rigidbody.mass);
 	}
 
 	public void Enable() {
