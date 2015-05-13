@@ -29,7 +29,7 @@ public class CharacterSelect : StateLayer {
 	public Text spellName;
 	public Image background;
 	public GameObject box;
-	public CharacterSelectMenu wizardSelect;
+	public CharacterSelectMenu selectMenu;
 	
 	[Disable] public int wizardIndexHash = Animator.StringToHash("WizardIndex");
 	

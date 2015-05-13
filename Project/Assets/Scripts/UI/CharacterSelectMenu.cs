@@ -27,6 +27,12 @@ public class CharacterSelectMenu : MonoBehaviourExtended {
 		}
 	}
 	
+	public void TryStartGame() {
+		if (Array.TrueForAll(characterBoxes, characterBox => !characterBox.box.activeSelf || characterBox.StateIsActive<CharacterSelectReady>())) {
+			Game.instance.SwitchState<GameNextLevel>();
+		}
+	}
+	
 	public CharacterSelect GetAvailableCharacterBox() {
 		foreach (CharacterSelect wizardBox in characterBoxes) {
 			if (!wizardBox.box.activeSelf) {

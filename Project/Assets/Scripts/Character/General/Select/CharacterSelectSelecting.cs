@@ -16,7 +16,7 @@ public class CharacterSelectSelecting : State, IInputListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.wizardSelect.skipUpdate = true;
+		Layer.selectMenu.skipUpdate = true;
 		Layer.background.color = Layer.selectingColor;
 		Layer.wizardAnimator.enabled = true;
 		Layer.inputSystem.GetKeyboardInfo("Controller").AddListener(this);
@@ -34,7 +34,7 @@ public class CharacterSelectSelecting : State, IInputListener {
 		switch (input.InputName) {
 			case "CastAction":
 				if (input.State == ButtonStates.Down) {
-					Wizardz previousWizard = Layer.wizardSelect.GetPreviousAvailableWizard(Layer.Wizard);
+					Wizardz previousWizard = Layer.selectMenu.GetPreviousAvailableWizard(Layer.Wizard);
 					InputManager.SwitchController(Layer.Wizard, previousWizard);
 					Layer.Wizard = previousWizard;
 				}
