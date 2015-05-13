@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LaserTrigger : MonoBehaviour {
 
-	public EnemisSofter softer;
+	public float deltaTemperaturePerS;
 	
 	void Start () {
 	
@@ -16,8 +16,7 @@ public class LaserTrigger : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other) {
 		TemperatureInfo temperatureInfo = other.GetComponentInChildren<TemperatureInfo>();
 		if(temperatureInfo != null){
-			temperatureInfo.Temperature += softer.temperatureChangePerSeconde * Time.deltaTime;
-		}else{
+			temperatureInfo.Temperature += deltaTemperaturePerS * Time.deltaTime;
 		}
     }
 }
