@@ -17,10 +17,13 @@ public class CharacterTemperatureBlazing : State {
 		base.OnUpdate();
 		
 		Layer.spriteRenderer.color = Layer.spriteRenderer.color.Lerp(new Color(1, 1 - Layer.temperatureInfo.Hotness, 1 - Layer.temperatureInfo.Coldness), Time.deltaTime * Layer.fadeSpeed, Channels.RGB);
-		CharacterStatus characterStatus = (CharacterStatus) Layer.layer.layer;
+		CharacterStatus characterStatus = (CharacterStatus)Layer.layer.layer;
 		
-		Layer.temperatureInfo.Temperature = 0;
-		SwitchState<CharacterTemperatureIdle>();
-		characterStatus.Die();
+		if (Layer.temperatureInfo.wasBlazed) {
+			Layer.temperatureInfo.wasBlazed = false;
+			Layer.temperatureInfo.Temperature = 0;
+			SwitchState<CharacterTemperatureIdle>();
+			characterStatus.Die();
+		}
 	}
 }

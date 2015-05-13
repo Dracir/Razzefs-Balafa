@@ -14,9 +14,11 @@ public class TemperatureKiller : MonoBehaviour {
 	
 	
 	void Update () {
-		if(removeIfBlazed && info.IsBlazing){
+		if(removeIfBlazed && info.wasBlazed){
+			info.wasBlazed = false;
 			gameObject.Remove();
-		}else if(removeIfFrozen && info.IsFreezing){
+		}else if(removeIfFrozen && info.wasFrozen){
+			info.wasFrozen = false;
 			gameObject.Remove();
 		}
 	}

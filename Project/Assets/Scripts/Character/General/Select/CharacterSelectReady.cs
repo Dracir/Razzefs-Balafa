@@ -16,7 +16,7 @@ public class CharacterSelectReady : State, IInputListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.wizardSelect.skipUpdate = true;
+		Layer.selectMenu.skipUpdate = true;
 		Layer.background.color = Layer.readyColor;
 		Layer.wizardAnimator.enabled = false;
 		Layer.inputSystem.GetKeyboardInfo("Controller").AddListener(this);
@@ -35,6 +35,18 @@ public class CharacterSelectReady : State, IInputListener {
 			case "Cycle":
 				if (input.State == ButtonStates.Down) {
 					SwitchState<CharacterSelectSelecting>();
+				}
+				
+				break;
+			case "Jump":
+				if (input.State == ButtonStates.Down) {
+					Layer.selectMenu.TryStartGame();
+				}
+				
+				break;
+			case "Menu":
+				if (input.State == ButtonStates.Down) {
+					Layer.selectMenu.TryStartGame();
 				}
 				
 				break;
