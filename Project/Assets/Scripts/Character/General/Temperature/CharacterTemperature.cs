@@ -31,6 +31,7 @@ public class CharacterTemperature : StateLayer {
 			}
 		}
 	}
+	
 	bool _animatorCached;
 	Animator _animator;
 	public Animator animator { 
@@ -81,7 +82,6 @@ public class CharacterTemperature : StateLayer {
 	
 	public void Freeze() {
 		Layer.GetState<CharacterMotion>().Disable();
-		Layer.GetState<CharacterCast>().Disable();
 		
 		animator.enabled = false;
 		rigidbody.mass *= frozenMassModifier;
@@ -89,7 +89,6 @@ public class CharacterTemperature : StateLayer {
 	
 	public void Unfreeze() {
 		Layer.GetState<CharacterMotion>().Enable();
-		Layer.GetState<CharacterCast>().Enable();
 		
 		animator.enabled = true;
 		rigidbody.mass /= frozenMassModifier;

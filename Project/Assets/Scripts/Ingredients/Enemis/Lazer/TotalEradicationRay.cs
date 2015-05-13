@@ -66,7 +66,7 @@ public class TotalEradicationRay : MonoBehaviour {
 			
 			//setTrigger(lazerIndex, new Vector2(hit.distance + overLaser ,0.2f), start, rotation, deltaTemprature);
 			ReflectiveCollider reflectiveCollider = hit.collider.GetComponent<ReflectiveCollider>();
-			if(reflectiveCollider != null || true){
+			if(reflectiveCollider != null){
 				castLazer(lazerIndex + 1, hit.point, reflection.normalized, rotation + angle, deltaTemprature * softer.bounceDeltaTemperatureLost);
 			}
 			

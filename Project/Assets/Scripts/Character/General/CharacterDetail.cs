@@ -19,6 +19,8 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 	
 	public Color color = Color.white;
 	
+	public bool jTenTrainDeDebugger = true;
+	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
 	public InputSystem inputSystem { 
@@ -29,8 +31,10 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 		}
 	}
 	
-	void Awake() {
-		InputManager.SetController(wizard, inputSystem);
+	void Start() {
+		if (!jTenTrainDeDebugger) {
+			InputManager.SetController(wizard, inputSystem);
+		}
 	}
 }
 

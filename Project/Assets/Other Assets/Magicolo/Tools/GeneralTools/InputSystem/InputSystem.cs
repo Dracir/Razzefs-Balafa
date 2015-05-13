@@ -420,15 +420,47 @@ namespace Magicolo {
 			return joystick.ToString() + axis;
 		}
 		
-		public static KeyCode[] GetPressedKeys() {
-			return GetPressedKeys(AllKeys);
+		public static KeyCode[] GetKeysPressed() {
+			return GetKeysPressed(AllKeys);
 		}
 		
-		public static KeyCode[] GetPressedKeys(KeyCode[] keys) {
+		public static KeyCode[] GetKeysPressed(KeyCode[] keys) {
 			List<KeyCode> pressed = new List<KeyCode>();
 		
 			foreach (KeyCode key in keys) {
 				if (Input.GetKey(key)) {
+					pressed.Add(key);
+				}
+			}
+			
+			return pressed.ToArray();
+		}
+		
+		public static KeyCode[] GetKeysDown() {
+			return GetKeysPressed(AllKeys);
+		}
+		
+		public static KeyCode[] GetKeysDown(KeyCode[] keys) {
+			List<KeyCode> pressed = new List<KeyCode>();
+		
+			foreach (KeyCode key in keys) {
+				if (Input.GetKeyDown(key)) {
+					pressed.Add(key);
+				}
+			}
+			
+			return pressed.ToArray();
+		}
+		
+		public static KeyCode[] GetKeysUp() {
+			return GetKeysPressed(AllKeys);
+		}
+		
+		public static KeyCode[] GetKeysUp(KeyCode[] keys) {
+			List<KeyCode> pressed = new List<KeyCode>();
+		
+			foreach (KeyCode key in keys) {
+				if (Input.GetKeyUp(key)) {
 					pressed.Add(key);
 				}
 			}

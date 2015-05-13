@@ -42,7 +42,15 @@ public class InputManager : MonoBehaviourExtended {
 		}
 	}
     
+	void Awake() {
+		DontDestroyOnLoad(this);
+	}
+	
 	public static void SetController(Wizardz wizard, InputSystem system) {
+		if (!Instance.WizardControllerDict.ContainsKey(wizard)) {
+			return;
+		}
+		
 		KeyboardInfo keyboard = Instance.WizardControllerDict[wizard] as KeyboardInfo;
 		
 		if (keyboard != null) {
@@ -61,21 +69,43 @@ public class InputManager : MonoBehaviourExtended {
 	}
 	
 	public static void AssignController(Wizardz wizard, ControllerInfo controller) {
+		JoystickInfo joystick = controller as JoystickInfo;
+		
+		if (joystick != null) {
+			Instance.activeJoysticks.Add(joystick.Joystick);
+		}
+		
 		Instance.WizardControllerDict[wizard] = controller;
 	}
 	
+	public static void ReleaseController(Wizardz wizard) {
+		JoystickInfo joystick = Instance.WizardControllerDict[wizard] as JoystickInfo;
+		
+		if (joystick != null) {
+			Instance.activeJoysticks.Remove(joystick.Joystick);
+		}
+		
+		Instance.WizardControllerDict.Remove(wizard);
+	}
+	
+	public static void SwitchController(Wizardz wizard, Wizardz otherWizard) {
+		if (Instance.WizardControllerDict.ContainsKey(wizard)) {
+			Instance.WizardControllerDict[otherWizard] = Instance.WizardControllerDict[wizard];
+			Instance.WizardControllerDict.Remove(wizard);
+		}
+	}
+	
 	public static ControllerInfo GetNewController() {
-		for (int i = 1; i <= Instance.maxPlayers; i++) {
+		for (int i = 1; i <= 8; i++) {
 			Joysticks joystick = (Joysticks)i;
 				
 			if (Instance.activeJoysticks.Contains(joystick)) {
 				continue;
 			}
 				
-			KeyCode[] pressedKeys = InputSystem.GetPressedKeys(InputSystem.GetJoystickKeys(joystick));
+			KeyCode[] pressedKeys = InputSystem.GetKeysDown(InputSystem.GetJoystickKeys(joystick));
 			
 			if (pressedKeys.Length > 0) {
-				Instance.activeJoysticks.Add(joystick);
 				return Instance.inputSystem.GetJoystickInfo("Controller" + i);
 			}
 		}

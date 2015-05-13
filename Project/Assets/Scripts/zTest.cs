@@ -7,7 +7,6 @@ public class zTest : MonoBehaviourExtended {
 
 	[Button("Test", "Test", NoPrefixLabel = true)] public bool test;
 	void Test() {
-		Logger.Log(InputSystem.GetNonJoystickKeys());
 	}
 	
 	[Toggle] public bool logPressedKeys;
@@ -25,7 +24,7 @@ public class zTest : MonoBehaviourExtended {
 	
 	void Update() {
 		if (logPressedKeys) {
-			Logger.Log(InputSystem.GetPressedKeys());
+			Logger.Log(InputSystem.GetKeysPressed());
 		}
 	}
 }
