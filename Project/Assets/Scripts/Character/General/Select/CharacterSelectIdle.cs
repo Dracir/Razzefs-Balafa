@@ -16,6 +16,7 @@ public class CharacterSelectIdle : State {
 	public override void OnEnter() {
 		base.OnEnter();
 		
+		Layer.wizardSelect.skipUpdate = true;
 		Layer.box.SetActive(false);
 	}
 	

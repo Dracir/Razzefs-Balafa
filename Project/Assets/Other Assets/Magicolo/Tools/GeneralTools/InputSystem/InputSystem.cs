@@ -437,7 +437,7 @@ namespace Magicolo {
 		}
 		
 		public static KeyCode[] GetKeysDown() {
-			return GetKeysPressed(AllKeys);
+			return GetKeysDown(AllKeys);
 		}
 		
 		public static KeyCode[] GetKeysDown(KeyCode[] keys) {
@@ -453,7 +453,7 @@ namespace Magicolo {
 		}
 		
 		public static KeyCode[] GetKeysUp() {
-			return GetKeysPressed(AllKeys);
+			return GetKeysUp(AllKeys);
 		}
 		
 		public static KeyCode[] GetKeysUp(KeyCode[] keys) {

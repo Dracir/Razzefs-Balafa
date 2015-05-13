@@ -16,6 +16,9 @@ public class CharacterSelectReady : State, IInputListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
+		Layer.wizardSelect.skipUpdate = true;
+		Layer.background.color = Layer.readyColor;
+		Layer.wizardAnimator.enabled = false;
 		Layer.inputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.inputSystem.GetJoystickInfo("Controller").AddListener(this);
 	}

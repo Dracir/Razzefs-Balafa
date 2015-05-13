@@ -10,7 +10,14 @@ public class CharacterSelectMenu : MonoBehaviourExtended {
 	
 	public CharacterSelect[] characterBoxes;
 	
+	[Disable] public bool skipUpdate;
+	
 	void Update() {
+		if (skipUpdate) {
+			skipUpdate = false;
+			return;
+		}
+		
 		if (!Array.TrueForAll(characterBoxes, characterBox => characterBox.box.activeSelf)) {
 			ControllerInfo controller = InputManager.GetNewController();
 		
