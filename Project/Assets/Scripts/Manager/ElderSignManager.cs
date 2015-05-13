@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public static class ElderSignManager {
 
+	static Dictionary<Wizardz,int> WizardElderSignCount;
 	//TODO: Maybe not this
 	const int ElderSignStartCount = 0;
 
@@ -13,8 +14,6 @@ public static class ElderSignManager {
 			WizardElderSignCount[wizard] = 0;
 		}
 	}
-
-	static Dictionary<Wizardz,int> WizardElderSignCount;
 
 	public static void incrementElderSignCount(Wizardz wizard){
 		WizardElderSignCount[wizard]++;
