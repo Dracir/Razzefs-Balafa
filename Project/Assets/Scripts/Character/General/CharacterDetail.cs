@@ -19,7 +19,7 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 	
 	public Color color = Color.white;
 	
-	public bool jtentraindedebugger = true;
+	public bool jTenTrainDeDebugger = true;
 	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
@@ -32,7 +32,7 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 	}
 	
 	void Start() {
-		if (!jtentraindedebugger) {
+		if (!jTenTrainDeDebugger) {
 			InputManager.SetController(wizard, inputSystem);
 		}
 	}
