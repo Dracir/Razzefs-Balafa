@@ -96,6 +96,6 @@ public class CharacterTemperature : StateLayer {
 
 	void OnCollisionEnter2D(Collision2D coll){
 		temperatureInfo.Temperature += Mathf.Max(coll.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
-		Debug.Log (this.gameObject.name + " has collided with force " + coll.relativeVelocity.magnitude + " and has reached temperature " + temperatureInfo.Temperature);
+		//Debug.Log (this.gameObject.name + " has collided with force " + coll.relativeVelocity.magnitude + " and has reached temperature " + temperatureInfo.Temperature);
 	}
 }
