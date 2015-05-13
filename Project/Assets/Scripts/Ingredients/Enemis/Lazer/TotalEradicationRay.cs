@@ -36,7 +36,8 @@ public class TotalEradicationRay : MonoBehaviour {
 			}
 		}
 		
-		castLazer(0,transform.position, transform.right, 0, softer.deltaTemperatureChangePerSeconde);
+		float angle = ((Vector2) transform.right).Angle();
+		castLazer(0,transform.position, transform.right, -angle, softer.deltaTemperatureChangePerSeconde);
 		setLineRenderPositions(0,transform.position);
 	}
 
@@ -46,22 +47,29 @@ public class TotalEradicationRay : MonoBehaviour {
 		Debug.DrawLine(castPosition, castPosition + new Vector3(0,0.5f,0), Color.red, 1f);
 		RaycastHit2D hit = Physics2D.Raycast(castPosition, direction, float.PositiveInfinity, softer.lazerLayerMask);
 		
-		float overLaser = 0.1f;
+		float overLaser = 0.2f;
 		
 		
 		if(hit.collider != null){
 			Debug.DrawRay(castPosition, direction * hit.distance, new Color(1,0.8f,0,0.4f),0.1f);
 			setLineRenderCount(lazerIndex+2);
-			setLineRenderPositions(lazerIndex + 1, new Vector3(hit.point.x + overLaser, hit.point.y,0));
+			setLineRenderPositions(lazerIndex + 1, new Vector3(hit.point.x, hit.point.y,0));
 			
 			Vector3 reflection = Vector3.Reflect(direction, hit.normal);
 			float angle = ((Vector2) direction).Angle();
-			Debug.Log(start + " - " + (start + direction) + " : " + rotation);
 			
-			setTrigger(lazerIndex, new Vector2(hit.distance + overLaser ,0.2f), start, rotation, deltaTemprature);
 			
-			Debug.DrawRay(hit.point, reflection, new Color(0f,1f,1f,0.6f),0.1f);
-			castLazer(lazerIndex + 1, hit.point, reflection.normalized, rotation + angle, deltaTemprature * softer.bounceDeltaTemperatureLost);
+			TemperatureInfo temperatureInfo = hit.collider.GetComponentInChildren<TemperatureInfo>();
+			if(temperatureInfo != null){
+				temperatureInfo.Temperature += deltaTemprature * Time.deltaTime;
+			}
+			
+			//setTrigger(lazerIndex, new Vector2(hit.distance + overLaser ,0.2f), start, rotation, deltaTemprature);
+			ReflectiveCollider reflectiveCollider = hit.collider.GetComponent<ReflectiveCollider>();
+			if(reflectiveCollider != null || true){
+				castLazer(lazerIndex + 1, hit.point, reflection.normalized, rotation + angle, deltaTemprature * softer.bounceDeltaTemperatureLost);
+			}
+			
 			
 		}else{
 			foreach (var line in lineRenderers) {
@@ -76,7 +84,7 @@ public class TotalEradicationRay : MonoBehaviour {
 		BoxCollider2D box = triggers[lazerIndex];
 		box.enabled = true;
 		box.size = size;
-		box.offset = new Vector2(size.x / 2 , -0.1f);
+		box.offset = new Vector2(size.x / 2f , 0);
 		box.transform.position = positionTrigger;
 		box.transform.rotation = Quaternion.Euler(0,0,rotation);
 		box.GetComponent<LaserTrigger>().deltaTemperaturePerS = deltaTemprature;

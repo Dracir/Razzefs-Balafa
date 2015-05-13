@@ -16,6 +16,7 @@ public class LaserTrigger : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other) {
 		TemperatureInfo temperatureInfo = other.GetComponentInChildren<TemperatureInfo>();
 		if(temperatureInfo != null){
+			//Debug.Log(temperatureInfo.gameObject.name);
 			temperatureInfo.Temperature += deltaTemperaturePerS * Time.deltaTime;
 		}
     }

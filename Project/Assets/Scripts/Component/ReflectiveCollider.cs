@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Reflect : MonoBehaviour {
+public class ReflectiveCollider : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
