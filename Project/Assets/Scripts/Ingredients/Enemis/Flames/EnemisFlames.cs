@@ -3,12 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class EnemisSofter : StateLayer {
+public class EnemisFlames : StateLayer {
 	
-	public float chargingTime;
-	public LayerMask lazerLayerMask;
-	public float deltaTemperatureChangePerSeconde;
-	public float bounceDeltaTemperatureLost;
+	public float HeatingPerSecond;
 	
     StateMachine Machine {
     	get { return (StateMachine)machine; }

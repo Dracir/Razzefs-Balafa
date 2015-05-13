@@ -21,18 +21,15 @@ public class ElderSign : MonoBehaviour {
 
 			//Increment player's coin count
 			if(other.GetComponent<CharacterDetail>()){
-				//TODO: Use wizardz enum instead of character ID
-				ElderSignManager.incrementElderSignCount((Wizardz)other.GetComponent<CharacterDetail>().Id);
+				ElderSignManager.incrementElderSignCount(other.GetComponent<CharacterDetail>().wizard);
 			}
-
-			//Increment total coin count
-			//Handled by Elder Sign Manager
 
 			//Disappear coin
 			GameObject.Destroy(this.gameObject);
 
 			Debug.Log (other.name + " picked up an elder sign!");
-			Debug.Log (other.name + " has " + ElderSignManager.getElderSignCount((Wizardz)other.GetComponent<CharacterDetail>().Id) + " elder signs!");
+			Debug.Log (other.name + " has " + ElderSignManager.getElderSignCount(other.GetComponent<CharacterDetail>().wizard) + " elder signs!");
+			Debug.Log (ElderSignManager.getTotalElderSignCount() + " elder signs have been collected.");
 
 		}
 	}

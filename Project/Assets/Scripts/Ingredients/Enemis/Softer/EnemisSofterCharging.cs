@@ -18,11 +18,13 @@ public class EnemisSofterCharging : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
+		chargingAnimation.Play();
 		t = Layer.chargingTime;
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
+		chargingAnimation.Stop();
 		
 	}
 	

@@ -59,6 +59,12 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		}
 	}
 	
+	public bool IsHot{
+		get{
+			return Temperature > 0;
+		}
+	}
+	
 	public float AmbientTemperature {
 		get {
 			return 0;

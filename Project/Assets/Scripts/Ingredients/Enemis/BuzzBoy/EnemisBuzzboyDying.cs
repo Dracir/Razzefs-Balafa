@@ -15,7 +15,7 @@ public class EnemisBuzzboyDying : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		transform.parent.gameObject.Remove();
 	}
 	
 	public override void OnExit() {
