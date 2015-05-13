@@ -1,11 +1,13 @@
-introHarry : And so, [wizard1] the Wizard, whose name was borrowed from ancient wizard texts, though he bears no resemblance to the original, entered Vancer's castle [company]. [LB][LB] "If I can just get there in time, I may be one of the first people to witness the Ancient One!" [wizard1], a long-time scholar of the Ancient One and his bizarre effects on the world, desires nothing more than to be present at its summoning. He is fully aware it may leave him a mindless heap, a writhing maniac, or even to serve as a cosmic butler for all of eternity. No price is too great for this opportunity.
+introHarry : And so, [wizard1] the Wizard, whose name was borrowed from ancient wizard texts, though he bears no resemblance to the original, entered Vancer's castle [company]. [LB][LB] "If I can just get there in time, I may be one of the first people to witness the Ancient One!" [wizard1], a long-time scholar of the Ancient One and his bizarre effects on the world, desires nothing more than to be present at its summoning. He is fully aware it may leave him a mindless heap, a writhing maniac, or even to serve as a cosmic butler for all of eternity. No price is too great for this opportunity.[LB][LB]Help [wizard1] make it to the top of the tower first, and witness the ceremony!
 
-Help [wizard1] make it to the top of the tower first, and witness the ceremony!
+introRincewind : And so, [wizard2] the Wizard walked into Vancer's fortress [company]. Though to say he walked is not entirely accurate: his ego was so inflated, he more or less floated in. [LB][LB] "The nerve of him. He dares presume to achieve in an afternoon the work I have dedicated my life to!" Raised in the height of society, [wizard2] has intricate knowledge of its failings and hypocrisies. He has, after much study, come to the conclusion that people should not be allowed to live any longer on the planet. He's not about to be done by an evil genius - or, as he liked to think of them, insecure personnel managers.[LB][LB]Help [wizard2] stop Vancer before it's too late! Perhaps the spell could even be commandeered....
 
-introRincewind : And so, [wizard2] the Wizard
+introGandalf : And so, [wizard3], the Librarian of the Wizard Library, entered Vancer's stronghold [company]. [wizard3]'s book-sense has been tuned so finely that he could sense it even at the base of the tower. "This better not take long; I have a lot of filing to get back to," he rattled. Having been the greatest librarian the Guild has ever known during his lifetime, [wizard3]'s final wish was to be able to continue his cataloguing system after his demise. Well, his final wish made with muscles and organs. [LB][LB]Help [wizard3] climb the tower to reclaim the book! If everyone dies before it's too late, well... at least he was already dead; in any case, he prefers the company of books to that of people these days. They're not so selfish.
 
 wizard1 : Harry
 wizard2 : Rincewind
+wizard3 : Gandalf
+wizard4 : Mysterio
 
 // p1
 // p2
