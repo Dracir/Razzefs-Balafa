@@ -15,7 +15,11 @@ public class CharacterDieWaitingToRevive : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		Layer.Layer.spriteRenderer.color = new Color(1,1,1,1f);
+		Layer.Layer.rigidBody.isKinematic = false;
+		Layer.Layer.setColliders(true);
+		SwitchState<CharacterDieIdle>();
+		Layer.Layer.SwitchState<CharacterLive>();
 	}
 	
 	public override void OnExit() {

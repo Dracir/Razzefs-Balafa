@@ -10,10 +10,10 @@ public class Game : StateLayer {
     	get { return ((StateMachine)machine); }
     }
 	
-	public GameObject player1Prefab;
-	public GameObject player2Prefab;
-	public GameObject player3Prefab;
-	public GameObject player4Prefab;
+	public GameObject[] playersPrefab = new GameObject[4];
+	public GameObject[] playersGameObject = new GameObject[4];
+	
+	public Vector3[] playerPositions = new Vector3[4];
 	
 	public static Game instance;
 	
