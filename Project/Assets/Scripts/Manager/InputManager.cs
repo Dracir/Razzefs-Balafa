@@ -102,7 +102,7 @@ public class InputManager : MonoBehaviourExtended {
 			if (Instance.activeJoysticks.Contains(joystick)) {
 				continue;
 			}
-				
+			
 			KeyCode[] pressedKeys = InputSystem.GetKeysDown(InputSystem.GetJoystickKeys(joystick));
 			
 			if (pressedKeys.Length > 0) {
