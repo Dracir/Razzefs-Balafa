@@ -24,12 +24,12 @@ public class EnemisFlamesAttacking : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		animator.StartPlayback();
+		animator.enabled = true;
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
-		animator.StopPlayback();
+		animator.enabled = false;
 	}
 	
 	public override void OnUpdate() {

@@ -6,9 +6,9 @@ using Magicolo;
 public class EnemisSofter : StateLayer {
 	
 	public float chargingTime;
-	public float maxLazerLenght; 
 	public LayerMask lazerLayerMask;
-	public float temperatureChangePerSeconde;
+	public float deltaTemperatureChangePerSeconde;
+	public float bounceDeltaTemperatureLost;
 	
     StateMachine Machine {
     	get { return (StateMachine)machine; }
