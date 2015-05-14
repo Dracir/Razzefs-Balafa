@@ -68,7 +68,11 @@ public class CharacterStatus : StateLayer {
 		}
 	}
 	
-	
+	public CharacterDetail detail;
+	public override void OnAwake(){
+		base.OnAwake();
+		detail = GetComponent<CharacterDetail>();
+	}
 	
 	public void setColliders(bool active){
 		circleCollider.enabled = active;
