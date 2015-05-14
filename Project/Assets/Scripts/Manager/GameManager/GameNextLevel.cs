@@ -60,7 +60,7 @@ public class GameNextLevel : State {
 	}
 
 	void makeCamera() {
-		CameraDudes follow = Camera.main.GetOrAddComponent<CameraDudes>();
+		CameraFollowMany follow = Camera.main.GetOrAddComponent<CameraFollowMany>();
 		GameObject flag = levelCycle.currentMapGO.FindChildRecursive("EndFlag");
 		follow.SetFollowing(new [] { flag, Layer.playersGameObject[0], Layer.playersGameObject[1], Layer.playersGameObject[2], Layer.playersGameObject[3] });
 	}
