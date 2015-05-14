@@ -15,8 +15,6 @@ public class CharacterDie : StateLayer {
 		}
 	}
 	
-	
-	
     public CharacterStatus Layer {
     	get { return ((CharacterStatus)layer); }
     }
@@ -25,4 +23,11 @@ public class CharacterDie : StateLayer {
     StateMachine Machine {
     	get { return ((StateMachine)machine); }
     }
+	
+	public Animator animator;
+	
+	public override void OnAwake(){
+		base.OnAwake();
+		animator = GetComponent<Animator>();
+	}
 }

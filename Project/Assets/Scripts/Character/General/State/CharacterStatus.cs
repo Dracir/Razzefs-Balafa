@@ -52,6 +52,16 @@ public class CharacterStatus : StateLayer {
 		}
 	}
 	
+	bool _AnimatorCached;
+	Animator _animator;
+	public Animator animator { 
+		get { 
+			_animator = _AnimatorCached ? _animator : GetComponentInChildren<Animator>();
+			_AnimatorCached = true;
+			return _animator;
+		}
+	}
+	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}

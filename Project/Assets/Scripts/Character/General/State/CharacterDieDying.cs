@@ -6,6 +6,7 @@ using Magicolo;
 public class CharacterDieDying : State {
 	
 	public GameObject dyingEmitter;
+	public Sprite dyingSprite;
 	
 	float t=0;
 	Color baseColor = new Color(1f,1f,1f,0f);
@@ -21,9 +22,12 @@ public class CharacterDieDying : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		Layer.Layer.spriteRenderer.color = new Color(0,0,0,0f);
-		Layer.Layer.rigidBody.isKinematic = true;
-		Layer.Layer.setColliders(false);
+		CharacterStatus character = Layer.Layer;
+		character.spriteRenderer.color = new Color(0,0,0,0f);
+		character.spriteRenderer.sprite = dyingSprite;
+		character.rigidBody.isKinematic = true;
+		character.setColliders(false);
+		character.animator.enabled = false;
 		GameObjectExtend.createClone(dyingEmitter, transform, transform.position);
 		StartCoroutine("WaitToMove");
 		t = 0;

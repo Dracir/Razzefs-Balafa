@@ -33,6 +33,7 @@ public class GameLoadingLevel : State {
 			makePlayers();
 			makeCamera();
 			moveBackground();
+			makeAndSetGametGui();
 			SwitchState<GamePlaying>();
 		}
 	}
@@ -68,7 +69,11 @@ public class GameLoadingLevel : State {
 		GameObject flag = levelCycle.currentMapGO.FindChildRecursive("EndFlag");
 		follow.SetFollowing(new [] { flag, Layer.playersGameObject[0], Layer.playersGameObject[1], Layer.playersGameObject[2], Layer.playersGameObject[3] });
 	}
-	
+
+	void makeAndSetGametGui(){
+		Layer.guiGameObject = GameObjectExtend.createClone(Layer.GuiPrefab);
+		
+	}
 	public override void OnExit() {
 		base.OnExit();
 		
