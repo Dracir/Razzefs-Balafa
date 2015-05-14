@@ -23,6 +23,12 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
+	TemperatureInfo temp;
+	public float Temperature {
+		get{
+			return temp.Temperature;
+		}
+	}
 	public InputSystem inputSystem { 
 		get { 
 			_inputSystem = _inputSystemCached ? _inputSystem : GetComponent<InputSystem>();
@@ -35,6 +41,8 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 		if (!jTenTrainDeDebugger) {
 			InputManager.SetController(wizard, inputSystem);
 		}
+		
+		temp = GetComponent<TemperatureInfo>();
 	}
 }
 
