@@ -12,7 +12,7 @@ public class Block : MonoBehaviourExtended {
 		}
 		set {
 			size = value;
-			GetComponent<Rigidbody2D>().mass = 3.Pow(size);
+			GetComponent<Rigidbody2D>().mass = 2.Pow(size);
 			transform.FindChild("Sprite").SetLocalScale(size, Axis.XY);
 		}
 	}

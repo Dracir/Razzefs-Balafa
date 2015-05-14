@@ -54,21 +54,29 @@ public class Raindrop : MonoBehaviourExtended {
 		}
 	}
 	
-	void OnTriggerEnter2D(Collider2D collision) {
-		TemperatureInfo temperature = collision.GetComponent<TemperatureInfo>();
-		Effector2D effector = collision.GetComponent<Effector2D>();
+	void OnCollisionEnter2D(Collision2D collision) {
+		TemperatureInfo temperature = collision.collider.FindComponent<TemperatureInfo>();
 		
-		if (temperature == null && collision.transform.parent != null) {
-			temperature = collision.transform.parent.GetComponent<TemperatureInfo>();
-		}
+//		if (collision.collider.GetComponent<Effector2D>() == null && collision.collider.GetComponent<MirrorBall>() == null) {
+//		}
 		
 		if (temperature != null) {
 			temperature.Temperature -= FreezingRain.Coldness;
-		}
-		
-		if (effector == null) {
 			FreezingRain.DespawnRaindrop(this);
 		}
 	}
+	
+	//	void OnTriggerEnter2D(Collider2D collision) {
+	//		TemperatureInfo temperature = collision.FindComponent<TemperatureInfo>();
+	//		Effector2D effector = collision.GetComponent<Effector2D>();
+	//
+	//		if (temperature != null) {
+	//			temperature.Temperature -= FreezingRain.Coldness;
+	//		}
+	//
+	//		if (effector == null) {
+	//			FreezingRain.DespawnRaindrop(this);
+	//		}
+	//	}
 }
 

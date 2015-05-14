@@ -10,7 +10,8 @@ namespace FMG
 		//the array of buttons.
 		public Button[] buttons;
 
-		public GameObject selectCursor;
+		public RectTransform selectCursor;
+		public bool cursorRightSide = true;
 		//the selected button
 		public Button selectedButton;
 
@@ -20,13 +21,16 @@ namespace FMG
 		//the selected color.
 		public Color selectedColor = Color.green;
 
-
 		private int m_selectedIndex=0;
 		private bool m_isAxisInUse;
 
 		private RectTransform m_rectTransform;
 		private Vector3 m_orgPos;
-		private Image cursor;
+
+		private Slider slider;
+
+		private const string sliderCursorText = ">>";
+		private const string buttonCursorText = "();";
 
 		Text myText {
 			get{
@@ -46,10 +50,8 @@ namespace FMG
 			}else{
 				init ();
 			}
-
-			Transform cursorObject = Instantiate(selectCursor).transform;
-			cursor = cursorObject.GetComponent<Image>();
-			cursor.transform.parent = this.transform;
+			selectCursor = Instantiate<RectTransform>(selectCursor);
+			selectCursor.parent = this.m_rectTransform;
 			ResetCursor();
 		}
 		void init()
@@ -65,7 +67,8 @@ namespace FMG
 
 		public void selectIndex(int index)	
 		{
-			if(selectedButton)
+			Debug.Log ("Changing button");
+			if(selectedButton && selectedButton.image != null)
 			{
 				selectedButton.image.color = unselectedColor;
 			}
@@ -78,10 +81,13 @@ namespace FMG
 
 
 
-			if(selectedButton)
+			if(selectedButton && selectedButton.image != null)
 			{
 				selectedButton.image.color = selectedColor;
 			}
+			
+			slider = selectedButton.GetComponentInChildren<Slider>();
+
 		}
 
 		void Update () {
@@ -96,20 +102,17 @@ namespace FMG
 			bool next = false;
 			bool prev = false;
 			float axis = Input.GetAxis("NextPrev");
-			Debug.Log ("axis is " + axis);
+			//Debug.Log ("My axis is " + axis);
 			if(axis != 0)
 			{
 				if(m_isAxisInUse == false)
 				{
-					if (axis > 0){
+					if (axis < 0){
 						prev = true;
 					} else {
 						next = true;
 					}
 					m_isAxisInUse = true;
-					Debug.Log ("Changing things!");
-				} else {
-					Debug.Log ("Not changing");
 				}
 			}
 			if(Input.GetAxisRaw("NextPrev") == 0)
@@ -155,13 +158,22 @@ namespace FMG
 				selectIndex(m_selectedIndex);
 				ResetCursor();
 			}
+
+			//deal with sliders
+			if (slider != null){
+				slider.value += Input.GetAxis ("Horizontal") * Time.deltaTime;
+			}
 		}
 		
 		void ResetCursor () {
+			if (slider != null){
+				selectCursor.GetComponent<Text>().text = sliderCursorText;
+			} else{
+				selectCursor.GetComponent<Text>().text = buttonCursorText;
+			}
 			RectTransform select = selectedButton.GetComponent<RectTransform>();
-			RectTransform curs = cursor.rectTransform;
-			curs.position = select.position;
-			curs.position -= (Vector3)Vector2.right * (select.rect.width/2 + curs.rect.width/2);
+			selectCursor.position = select.position;
+			selectCursor.position += (Vector3)(cursorRightSide? Vector2.right : -Vector2.right) * (select.rect.width/2 + selectCursor.rect.width/2);
 		}
 	}
 }

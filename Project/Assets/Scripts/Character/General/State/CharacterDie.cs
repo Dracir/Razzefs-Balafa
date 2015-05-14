@@ -15,9 +15,12 @@ public class CharacterDie : StateLayer {
 		}
 	}
 	
-    CharacterStatus Layer {
+	
+	
+    public CharacterStatus Layer {
     	get { return ((CharacterStatus)layer); }
     }
+	
     
     StateMachine Machine {
     	get { return ((StateMachine)machine); }

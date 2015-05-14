@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class ModelMove : StateLayer, IInputAxisListener {
+public class ModelMove : StateLayer, IInputListener {
 	
 	[Min] public float moveThreshold;
 	[Min] public float inputPower = 1;
@@ -49,7 +49,15 @@ public class ModelMove : StateLayer, IInputAxisListener {
 		get { return ((StateMachine)machine); }
 	}
 
-	public void OnAxisInput(AxisInfo axisInfo, float axisValue) {
-		HorizontalAxis = axisValue.PowSign(inputPower);
+	public void OnButtonInput(ButtonInput input) {
+		
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		switch (input.InputName) {
+			case "MotionX":
+				HorizontalAxis = input.Value.PowSign(inputPower);
+				break;
+		}
 	}
 }

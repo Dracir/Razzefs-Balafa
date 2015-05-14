@@ -10,18 +10,21 @@ public class zTest : MonoBehaviourExtended {
 	}
 	
 	[Toggle] public bool logPressedKeys;
+	[Toggle] public bool setKey;
+	
+	bool _inputSystemCached;
+	InputSystem _inputSystem;
+	public InputSystem inputSystem { 
+		get { 
+			_inputSystem = _inputSystemCached ? _inputSystem : GetComponent<InputSystem>();
+			_inputSystemCached = true;
+			return _inputSystem;
+		}
+	}
 	
 	void Update() {
 		if (logPressedKeys) {
-			List<KeyCode> pressed = new List<KeyCode>();
-		
-			foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode))) {
-				if (Input.GetKey(key)) {
-					pressed.Add(key);
-				}
-			}
-		
-			Logger.Log(pressed);
+			Logger.Log(InputSystem.GetKeysPressed());
 		}
 	}
 }

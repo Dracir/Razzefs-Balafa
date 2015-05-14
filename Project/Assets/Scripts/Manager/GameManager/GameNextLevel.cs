@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using Magicolo;
+
 
 public class GameNextLevel : State {
 	
@@ -12,42 +11,27 @@ public class GameNextLevel : State {
     StateMachine Machine {
     	get { return ((StateMachine)machine); }
     }
-	[Disable] GameObject player1;
-	[Disable] GameObject player2;
-	[Disable] GameObject player3;
-	[Disable] GameObject player4;
 	
-	public LevelCycleMenager levelCycle;
 	
-	public override void OnAwake() {
-		base.OnAwake();
+	// Fix pour que le update se fasse apres le start car tser unity orders stuff et state machin stuff order suff words
+	bool asAwake;
+	
+	public override void OnStart() {
+		base.OnStart();
 		DontDestroyOnLoad(this);
-		levelCycle = GetComponent<LevelCycleMenager>();
-		levelCycle.loadMapPack();
-		
-		levelCycle.nextMap();
+		Layer.levelCycle.loadMapPack();
+		asAwake = true;
+	}
+	
+	public override void OnEnter(){
+		base.OnEnter();
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		if(levelCycle.levelLoaded){
-			makePlayers();
-			makeCamera();
-			SwitchState<GamePlaying>();
+		if(asAwake){
+			Layer.levelCycle.nextMap();
+			SwitchState<GameLoadingLevel>();
 		}
-	}
-	
-	void makePlayers() {
-		//TODO select nb player comme faut
-		if(player1 == null){
-			player1 = GameObjectExtend.createClone(Layer.player1Prefab);
-			player1.transform.position = levelCycle.currentMapGO.FindChildRecursive("P1Start").transform.position;
-		}
-	}
-
-	void makeCamera() {
-		CameraDudes follow = Camera.main.GetOrAddComponent<CameraDudes>();
-		GameObject flag = levelCycle.currentMapGO.FindChildRecursive("EndFlag");
-		follow.SetFollowing(new [] { flag, player1, player2, player3, player4 });
 	}
 }

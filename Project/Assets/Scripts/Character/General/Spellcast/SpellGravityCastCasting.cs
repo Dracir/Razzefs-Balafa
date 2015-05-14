@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class SpellGravityCastCasting : State, IInputKeyListener {
+public class SpellGravityCastCasting : State, IInputListener {
 	
 	[Min] public int maxSize = 8;
 	
@@ -13,6 +13,7 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 	[Disable] public float currentSize;
 	[Disable] public Transform castZone;
 	[Disable] public Transform castZoneSprite;
+	[Disable] public Transform castZonePortal;
 	[Disable] public GravityWell activeGravityWell;
 	
 	SpellGravityCast Layer {
@@ -26,17 +27,20 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.InputSystem.GetKeyInfo("Cast").AddListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
 		startPosition = Layer.Cursor.position.Round();
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
+		castZonePortal = castZone.FindChild("Portal");
 	}
 
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.InputSystem.GetKeyInfo("Cast").RemoveListener(this);
+		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
+		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
 		
 		castZone.gameObject.Remove();
 	}
@@ -49,11 +53,19 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 		UpdateCastZone();
 	}
 
-	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
-		if (keyState == KeyStates.Up) {
-			Cast();
-			SwitchState<SpellGravityCastCooldown>();
+	public void OnButtonInput(ButtonInput input) {
+		switch (input.InputName) {
+			case "Cast":
+				if (input.State == ButtonStates.Up) {
+					Cast();
+					SwitchState<SpellGravityCastCooldown>();
+				}
+				break;
 		}
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		
 	}
 	
 	void UpdateCastZone() {
@@ -64,6 +76,7 @@ public class SpellGravityCastCasting : State, IInputKeyListener {
 		
 		castZone.SetLocalEulerAngles(currentAngle, Axis.Z);
 		castZoneSprite.SetLocalScale(currentSize, Axis.X);
+		castZonePortal.gameObject.SetActive(currentSize >= 1);
 	}
 	
 	void Cast() {

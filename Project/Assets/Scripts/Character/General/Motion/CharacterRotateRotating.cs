@@ -15,13 +15,6 @@ public class CharacterRotateRotating : State {
 		get { return ((StateMachine)machine); }
 	}
 	
-	public override void OnExit() {
-		base.OnExit();
-		
-		Layer.Rigidbody.SetEulerAngle(Layer.targetAngle);
-		Layer.spriteTransform.SetLocalScale(Layer.currentFacingDirection, Axis.X);
-	}
-	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		

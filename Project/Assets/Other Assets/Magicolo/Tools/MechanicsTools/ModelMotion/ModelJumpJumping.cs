@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class ModelJumpJumping : State, IInputKeyListener {
+public class ModelJumpJumping : State, IInputListener {
 	
 	[Min] public float minHeight = 1;
 	[Min] public float maxHeight = 30;
@@ -24,7 +24,7 @@ public class ModelJumpJumping : State, IInputKeyListener {
 		increment = (maxHeight - minHeight) / duration;
 		direction = -Layer.Gravity.Direction;
 		
-		Layer.inputSystem.GetKeyInfo("Jump").AddListener(this);
+		Layer.inputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.Jumping = true;
 		Layer.animator.Play(Layer.jumpingHash, 1);
 		
@@ -52,7 +52,7 @@ public class ModelJumpJumping : State, IInputKeyListener {
 	public override void OnExit() {
 		base.OnExit();
 		
-		Layer.inputSystem.GetKeyInfo("Jump").RemoveListener(this);
+		Layer.inputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
 		Layer.Jumping = false;
 	}
 
@@ -68,10 +68,18 @@ public class ModelJumpJumping : State, IInputKeyListener {
 			SwitchState("Falling");
 		}
 	}
-	
-	public void OnKeyInput(KeyInfo keyInfo, KeyStates keyState) {
-		if (keyState != KeyStates.Pressed) {
-			SwitchState("Falling");
+
+	public void OnButtonInput(ButtonInput input) {
+		switch (input.InputName) {
+			case "Jump":
+				if (input.State == ButtonStates.Pressed) {
+					SwitchState("Falling");
+				}
+				break;
 		}
+	}
+	
+	public void OnAxisInput(AxisInput input) {
+		
 	}
 }

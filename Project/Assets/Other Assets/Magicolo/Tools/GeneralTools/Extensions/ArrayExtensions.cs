@@ -21,8 +21,10 @@ namespace Magicolo {
 	
 		public static T Pop<T>(this T[] array, int index, out T[] remaining) {
 			List<T> list = new List<T>(array);
+			
 			T item = list.Pop(index);
 			remaining = list.ToArray();
+			
 			return item;
 		}
 	
@@ -49,6 +51,15 @@ namespace Magicolo {
 			return array.PopRange(0, count, out remaining);
 		}
 	
+		public static T[] Join<T>(this T[] array, IList<T> other) {
+			T[] joined = new T[array.Length + other.Count];
+			
+			array.CopyTo(joined, 0);
+			other.CopyTo(joined, array.Length);
+
+			return joined;
+		}
+		
 		public static T First<T>(this IList<T> array) {
 			return array != null && array.Count > 0 ? array[0] : default(T);
 		}
@@ -144,33 +155,41 @@ namespace Magicolo {
 	
 		public static int[] ToIntArray<T>(this IList<T> array) {
 			int[] intArray = new int[array.Count];
+			
 			for (int i = 0; i < array.Count; i++) {
 				intArray[i] = array[i].GetHashCode();
 			}
+			
 			return intArray;
 		}
 	
 		public static float[] ToFloatArray<T>(this IList<T> array) {
 			float[] floatArray = new float[array.Count];
+			
 			for (int i = 0; i < array.Count; i++) {
 				floatArray[i] = (float)(array[i].GetHashCode());
 			}
+			
 			return floatArray;
 		}
 	
 		public static double[] ToDoubleArray<T>(this IList<T> array) {
 			double[] doubleArray = new double[array.Count];
+			
 			for (int i = 0; i < array.Count; i++) {
 				doubleArray[i] = (double)(array[i].GetHashCode());
 			}
+			
 			return doubleArray;
 		}
 	
 		public static string[] ToStringArray<T>(this IList<T> array) {
 			string[] stringArray = new string[array.Count];
+			
 			for (int i = 0; i < array.Count; i++) {
 				stringArray[i] = array[i].ToString();
 			}
+			
 			return stringArray;
 		}
 	}

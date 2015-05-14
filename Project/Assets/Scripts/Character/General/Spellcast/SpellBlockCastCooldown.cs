@@ -6,6 +6,7 @@ using Magicolo;
 public class SpellBlockCastCooldown : State {
 	
 	public float cooldown;
+	
 	[Disable] public float counter;
 	
 	SpellBlockCast Layer {

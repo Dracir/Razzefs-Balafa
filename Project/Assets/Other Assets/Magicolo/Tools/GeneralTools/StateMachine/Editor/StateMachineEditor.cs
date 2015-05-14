@@ -316,7 +316,6 @@ namespace Magicolo.GeneralTools {
 				StateMachine selectedMachine = selectedObject as StateMachine;
 				
 				if (selectedMachine != null) {
-					StateMachineUtility.UpdateCallbacks(selectedMachine);
 					StateMachineUtility.CleanUp(selectedMachine, selectedMachine.gameObject);
 				}
 			}

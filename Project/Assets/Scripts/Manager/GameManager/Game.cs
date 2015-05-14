@@ -10,21 +10,32 @@ public class Game : StateLayer {
     	get { return ((StateMachine)machine); }
     }
 	
-	public GameObject player1Prefab;
-	public GameObject player2Prefab;
-	public GameObject player3Prefab;
-	public GameObject player4Prefab;
+	public GameObject[] playersPrefab = new GameObject[4];
+	public GameObject[] playersGameObject = new GameObject[4];
+	
+	public Vector3[] playerPositions = new Vector3[4];
 	
 	public static Game instance;
 	
+	public LevelCycleMenager levelCycle;
+	
 	public override void OnAwake(){
 		base.OnAwake();
-		
-		Game.instance = this;
+		if(instance == null){
+			levelCycle = GetComponent<LevelCycleMenager>();
+			Game.instance = this;
+		}
 	}
 	
 	public MapData MapData{
-		get{return GetComponent<GameNextLevel>().levelCycle.currentMapData;}
+		get{return levelCycle.currentMapData;}
+	}
+	
+	[Button("Load Next Map", "nextMap")]
+	public bool loadNextMapBtn;
+	
+	public void nextMap(){
+		SwitchState<GameNextLevel>();
 	}
 	
 	public override void OnEnter() {

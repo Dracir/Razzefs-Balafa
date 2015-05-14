@@ -1,0 +1,131 @@
+introHarry : And so, [wizard1] the Wizard, whose name was borrowed from ancient wizard texts, though he bears no resemblance to the original, entered Vancer's castle [company]. [LB][LB] "If I can just get there in time, I may be one of the first people to witness the Ancient One!" [wizard1], a long-time scholar of the Ancient One and his bizarre effects on the world, desires nothing more than to be present at its summoning. He is fully aware it may leave him a mindless heap, a writhing maniac, or even to serve as a cosmic butler for all of eternity. No price is too great for this opportunity.[LB][LB]Help [wizard1] make it to the top of the tower first, and witness the ceremony!
+
+introRincewind : And so, [wizard2] the Wizard walked into Vancer's fortress [company]. Though to say he walked is not entirely accurate: his ego was so inflated, he more or less floated in. [LB][LB] "The nerve of him. He dares presume to achieve in an afternoon the work I have dedicated my life to!" Raised in the height of society, [wizard2] has intricate knowledge of its failings and hypocrisies. He has, after much study, come to the conclusion that people should not be allowed to live any longer on the planet. He's not about to be done by an evil genius - or, as he liked to think of them, insecure personnel managers.[LB][LB]Help [wizard2] stop Vancer before it's too late! Perhaps the spell could even be commandeered....
+
+introGandalf : And so, [wizard3], the Librarian of the Wizard Library, entered Vancer's stronghold [company]. [wizard3]'s book-sense has been tuned so finely that he could sense it even at the base of the tower. "This better not take long; I have a lot of filing to get back to," he rattled. Having been the greatest librarian the Guild has ever known during his lifetime, [wizard3]'s final wish was to be able to continue his cataloguing system after his demise. Well, his final wish made with muscles and organs. [LB][LB]Help [wizard3] climb the tower to reclaim the book! If everyone dies before it's too late, well... at least he was already dead; in any case, he prefers the company of books to that of people these days. They're not so selfish.
+
+introMysterio : And so, [wizard4] the Wizard entered Vancer's home, though he didn't bother knocking. He didn't like thinking ill of people, but this is a special case. Vancer wants to destroy everything, using magic he doesn't even understand! [LB][LB]"Poor man. He must be very troubled to attempt such a foolish thing." [wizard4] specialises in abjuration, and has always tried to help and protect anyone and any thing that needs it. He believes that Vancer just needs someone to talk to. He understands what it means to be left out; he doesn't even have a real wizard's name. [LB][LB]Help Mysterio save the world, and provide Vancer "Cancer" Mancer with the social rehabilitation he needs!
+
+wizard1 : Harry
+wizard2 : Rincewind
+wizard3 : Gandalf
+wizard4 : Mysterio
+
+// p1
+// p2
+// p3
+// p4
+// company
+
+(company: 'alone' or 'with a companion' or 'pursued by other wizards, though he didn't know what they were up to.')
+
+
+<convo name="StartHarry">
+
+HARRY: Right! We're in! Now, we just climb to the top of this evil tower! No problem.
+RINCEWIND: He's got defences. It won't be that easy.
+MYSTERIO: Sure, but, we can do it! We just have to work together!
+</convo>
+
+<convo name="StartRincewind">
+
+RINCEWIND: Blast! I can practically hear the words being spoken. Can you hear it? I give it... maybe an hour before he finishes the spell.
+HARRY: Hah! We'll be there in half the time!
+</convo>
+
+<convo name="StartMysterio">
+
+MYSTERIO: Is anyone hungry?
+GANDALF: No.
+HARRY: I could use a snack, actually.
+RINCEWIND: Can it WAIT?! Or are you going to ask Cancer Man up there to kindly delay his ritual while we have a bite?!
+MYSTERIO: It was just a thought....
+</convo>
+
+<convo name="StartGandalf">
+
+GANDALF: Are you listening, Vancer? You have outstanding library fees. I will accept your ass as payment.
+RINCEWIND: Ouch.
+</convo>
+
+<convo name="FirstGravityHarry">
+HARRY: Aaaaahh I'll never get used to this</convo>
+<convo name="FirstGravityRincewind">
+RINSEWIND: Rahahaha! Light as a feather, thick as a boulder! Euh, I mean... nevermind.</convo>
+<convo name="FirstGravityGandalf">
+GANDALF: This is abnormal.</convo>
+<convo name="FirstGravityMysterio">
+MYSTERIO: Woah!</convo>
+
+<convo name="FirstIceHarry">
+HARRY: So... cold....</convo>
+<convo name="FirstIceRincewind">
+RINSEWIND: I seem to have become rather stiff.</convo>
+<convo name="FirstIceGandalf">
+GANDALF: Story of my life.</convo>
+<convo name="FirstIceMysterio">
+MYSTERIO: I'll be fi-</convo>
+
+<convo name="FirstBlockHarry">
+HARRY: Hahaha look at me!</convo>
+<convo name="FirstBlockRincewind">
+RINSEWIND: I suppose you think this is terribly funny.</convo>
+<convo name="FirstBlockGandalf">
+GANDALF: Typical.</convo>
+<convo name="FirstBlockMysterio">
+MYSTERIO: See? I said the charmed hats were a good idea!</convo>
+
+<convo name="FirstMirrorHarry">
+HARRY: Weeeee!</convo>
+<convo name="FirstMirrorRincewind">
+RINSEWIND: Ouf!</convo>
+<convo name="FirstMirrorGandalf">
+GANDALF: I'm too old for this shit.</convo>
+<convo name="FirstMirrorMysterio">
+MYSTERIO: Wahoo!</convo>
+
+<convo name="FirstRobotKillHarry">
+HARRY: Take that, robot trash!</convo>
+<convo name="FirstRobotKillRincewind">
+RINSEWIND: Ugh. Where are your servants when you need them?</convo>
+<convo name="FirstRobotKillGandalf">
+GANDALF: Bone is greater than chassis.</convo>
+<convo name="FirstRobotKillMysterio">
+MYSTERIO: Sorry!</convo>
+
+<convo name="FirstRobotSeeHarry">
+HARRY: Ooh! Fancy!</convo>
+<convo name="FirstRobotSeeRincewind">
+RINSEWIND: Security drones? Vancer, that's just tacky.</convo>
+<convo name="FirstRobotSeeGandalf">
+GANDALF: There are robots now.</convo>
+<convo name="FirstRobotSeeMysterio">
+MYSTERIO: Disposable robots. Such reckless extravagance....</convo>
+
+<convo name="FirstColdRoomHarry">
+HARRY: Is this... the right way?</convo>
+<convo name="FirstColdRoomRincewind">
+RINSEWIND: It's so cold in here, you'd think my mother was staring at us.</convo>
+<convo name="FirstColdRoomGandalf">
+GANDALF: It's cold now.</convo>
+<convo name="FirstColdRoomMysterio">
+MYSTERIO: Is anyone cold? I can give you my robes....</convo>
+
+<convo name="FirstHotRoomHarry">
+HARRY: Oh my! Normally I like a sauna, but under the circumstances....</convo>
+<convo name="FirstHotRoomRincewind">
+RINSEWIND: Ugh. I'm going to sweat, aren't I...?</convo>
+<convo name="FirstHotRoomGandalf">
+GANDALF: It's hot now.</convo>
+<convo name="FirstHotRoomMysterio">
+MYSTERIO: Welp, so much for my deodorant....</convo>
+
+<convo name="FirstLaserHarry">
+HARRY: Lasers are so cool! Ahahah, I mean, hot.</convo>
+<convo name="FirstLaserRincewind">
+RINSEWIND: Oh, wonderful. Lasers. And me without my sunglasses.</convo>
+<convo name="FirstLaserGandalf">
+GANDALF: There are lasers now.</convo>
+<convo name="FirstLaserMysterio">
+MYSTERIO: Um, I don't think we should touch these things.</convo>
+

@@ -42,10 +42,10 @@ namespace Magicolo {
 			return s.PopRange(0, stopCharacter, out remaining);
 		}
 	
-		public static string PopRange(this string s, int startIndex, int count, out string remaining) {
+		public static string PopRange(this string s, int startIndex, int length, out string remaining) {
 			string popped = "";
 		
-			for (int i = 0; i < count; i++) {
+			for (int i = 0; i < length; i++) {
 				popped += s.Pop(startIndex, out s);
 			}
 		
@@ -54,41 +54,47 @@ namespace Magicolo {
 			return popped;
 		}
 	
-		public static string PopRange(this string s, int count, out string remaining) {
-			return s.PopRange(0, count, out remaining);
+		public static string PopRange(this string s, int length, out string remaining) {
+			return s.PopRange(0, length, out remaining);
 		}
 
 		public static string GetRange(this string s, int startIndex, char stopCharacter) {
 			string substring = "";
 		
-			for (int i = 0; i < s.Length - startIndex; i++) {
-				char c = s[i + startIndex];
+			for (int i = startIndex; i < s.Length; i++) {
+				char c = s[i];
+				
 				if (c == stopCharacter) {
 					break;
 				}
+				
 				substring += c;
 			}
 			
 			return substring;
 		}
-			
-		public static string GetRange(this string s, int startIndex) {
-			string substring = "";
 		
-			for (int i = 0; i < s.Length - startIndex; i++) {
-				char c = s[i + startIndex];
-				substring += c;
-			}
-			
-			return substring;
-		}
-	
 		public static string GetRange(this string s, char stopCharacter) {
 			return s.GetRange(0, stopCharacter);
 		}
 	
+		public static string GetRange(this string s, int startIndex, int length) {
+			string substring = "";
+		
+			for (int i = startIndex; i < startIndex + length; i++) {
+				substring += s[i];
+			}
+			
+			return substring;
+		}
+	
+		public static string GetRange(this string s, int startIndex) {
+			return s.GetRange(startIndex, s.Length - startIndex);
+		}
+	
 		public static string Reverse(this string s) {
 			string reversed = "";
+			
 			for (int i = s.Length - 1; i >= 0; i--) {
 				reversed += s[i];
 			}
@@ -162,8 +168,7 @@ namespace Magicolo {
 				font.GetCharacterInfo(letter, out charInfo, size, fontStyle);
         	
 				if (letter == '\n') {
-					if (lineHeight == 0)
-						lineHeight = size;
+					if (lineHeight == 0) lineHeight = size;
 					width = Mathf.Max(width, lineWidth);
 					height += lineHeight;
 					lineWidth = 0;
@@ -196,15 +201,11 @@ namespace Magicolo {
 			for (int i = 0; i < labels.Count; i++) {
 				if (labelTooltipSeparator != '\0') {
 					string[] split = labels[i].Split(labelTooltipSeparator);
-					if (split.Length == 1)
-						guiContents[i] = new GUIContent(split[0]);
-					else if (split.Length == 2)
-						guiContents[i] = new GUIContent(split[0], split[1]);
-					else
-						guiContents[i] = new GUIContent(labels[i]);
+					if (split.Length == 1) guiContents[i] = new GUIContent(split[0]);
+					else if (split.Length == 2) guiContents[i] = new GUIContent(split[0], split[1]);
+					else guiContents[i] = new GUIContent(labels[i]);
 				}
-				else
-					guiContents[i] = new GUIContent(labels[i]);
+				else guiContents[i] = new GUIContent(labels[i]);
 			}
 			return guiContents;
 		}

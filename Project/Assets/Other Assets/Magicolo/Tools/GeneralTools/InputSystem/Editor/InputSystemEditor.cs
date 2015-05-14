@@ -9,144 +9,232 @@ namespace Magicolo.GeneralTools {
 	public class InputSystemEditor : CustomEditorBase {
 		
 		InputSystem inputSystem;
-		SerializedProperty keyInfosProperty;
-		KeyInfo currentKeyInfo;
-		SerializedProperty currentKeyInfoProperty;
-		SerializedProperty keysProperty;
-		SerializedProperty currentKeyProperty;
-		SerializedProperty keyInfoListenersProperty;
-		SerializedProperty currentKeyInfoListenerProperty;
-		SerializedProperty axisInfosProperty;
-		AxisInfo currentAxisInfo;
-		SerializedProperty currentAxisInfoProperty;
-		SerializedProperty axisInfoListenersProperty;
-		SerializedProperty currentAxisInfoListenerProperty;
+		
+		SerializedProperty keyboardInfosProperty;
+		KeyboardInfo currentKeyboardInfo;
+		SerializedProperty currentKeyboardInfoProperty;
+		SerializedProperty keyboardButtonsProperty;
+		SerializedProperty currentKeyboardButtonProperty;
+		SerializedProperty keyboardAxesProperty;
+		SerializedProperty currentKeyboardAxisProperty;
+		SerializedProperty keyboardListenersProperty;
+		SerializedProperty currentKeyboardListenerProperty;
+		
+		SerializedProperty joystickInfosProperty;
+		JoystickInfo currentJoystickInfo;
+		SerializedProperty currentJoystickInfoProperty;
+		SerializedProperty joystickButtonsProperty;
+		SerializedProperty currentJoystickButtonProperty;
+		SerializedProperty joystickAxesProperty;
+		SerializedProperty currentJoystickAxisProperty;
+		SerializedProperty joystickListenersProperty;
+		SerializedProperty currentJoystickListenerProperty;
+		
+		KeyCode[] keyboardKeys;
+		string[] keyboardKeyNames;
+		string[] keyboardAxes;
 		
 		public override void OnEnable() {
 			base.OnEnable();
 			
 			inputSystem = (InputSystem)target;
+			keyboardKeys = InputSystem.GetNonJoystickKeys();
+			keyboardKeyNames = keyboardKeyNames ?? keyboardKeys.ToStringArray();
+			keyboardAxes = InputSystemUtility.GetKeyboardAxes();
 		}
 
 		public override void OnInspectorGUI() {
 			Begin();
 			
-			ShowKeyInfos();
-			ShowAxisInfos();
+			ShowKeyboardInfos();
+			ShowJoystickInfos();
+			
+			Separator();
 			
 			End();
 		}
 
-		void ShowKeyInfos() {
-			keyInfosProperty = serializedObject.FindProperty("keyInfos");
+		void ShowKeyboardInfos() {
+			keyboardInfosProperty = serializedObject.FindProperty("keyboardInfos");
 			
-			if (AddFoldOut(keyInfosProperty, "Keys".ToGUIContent())) {
-				KeyInfo[] keyInfos = inputSystem.GetKeyInfos();
-				KeyInfo keyInfo = keyInfos.Last();
+			if (AddFoldOut(keyboardInfosProperty, "Keyboards".ToGUIContent())) {
+				KeyboardInfo[] keyboardInfos = inputSystem.GetKeyboardInfos();
+				KeyboardInfo keyboardInfo = keyboardInfos.Last();
 				
-				keyInfo.SetUniqueName("default", "", keyInfos);
-				keyInfo.SetKeys(new []{ KeyCode.None });
+				keyboardInfo.SetUniqueName("default", "", keyboardInfos);
 				
 				serializedObject.Update();
 			}
 			
-			if (keyInfosProperty.isExpanded) {
+			if (keyboardInfosProperty.isExpanded) {
 				EditorGUI.indentLevel += 1;
 				
-				for (int i = 0; i < keyInfosProperty.arraySize; i++) {
-					currentKeyInfo = inputSystem.GetKeyInfos()[i];
-					currentKeyInfoProperty = keyInfosProperty.GetArrayElementAtIndex(i);
+				for (int i = 0; i < keyboardInfosProperty.arraySize; i++) {
+					currentKeyboardInfo = inputSystem.GetKeyboardInfos()[i];
+					currentKeyboardInfoProperty = keyboardInfosProperty.GetArrayElementAtIndex(i);
 				
 					BeginBox();
 					
-					if (DeleteFoldOut(keyInfosProperty, i, currentKeyInfo.Name.ToGUIContent(), CustomEditorStyles.BoldFoldout)) {
+					
+					if (DeleteFoldOut(keyboardInfosProperty, i, currentKeyboardInfo.Name.ToGUIContent(), CustomEditorStyles.BoldFoldout)) {
 						break;
 					}
 				
-					ShowKeyInfo();
+					ShowKeyboardInfo();
 					
 					EndBox();
 				}
 				
+				Separator();
 				EditorGUI.indentLevel -= 1;
 			}
 		}
 		
-		void ShowKeyInfo() {
-			keysProperty = currentKeyInfoProperty.FindPropertyRelative("inputKeys");
+		void ShowKeyboardInfo() {
+			keyboardButtonsProperty = currentKeyboardInfoProperty.FindPropertyRelative("buttons");
+			keyboardAxesProperty = currentKeyboardInfoProperty.FindPropertyRelative("axes");
 			
-			if (currentKeyInfoProperty.isExpanded) {
+			if (currentKeyboardInfoProperty.isExpanded) {
 				EditorGUI.indentLevel += 1;
 				
-				UniqueNameField(currentKeyInfo, inputSystem.GetKeyInfos());
-
-				BeginBox();
+				UniqueNameField(currentKeyboardInfo, inputSystem.GetKeyboardInfos());
 				
-				for (int i = 0; i < keysProperty.arraySize; i++) {
-					currentKeyProperty = keysProperty.GetArrayElementAtIndex(i);
-					
-					EditorGUILayout.BeginHorizontal();
+				Separator();
+			
+				ShowKeyboardButtons();
+				ShowKeyboardAxes();
+				
+				Separator();
+				
+				ShowKeyboardListeners();
+				
+				Separator();
+				EditorGUI.indentLevel -= 1;
+			}
+		}
+
+		void ShowKeyboardButtons() {
+			BeginBox();
+			
+			if (AddFoldOut(keyboardButtonsProperty)) {
+				keyboardButtonsProperty.Last().FindPropertyRelative("name").SetValue("default");
+			}
+				
+			if (keyboardButtonsProperty.isExpanded) {
+				EditorGUI.indentLevel += 1;
+
+				for (int i = 0; i < keyboardButtonsProperty.arraySize; i++) {
+					currentKeyboardButtonProperty = keyboardButtonsProperty.GetArrayElementAtIndex(i);
 						
-					EditorGUILayout.PrefixLabel("Key " + i);
+					EditorGUILayout.BeginHorizontal();
+					EditorGUI.BeginChangeCheck();
 					
+					KeyboardButton currentKeyboardKey = currentKeyboardInfo.GetButtons()[i];
+					int index = System.Array.IndexOf(keyboardKeys, currentKeyboardKey.Key);
+					
+					index = EditorGUILayout.Popup(index, keyboardKeyNames);
+					
+					if (EditorGUI.EndChangeCheck()) {
+						currentKeyboardKey.Key = keyboardKeys[Mathf.Clamp(index, 0, Mathf.Max(keyboardKeys.Length - 1, 0))];
+						serializedObject.Update();
+					}
+						
 					int indent = EditorGUI.indentLevel;
 					EditorGUI.indentLevel = 0;
-					
-					EditorGUILayout.PropertyField(currentKeyProperty, GUIContent.none);
-					
+						
+					EditorGUILayout.PropertyField(currentKeyboardButtonProperty.FindPropertyRelative("name"), GUIContent.none);
+						
 					EditorGUI.indentLevel = indent;
 						
-					if (i == 0) {
-						SmallAddButton(keysProperty);
+					if (DeleteButton(keyboardButtonsProperty, i, ButtonAlign.Right)) {
+						break;
 					}
-					else {
-						if (DeleteButton(keysProperty, i) && keysProperty.arraySize == 0) {
-							AddToArray(keysProperty);
-						}
+						
+					EditorGUILayout.EndHorizontal();
+					
+					Reorderable(keyboardButtonsProperty, i, true);
+				}
+					
+				Separator();
+				EditorGUI.indentLevel -= 1;
+				
+			}
+			
+			EndBox();
+		}
+
+		void ShowKeyboardAxes() {
+			BeginBox();
+				
+			if (AddFoldOut(keyboardAxesProperty)) {
+				keyboardAxesProperty.Last().FindPropertyRelative("name").SetValue("default");
+			}
+			
+			if (keyboardAxesProperty.isExpanded) {
+				EditorGUI.indentLevel += 1;
+				
+				for (int i = 0; i < keyboardAxesProperty.arraySize; i++) {
+					currentKeyboardAxisProperty = keyboardAxesProperty.GetArrayElementAtIndex(i);
+				
+					EditorGUILayout.BeginHorizontal();
+				
+					SerializedProperty axisProperty = currentKeyboardAxisProperty.FindPropertyRelative("axis");
+					int index = System.Array.IndexOf(keyboardAxes, axisProperty.GetValue<string>());
+					
+					index = EditorGUILayout.Popup(index, keyboardAxes);
+					
+					axisProperty.SetValue(keyboardAxes[Mathf.Clamp(index, 0, Mathf.Max(keyboardAxes.Length - 1, 0))]);
+				
+					int indent = EditorGUI.indentLevel;
+					EditorGUI.indentLevel = 0;
+						
+					EditorGUILayout.PropertyField(currentKeyboardAxisProperty.FindPropertyRelative("name"), GUIContent.none);
+						
+					EditorGUI.indentLevel = indent;
+					
+					if (DeleteButton(keyboardAxesProperty, i, ButtonAlign.Right)) {
+						break;
 					}
 					
 					EditorGUILayout.EndHorizontal();
 					
-					Reorderable(keysProperty, i, true);
+					Reorderable(keyboardAxesProperty, i, true);
 				}
-				
-				EndBox();
-				Separator();
-				
-				ShowKeyInfoListeners();
 				
 				Separator();
 				EditorGUI.indentLevel -= 1;
 			}
+			
+			EndBox();
 		}
-	
-		void ShowKeyInfoListeners() {
-			keyInfoListenersProperty = currentKeyInfoProperty.FindPropertyRelative("listenerReferences");
+		
+		void ShowKeyboardListeners() {
+			keyboardListenersProperty = currentKeyboardInfoProperty.FindPropertyRelative("listenerReferences");
 			
 			BeginBox();
 			
-			AddFoldOut(keyInfoListenersProperty, "Listeners".ToGUIContent());
+			AddFoldOut(keyboardListenersProperty, "Listeners".ToGUIContent());
 
-			if (keyInfoListenersProperty.isExpanded) {
+			if (keyboardListenersProperty.isExpanded) {
 				EditorGUI.indentLevel += 1;
 				
 				
-				for (int i = 0; i < keyInfoListenersProperty.arraySize; i++) {
-					currentKeyInfoListenerProperty = keyInfoListenersProperty.GetArrayElementAtIndex(i);
+				for (int i = 0; i < keyboardListenersProperty.arraySize; i++) {
+					currentKeyboardListenerProperty = keyboardListenersProperty.GetArrayElementAtIndex(i);
 					
 					EditorGUI.BeginDisabledGroup(Application.isPlaying);
 					EditorGUILayout.BeginHorizontal();
 					
-					ShowAddKeyListenerPopup();
+					ShowAddKeyboardListenerPopup();
 					
-					if (DeleteButton(keyInfoListenersProperty, i)) {
+					if (DeleteButton(keyboardListenersProperty, i)) {
 						break;
 					}
 					
 					EditorGUILayout.EndHorizontal();
 					EditorGUI.EndDisabledGroup();
 					
-					Reorderable(keyInfoListenersProperty, i, true);
+					Reorderable(keyboardListenersProperty, i, true);
 				}
 					
 				Separator();
@@ -156,130 +244,216 @@ namespace Magicolo.GeneralTools {
 			EndBox();
 		}
 		
-		void ShowAddKeyListenerPopup() {
+		void ShowAddKeyboardListenerPopup() {
 			List<MonoBehaviour> listeners = new List<MonoBehaviour>();
 			List<string> options = new List<string>{ " " };
-			MonoBehaviour currentListener = currentKeyInfoListenerProperty.GetValue<MonoBehaviour>();
+			MonoBehaviour currentListener = currentKeyboardListenerProperty.GetValue<MonoBehaviour>();
 			
 			foreach (MonoBehaviour listener in inputSystem.GetComponents<MonoBehaviour>()) {
-				if (listener is IInputKeyListener && (currentListener == listener || !keyInfoListenersProperty.Contains(listener))) {
+				if (listener is IInputListener && (currentListener == listener || !keyboardListenersProperty.Contains(listener))) {
 					listeners.Add(listener);
 					options.Add(InputSystemUtility.FormatListener(listener));
 				}
 			}
 			
 			foreach (MonoBehaviour listener in FindObjectsOfType<MonoBehaviour>()) {
-				if (listener is IInputKeyListener && (currentListener == listener || !keyInfoListenersProperty.Contains(listener))) {
+				if (listener is IInputListener && (currentListener == listener || !keyboardListenersProperty.Contains(listener))) {
 					listeners.Add(listener);
 					options.Add(InputSystemUtility.FormatListener(listener));
 				}
 			}
 			
-			int index = listeners.IndexOf(currentKeyInfoListenerProperty.GetValue<MonoBehaviour>()) + 1;
+			int index = listeners.IndexOf(currentKeyboardListenerProperty.GetValue<MonoBehaviour>()) + 1;
 			
 			index = EditorGUILayout.Popup(index, options.ToArray()) - 1;
 			
-			currentKeyInfoListenerProperty.SetValue(index == -1 ? null : listeners[index]);
+			currentKeyboardListenerProperty.SetValue(index == -1 ? null : listeners[index]);
 		}
 		
-		void ShowAxisInfos() {
-			axisInfosProperty = serializedObject.FindProperty("axisInfos");
+		void ShowJoystickInfos() {
+			joystickInfosProperty = serializedObject.FindProperty("joystickInfos");
 			
-			if (AddFoldOut(axisInfosProperty, "Axes".ToGUIContent())) {
-				AxisInfo[] axisInfos = inputSystem.GetAxisInfos();
-				AxisInfo axisInfo = axisInfos.Last();
+			if (AddFoldOut(joystickInfosProperty, "Joysticks".ToGUIContent())) {
+				JoystickInfo[] joystickInfos = inputSystem.GetJoystickInfos();
+				JoystickInfo joystickInfo = joystickInfos.Last();
 				
-				axisInfo.SetUniqueName("default", "", axisInfos);
+				joystickInfo.SetUniqueName("default", "", joystickInfos);
 				
 				serializedObject.Update();
 			}
 			
-			if (axisInfosProperty.isExpanded) {
+			if (joystickInfosProperty.isExpanded) {
 				EditorGUI.indentLevel += 1;
 				
-				for (int i = 0; i < axisInfosProperty.arraySize; i++) {
-					currentAxisInfo = inputSystem.GetAxisInfos()[i];
-					currentAxisInfoProperty = axisInfosProperty.GetArrayElementAtIndex(i);
+				for (int i = 0; i < joystickInfosProperty.arraySize; i++) {
+					currentJoystickInfo = inputSystem.GetJoystickInfos()[i];
+					currentJoystickInfoProperty = joystickInfosProperty.GetArrayElementAtIndex(i);
 				
 					BeginBox();
 					
-					if (DeleteFoldOut(axisInfosProperty, i, currentAxisInfo.Name.ToGUIContent(), CustomEditorStyles.BoldFoldout)) {
+					string joystickName = currentJoystickInfoProperty.FindPropertyRelative("joystick").GetValue<Joysticks>().ToString();
+					
+					if (DeleteFoldOut(joystickInfosProperty, i, string.Format("{0} ({1})", currentJoystickInfo.Name, joystickName).ToGUIContent(), CustomEditorStyles.BoldFoldout)) {
 						break;
 					}
 				
-					ShowAxisInfo();
+					ShowJoystickInfo();
 					
 					EndBox();
 				}
 				
+				Separator();
 				EditorGUI.indentLevel -= 1;
 			}
 		}
 		
-		void ShowAxisInfo() {
-			if (currentAxisInfoProperty.isExpanded) {
+		void ShowJoystickInfo() {
+			joystickButtonsProperty = currentJoystickInfoProperty.FindPropertyRelative("buttons");
+			joystickAxesProperty = currentJoystickInfoProperty.FindPropertyRelative("axes");
+			
+			if (currentJoystickInfoProperty.isExpanded) {
 				EditorGUI.indentLevel += 1;
 				
-				UniqueNameField(currentAxisInfo, inputSystem.GetAxisInfos());
+				UniqueNameField(currentJoystickInfo, inputSystem.GetJoystickInfos());
+				EditorGUILayout.PropertyField(currentJoystickInfoProperty.FindPropertyRelative("joystick"), "Input".ToGUIContent());
 				
-				ShowAxisPopup();
-				EditorGUILayout.PropertyField(currentAxisInfoProperty.FindPropertyRelative("threshold"));
+				Separator();
+			
+				ShowJoystickButtons();
+				ShowJoystickAxes();
 				
 				Separator();
 				
-				ShowAxisInfoListeners();
+				ShowJoystickListeners();
 				
 				Separator();
 				
 				EditorGUI.indentLevel -= 1;
 			}
 		}
-		
-		void ShowAxisPopup() {
-			List<string> options = new List<string>{ " " };
+
+		void ShowJoystickButtons() {
+			BeginBox();
 			
-			SerializedObject inputManagerSerialized = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/InputManager.asset"));
-			SerializedProperty inputManagerAxisProperty = inputManagerSerialized.FindProperty("m_Axes");
-			SerializedProperty currentAxisProperty = currentAxisInfoProperty.FindPropertyRelative("inputAxis");
-		
-			for (int i = 0; i < inputManagerAxisProperty.arraySize; i++) {
-				string axisName = inputManagerAxisProperty.GetArrayElementAtIndex(i).FindPropertyRelative("m_Name").GetValue<string>();
+			if (AddFoldOut(joystickButtonsProperty)) {
+				joystickButtonsProperty.Last().FindPropertyRelative("name").SetValue("default");
 				
-				if (!options.Contains(axisName)) {
-					options.Add(axisName);
+				JoystickButton button = currentJoystickInfo.GetButtons().Last();
+				
+				button.Joystick = currentJoystickInfo.Joystick;
+				button.Button = JoystickButtons.Cross_A;
+				
+				serializedObject.Update();
+			}
+				
+			if (joystickButtonsProperty.isExpanded) {
+				EditorGUI.indentLevel += 1;
+
+				for (int i = 0; i < joystickButtonsProperty.arraySize; i++) {
+					currentJoystickButtonProperty = joystickButtonsProperty.GetArrayElementAtIndex(i);
+						
+					EditorGUILayout.BeginHorizontal();
+					
+					EditorGUILayout.PropertyField(currentJoystickButtonProperty.FindPropertyRelative("button"), GUIContent.none);
+						
+					int indent = EditorGUI.indentLevel;
+					EditorGUI.indentLevel = 0;
+						
+					EditorGUILayout.PropertyField(currentJoystickButtonProperty.FindPropertyRelative("name"), GUIContent.none);
+						
+					EditorGUI.indentLevel = indent;
+						
+					if (DeleteButton(joystickButtonsProperty, i, ButtonAlign.Right)) {
+						break;
+					}
+						
+					EditorGUILayout.EndHorizontal();
+					
+					Reorderable(joystickButtonsProperty, i, true);
 				}
+					
+				Separator();
+				EditorGUI.indentLevel -= 1;
+				
 			}
 			
-			Popup(currentAxisProperty, options.ToArray(), "Axis".ToGUIContent());
+			EndBox();
+		}
+
+		void ShowJoystickAxes() {
+			BeginBox();
+				
+			if (AddFoldOut(joystickAxesProperty)) {
+				joystickAxesProperty.Last().FindPropertyRelative("name").SetValue("default");
+				
+				JoystickAxis axis = currentJoystickInfo.GetAxes().Last();
+				
+				axis.Joystick = currentJoystickInfo.Joystick;
+				axis.Axis = JoystickAxes.LeftStickX;
+				
+				serializedObject.Update();
+			}
+			
+			if (joystickAxesProperty.isExpanded) {
+				EditorGUI.indentLevel += 1;
+				
+				for (int i = 0; i < joystickAxesProperty.arraySize; i++) {
+					currentJoystickAxisProperty = joystickAxesProperty.GetArrayElementAtIndex(i);
+				
+					EditorGUILayout.BeginHorizontal();
+				
+					EditorGUILayout.PropertyField(currentJoystickAxisProperty.FindPropertyRelative("axis"), GUIContent.none);
+				
+					int indent = EditorGUI.indentLevel;
+					EditorGUI.indentLevel = 0;
+						
+					EditorGUILayout.PropertyField(currentJoystickAxisProperty.FindPropertyRelative("name"), GUIContent.none);
+						
+					EditorGUI.indentLevel = indent;
+					
+					if (DeleteButton(joystickAxesProperty, i, ButtonAlign.Right)) {
+						break;
+					}
+					
+					EditorGUILayout.EndHorizontal();
+					
+					Reorderable(joystickAxesProperty, i, true);
+				}
+				
+				Separator();
+				EditorGUI.indentLevel -= 1;
+			}
+			
+			EndBox();
 		}
 		
-		void ShowAxisInfoListeners() {
-			axisInfoListenersProperty = currentAxisInfoProperty.FindPropertyRelative("listenerReferences");
+		void ShowJoystickListeners() {
+			joystickListenersProperty = currentJoystickInfoProperty.FindPropertyRelative("listenerReferences");
 			
 			BeginBox();
 			
-			AddFoldOut(axisInfoListenersProperty, "Listeners".ToGUIContent());
+			AddFoldOut(joystickListenersProperty, "Listeners".ToGUIContent());
 
-			if (axisInfoListenersProperty.isExpanded) {
+			if (joystickListenersProperty.isExpanded) {
 				EditorGUI.indentLevel += 1;
 				
 				
-				for (int i = 0; i < axisInfoListenersProperty.arraySize; i++) {
-					currentAxisInfoListenerProperty = axisInfoListenersProperty.GetArrayElementAtIndex(i);
+				for (int i = 0; i < joystickListenersProperty.arraySize; i++) {
+					currentJoystickListenerProperty = joystickListenersProperty.GetArrayElementAtIndex(i);
 					
 					EditorGUI.BeginDisabledGroup(Application.isPlaying);
 					EditorGUILayout.BeginHorizontal();
 					
-					ShowAddAxisListenerPopup();
+					ShowAddJoystickListenerPopup();
 					
-					if (DeleteButton(axisInfoListenersProperty, i)) {
+					if (DeleteButton(joystickListenersProperty, i)) {
 						break;
 					}
 					
 					EditorGUILayout.EndHorizontal();
 					EditorGUI.EndDisabledGroup();
 					
-					Reorderable(axisInfoListenersProperty, i, true);
+					Reorderable(joystickListenersProperty, i, true);
 				}
 					
 				Separator();
@@ -289,30 +463,30 @@ namespace Magicolo.GeneralTools {
 			EndBox();
 		}
 		
-		void ShowAddAxisListenerPopup() {
+		void ShowAddJoystickListenerPopup() {
 			List<MonoBehaviour> listeners = new List<MonoBehaviour>();
 			List<string> options = new List<string>{ " " };
-			MonoBehaviour currentListener = currentAxisInfoListenerProperty.GetValue<MonoBehaviour>();
+			MonoBehaviour currentListener = currentJoystickListenerProperty.GetValue<MonoBehaviour>();
 			
 			foreach (MonoBehaviour listener in inputSystem.GetComponents<MonoBehaviour>()) {
-				if (listener is IInputAxisListener && (currentListener == listener || !axisInfoListenersProperty.Contains(listener))) {
+				if (listener is IInputListener && (currentListener == listener || !joystickListenersProperty.Contains(listener))) {
 					listeners.Add(listener);
 					options.Add(InputSystemUtility.FormatListener(listener));
 				}
 			}
 			
 			foreach (MonoBehaviour listener in FindObjectsOfType<MonoBehaviour>()) {
-				if (listener is IInputAxisListener && (currentListener == listener || !axisInfoListenersProperty.Contains(listener))) {
+				if (listener is IInputListener && (currentListener == listener || !joystickListenersProperty.Contains(listener))) {
 					listeners.Add(listener);
 					options.Add(InputSystemUtility.FormatListener(listener));
 				}
 			}
 			
-			int index = listeners.IndexOf(currentAxisInfoListenerProperty.GetValue<MonoBehaviour>()) + 1;
+			int index = listeners.IndexOf(currentJoystickListenerProperty.GetValue<MonoBehaviour>()) + 1;
 			
 			index = EditorGUILayout.Popup(index, options.ToArray()) - 1;
 			
-			currentAxisInfoListenerProperty.SetValue(index == -1 ? null : listeners[index]);
+			currentJoystickListenerProperty.SetValue(index == -1 ? null : listeners[index]);
 		}
 	}
 }
