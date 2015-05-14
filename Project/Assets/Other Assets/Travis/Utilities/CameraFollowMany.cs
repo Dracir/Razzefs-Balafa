@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CameraDudes : MonoBehaviour {
+public class CameraFollowMany : MonoBehaviour {
 	
 	public List<Transform> follow;
 	
@@ -24,7 +24,7 @@ public class CameraDudes : MonoBehaviour {
 	
 	void Update () {
 		Vector3 average = Vector3.zero;
-		if (follow == null)
+		if (follow == null || follow.Count == 0)
 			return;
 		
 		//determine new position based on follow things
