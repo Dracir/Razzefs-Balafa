@@ -21,8 +21,10 @@ public class Game : StateLayer {
 	
 	public override void OnAwake(){
 		base.OnAwake();
-		levelCycle = GetComponent<LevelCycleMenager>();
-		Game.instance = this;
+		if(instance == null){
+			levelCycle = GetComponent<LevelCycleMenager>();
+			Game.instance = this;
+		}
 	}
 	
 	public MapData MapData{

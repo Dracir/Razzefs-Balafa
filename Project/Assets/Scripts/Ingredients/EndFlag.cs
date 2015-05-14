@@ -13,15 +13,8 @@ public class EndFlag : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Player") {
-			Debug.Log("Fesons des choses");
 			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Debug.Log("Fesons des choses genre Next Level");
-			//collider.enabled = false;
+			collider.enabled = false;
 		}
 	}
 }
