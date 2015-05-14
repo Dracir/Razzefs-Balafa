@@ -47,6 +47,7 @@ public class LevelCycleMenager : MonoBehaviour {
 	public bool loadNextMapBtn;
 	
 	public void nextMap(){
+		levelLoaded = false;
 		if(hasNextMap()){
 			if(!refreshed){
 				loadNextMap();
