@@ -30,6 +30,10 @@ public class LevelCycleMenager : MonoBehaviour {
 	public bool levelLoaded;
 	
 	void Awake(){
+		if(LevelCycleMenager.instance != null){
+			gameObject.Remove();
+			return;
+		} 
 		LevelCycleMenager.instance = this;
 		DontDestroyOnLoad(this);
 	}
@@ -49,11 +53,8 @@ public class LevelCycleMenager : MonoBehaviour {
 	public void nextMap(){
 		levelLoaded = false;
 		if(hasNextMap()){
-			if(!refreshed){
-				loadNextMap();
-			}else{
-				Application.LoadLevel(inGameMapName);
-			}
+			nextMapOnLevelWasLoaded = true;
+			Application.LoadLevel(inGameMapName);
 		}else{
 			endMapPack();
 		}
@@ -62,13 +63,8 @@ public class LevelCycleMenager : MonoBehaviour {
 
 	void OnLevelWasLoaded(int level) {
 		if(Application.loadedLevelName == inGameMapName && nextMapOnLevelWasLoaded){
-			
-			print("Woohoo");
-			nextMap();
+			loadNextMap();
 			nextMapOnLevelWasLoaded = false;
-			refreshed = true;
-			/*setPlayerPosition();
-			SwitchState<GamePlaying>();*/
 		}
     }
 	
