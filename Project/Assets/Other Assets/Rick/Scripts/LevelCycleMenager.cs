@@ -30,7 +30,7 @@ public class LevelCycleMenager : MonoBehaviour {
 	public bool levelLoaded;
 	
 	void Awake(){
-		if(LevelCycleMenager.instance != null){
+		if(LevelCycleMenager.instance != null && LevelCycleMenager.instance != this){
 			gameObject.Remove();
 			return;
 		} 
