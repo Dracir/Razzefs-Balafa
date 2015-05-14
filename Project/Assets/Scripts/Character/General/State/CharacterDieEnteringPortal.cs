@@ -30,6 +30,7 @@ public class CharacterDieEnteringPortal : State {
 		Layer.Layer.spriteRenderer.transform.localScale = ProLerp.smoothStep(Vector3.one, Vector3.zero, t/enterTime);
 		
 		t+= Time.deltaTime;
+		//if(Layer.portalAnimator.
 		if(t >= enterTime){
 			SwitchState<CharacterDieSpawning>();
 		}
