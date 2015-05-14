@@ -20,7 +20,8 @@ public class CharacterDieEnteringPortal : State {
 	public override void OnEnter() {
 		base.OnEnter();
 		Layer.portalGameObject.SetActive(true);
-		Layer.portalAnimator.SetTrigger("ouvreToi");
+		Layer.portalGameObject.transform.position = transform.position;
+		Layer.portalAnimator.SetTrigger("OuvreToi");
 		t = 0;
 	}
 	

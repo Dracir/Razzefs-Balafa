@@ -19,7 +19,7 @@ public class CharacterDieMovingToSpawn : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		Layer.Layer.spriteRenderer.color = new Color(1f,1f,1f,0.5f);
+		Layer.Layer.spriteRenderer.color = new Color(1f,1f,1f,0f);
 		startPosition = transform.position;
 		respawntimer = 0;
 		endPosition = GameObject.Find("P1Start").transform.position;
@@ -32,16 +32,16 @@ public class CharacterDieMovingToSpawn : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		float distance = (startPosition - endPosition).magnitude;
+		respawntimer += Time.deltaTime;
+		/*float distance = (startPosition - endPosition).magnitude;
 		float timeToReachRespawn = Mathf.Lerp(Layer.Layer.minRespawnTime, Layer.Layer.maxRespawnTime, distance / Layer.Layer.maxDistance);
 
-		respawntimer += Time.deltaTime;
-
 		float t = (respawntimer / timeToReachRespawn);
-		float tmod = t*t * (3f - 2f*t);
-		transform.position = Vector3.Lerp(startPosition,endPosition, tmod);
 		
-		if(t>= 1){
+		float tmod = t*t * (3f - 2f*t);
+		transform.position = Vector3.Lerp(startPosition,endPosition, tmod);*/
+		
+		if(respawntimer >= Layer.Layer.RespawnTime){
 			SwitchState<CharacterDieWaitingToRevive>();
 		}
 	}

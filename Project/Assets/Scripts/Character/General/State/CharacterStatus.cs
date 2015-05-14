@@ -6,11 +6,7 @@ using Magicolo;
 public class CharacterStatus : StateLayer {
 	
 	public bool invincible;
-	public float timeBeforeSpiritLeaveCorpse;
-	public float minRespawnTime = 0f;
-	public float maxRespawnTime = 4f;
-	public float maxDistance = 15;
-	
+	public float RespawnTime = 4f;
 	
 	bool _spriteRendererCached;
 	SpriteRenderer _spriteRenderer;
