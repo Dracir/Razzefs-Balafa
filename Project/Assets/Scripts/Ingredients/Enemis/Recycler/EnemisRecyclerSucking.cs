@@ -27,4 +27,16 @@ public class EnemisRecyclerSucking : State {
 		base.OnUpdate();
 		
 	}
+	
+	public override void TriggerEnter2D(Collider2D collision) {
+		base.TriggerEnter2D(collision);
+		if(collision.tag == "Player"){
+			
+		}else{
+			Recyclable recycable = collision.gameObject.GetComponentInChildren<Recyclable>();
+			if(recycable != null){
+				recycable.recycle();
+			}
+		}
+	}
 }
