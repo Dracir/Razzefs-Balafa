@@ -24,10 +24,15 @@ public class CharacterDie : StateLayer {
     	get { return ((StateMachine)machine); }
     }
 	
-	public Animator animator;
+	[Disable] public Animator animator;
+	public GameObject portalGameObject;
+	[Disable] public Animator portalAnimator;
 	
 	public override void OnAwake(){
 		base.OnAwake();
 		animator = GetComponent<Animator>();
+		
+		portalAnimator = portalGameObject.GetComponent<Animator>();
+		
 	}
 }

@@ -29,6 +29,7 @@ public class CharacterDieSpawning : State {
 		Layer.Layer.spriteRenderer.color = new Color(1,1,1,1f);
 		playerTransform.rotation = Quaternion.Euler(0,0,0);
 		GameObjectExtend.createClone(sparklingAnimationPrefab,transform,transform.position);
+		Layer.portalAnimator.SetTrigger("fermeToi");
 		t = 0;
 	}
 	
@@ -53,5 +54,6 @@ public class CharacterDieSpawning : State {
 		character.animator.enabled = true;
 		playerTransform.rotation = Quaternion.Euler(0,0,0);
 		character.animator.enabled = true;
+		Layer.portalGameObject.SetActive(false);
 	}
 }
