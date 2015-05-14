@@ -3,21 +3,25 @@ using System.Collections;
 using Magicolo;
 
 public class EndFlag : MonoBehaviour {
-
-	bool _collider2DCached;
-	Collider2D _collider2D;
-	new public Collider2D collider2D { 
-		get { 
-			_collider2D = _collider2DCached ? _collider2D : GetComponent<Collider2D>();
-			_collider2DCached = true;
-			return _collider2D;
-		}
+	
+	Collider2D collider;
+	
+	void Awake(){
+		collider = GetComponent<Collider2D>();
+		collider.enabled = true;
 	}
 	
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Player") {
+			Debug.Log("Fesons des choses");
 			Game.instance.SwitchState<GameNextLevel>();
-			collider2D.Remove();
+			Game.instance.SwitchState<GameNextLevel>();
+			Game.instance.SwitchState<GameNextLevel>();
+			Game.instance.SwitchState<GameNextLevel>();
+			Game.instance.SwitchState<GameNextLevel>();
+			Game.instance.SwitchState<GameNextLevel>();
+			Debug.Log("Fesons des choses genre Next Level");
+			//collider.enabled = false;
 		}
 	}
 }
