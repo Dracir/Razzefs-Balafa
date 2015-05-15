@@ -19,6 +19,7 @@ public class EnemisBobberActivating : State {
 		base.OnEnter();
 		t = Layer.activationTime;
 		GetComponent<Animator>().SetTrigger("Activating");
+		GetComponent<CircleCollider2D>().enabled = false;
 	}
 	
 	public override void OnUpdate() {

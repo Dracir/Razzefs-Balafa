@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
+using RickTools.MapLoader;
 
 public class CharacterLive : StateLayer {
 	
@@ -13,8 +14,11 @@ public class CharacterLive : StateLayer {
     	get { return ((StateMachine)machine); }
     }
 	
+	MapData mapData;
+	
 	public override void OnEnter() {
 		base.OnEnter();
+		mapData = Game.instance.MapData;
 		
 	}
 	
@@ -25,6 +29,8 @@ public class CharacterLive : StateLayer {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
+		if(!mapData.isWithinMap(transform.position)){
+			Layer.Die();
+		}
 	}
 }

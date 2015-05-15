@@ -62,16 +62,17 @@ public class CharacterStatus : StateLayer {
 		get { return ((StateMachine)machine); }
 	}
 	
-	public void Die() {
-		if (!invincible) {
-			SwitchState<CharacterDie>().SwitchState<CharacterDieDying>();
-		}
-	}
-	
 	public CharacterDetail detail;
 	public override void OnAwake(){
 		base.OnAwake();
 		detail = GetComponent<CharacterDetail>();
+	}
+	
+	
+	public void Die() {
+		if (!invincible) {
+			SwitchState<CharacterDie>().SwitchState<CharacterDieDying>();
+		}
 	}
 	
 	public void setColliders(bool active){
