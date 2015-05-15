@@ -40,6 +40,15 @@ public class EnemisFlamesAttacking : State {
 		
 	}
 	
+	public override void TriggerEnter2D(Collider2D collision){
+		base.TriggerEnter2D(collision);
+		Raindrop rd = collision.gameObject.GetComponent<Raindrop>();
+		//Debug.Log("Je ne sais pas ce qui es passe.");
+		if(rd != null){
+			rd.hitWith(gameObject);
+		}
+	}
+	
 	public override void TriggerStay2D(Collider2D collision) {
 		base.TriggerStay2D(collision);
 		TemperatureInfo otherTemperature = collision.GetComponentInChildren<TemperatureInfo>();
