@@ -41,8 +41,8 @@ public class CharacterDieSpawning : State {
 			Layer.Layer.SwitchState<CharacterLive>();
 		}
 		
-		playerTransform.localScale = ProLerp.smoothStep(Vector3.zero, Vector3.one, t/spawningtime);
-		float rotation = ProLerp.smoothStep(0, nbTurnToDo * 360, t/spawningtime);
+		playerTransform.localScale = Interpolation.smoothStep(Vector3.zero, Vector3.one, t/spawningtime);
+		float rotation = Interpolation.smoothStep(0, nbTurnToDo * 360, t/spawningtime);
 		playerTransform.rotation = Quaternion.Euler(0,0,rotation);
 	}
 	

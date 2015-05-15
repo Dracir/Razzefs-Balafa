@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class ProLerp {
+public static class Interpolation {
 
 	public static Vector3 smoothStep(Vector3 fromV, Vector3 toV, float t){
 		float tpro = t = t*t * (3f - 2f*t);
@@ -12,4 +12,6 @@ public static class ProLerp {
 		float tpro = t = t*t * (3f - 2f*t);
 		return Mathf.Lerp(fromfloat, toFloat, tpro);
 	}
+	
+	
 }
