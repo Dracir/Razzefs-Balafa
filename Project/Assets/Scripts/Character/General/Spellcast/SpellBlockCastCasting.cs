@@ -108,6 +108,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 			return;
 		}
 		
+		currentBlockArea = GetCurrentArea();
 		currentBlockArea += currentSize.Pow(2);
 		
 		RemoveOverflow();
@@ -118,12 +119,26 @@ public class SpellBlockCastCasting : State, IInputListener {
 		activeBlocks.Enqueue(block);
 	}
 
+	int GetCurrentArea() {
+		int area = 0;
+		
+		foreach (Block block in activeBlocks) {
+			if (block != null) {
+				area += block.Area;
+			}
+		}
+		
+		return area;
+	}
+	
 	void RemoveOverflow() {
 		while (currentBlockArea > maxArea) {
 			Block block = activeBlocks.Dequeue();
 			
-			currentBlockArea -= block.Area;
-			block.gameObject.Remove();
+			if (block != null) {
+				currentBlockArea -= block.Area;
+				block.gameObject.Remove();
+			}
 		}
 	}
 }

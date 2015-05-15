@@ -9,6 +9,7 @@ using Magicolo.GeneralTools;
 public class CharacterSelectMenu : MonoBehaviourExtended {
 	
 	public CharacterSelect[] characterBoxes;
+	public GameObject[] characterPrefabs;
 	
 	[Disable] public bool skipUpdate;
 	

@@ -34,6 +34,7 @@ public class CharacterSelectReady : State, IInputListener {
 		switch (input.InputName) {
 			case "Cycle":
 				if (input.State == ButtonStates.Down) {
+					Game.instance.playersPrefab[Layer.Id] = null;
 					SwitchState<CharacterSelectSelecting>();
 				}
 				
