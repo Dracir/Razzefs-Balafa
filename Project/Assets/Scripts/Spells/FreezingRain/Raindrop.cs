@@ -46,6 +46,16 @@ public class Raindrop : MonoBehaviourExtended {
 		}
 	}
 	
+	bool _rigidbody2DCached;
+	Rigidbody2D _rigidbody2D;
+	new public Rigidbody2D rigidbody2D { 
+		get { 
+			_rigidbody2D = _rigidbody2DCached ? _rigidbody2D : this.FindComponent<Rigidbody2D>();
+			_rigidbody2DCached = true;
+			return _rigidbody2D;
+		}
+	}
+	
 	void Update() {
 		lifeCounter -= Time.deltaTime;
 		
@@ -54,29 +64,18 @@ public class Raindrop : MonoBehaviourExtended {
 		}
 	}
 	
-	void OnCollisionEnter2D(Collision2D collision) {
-		TemperatureInfo temperature = collision.collider.FindComponent<TemperatureInfo>();
-		
-//		if (collision.collider.GetComponent<Effector2D>() == null && collision.collider.GetComponent<MirrorBall>() == null) {
-//		}
-		
+	void OnTriggerEnter2D(Collider2D collision) {
+		TemperatureInfo temperature = collision.FindComponent<TemperatureInfo>();
+		Effector2D effector = collision.GetComponent<Effector2D>();
+		MirrorBall mirror = collision.GetComponent<MirrorBall>();
+	
 		if (temperature != null) {
 			temperature.Temperature -= FreezingRain.Coldness;
+		}
+	
+		if (effector == null && mirror == null) {
 			FreezingRain.DespawnRaindrop(this);
 		}
 	}
-	
-	//	void OnTriggerEnter2D(Collider2D collision) {
-	//		TemperatureInfo temperature = collision.FindComponent<TemperatureInfo>();
-	//		Effector2D effector = collision.GetComponent<Effector2D>();
-	//
-	//		if (temperature != null) {
-	//			temperature.Temperature -= FreezingRain.Coldness;
-	//		}
-	//
-	//		if (effector == null) {
-	//			FreezingRain.DespawnRaindrop(this);
-	//		}
-	//	}
 }
 
