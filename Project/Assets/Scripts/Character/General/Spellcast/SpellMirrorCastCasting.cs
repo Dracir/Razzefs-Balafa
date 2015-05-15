@@ -46,6 +46,11 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		castZone = (Instantiate(Layer.castZone, currentPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
 		castZoneSpriteRenderer = castZoneSprite.GetComponent<SpriteRenderer>();
+		
+		if (activeBall != null) {
+			activeBall.Explode();
+			activeBall = null;
+		}
 	}
 
 	public override void OnExit() {
@@ -112,10 +117,6 @@ public class SpellMirrorCastCasting : State, IInputListener {
 	}
 	
 	void Cast() {
-		if (activeBall != null) {
-			activeBall.gameObject.Remove();
-		}
-		
 		activeBall = (Instantiate(Layer.mirror, currentPosition, Quaternion.identity) as GameObject).GetComponent<MirrorBall>();
 		activeBall.MinBounce = currentChargeLevel.minBounce;
 		activeBall.MaxBounce = currentChargeLevel.maxBounce;

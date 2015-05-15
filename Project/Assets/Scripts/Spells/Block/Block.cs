@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class Block : MonoBehaviourExtended {
+public class Block : MonoBehaviourExtended, Recyclable {
 
+	
 	[SerializeField, Disable] int size;
 	public int Size {
 		get {
@@ -20,6 +21,16 @@ public class Block : MonoBehaviourExtended {
 	public int Area {
 		get {
 			return size.Pow(2);
+		}
+	}
+
+	
+	
+	public void recycle(){
+		if(size == 1){
+			gameObject.Remove();
+		}else{
+			// TODO HP ?
 		}
 	}
 }

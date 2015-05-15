@@ -34,6 +34,11 @@ public class SpellGravityCastCasting : State, IInputListener {
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
 		castZonePortal = castZone.FindChild("Portal");
+		
+		if (activeGravityWell != null) {
+			activeGravityWell.gameObject.Remove();
+			activeGravityWell = null;
+		}
 	}
 
 	public override void OnExit() {
@@ -80,10 +85,6 @@ public class SpellGravityCastCasting : State, IInputListener {
 	}
 	
 	void Cast() {
-		if (activeGravityWell != null) {
-			activeGravityWell.gameObject.Remove();
-		}
-		
 		if (currentSize < 1) {
 			return;
 		}

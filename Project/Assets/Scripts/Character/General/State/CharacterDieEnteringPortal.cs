@@ -29,7 +29,7 @@ public class CharacterDieEnteringPortal : State {
 	public override void OnUpdate(){
 		base.OnUpdate();
 		
-		Layer.Layer.spriteRenderer.transform.localScale = ProLerp.smoothStep(Vector3.one, Vector3.zero, t/enterTime);
+		Layer.Layer.spriteRenderer.transform.localScale = Interpolation.smoothStep(Vector3.one, Vector3.zero, t/enterTime);
 		
 		t -= Time.deltaTime;
 		if (Layer.portalAnimator.isPlaying()){

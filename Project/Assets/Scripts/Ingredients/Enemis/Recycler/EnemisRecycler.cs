@@ -10,7 +10,7 @@ public class EnemisRecycler : StateLayer {
     }
 	
 	
-	public AreaEffector2D succerAreaEffector;
+	public PointEffector2D succerPointEffector;
 	public BoxCollider2D succerCollider;
 	
 	public override void OnEnter() {
