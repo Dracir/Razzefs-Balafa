@@ -7,9 +7,9 @@ public class SpellMirrorCastCasting : State, IInputListener {
 	
 	[Min] public float distance = 2;
 	[Min] public float fadeSpeed = 5;
-	public SpellMirrorChargeLevel level1;
-	public SpellMirrorChargeLevel level2;
-	public SpellMirrorChargeLevel level3;
+	public SpellMirrorChargeLevel level1 = new SpellMirrorChargeLevel(15f, 150f, 1f, 0.1f, 0, 0, -1, new Color(0.48f, 0.67f, 0.75f, 1f));
+	public SpellMirrorChargeLevel level2 = new SpellMirrorChargeLevel(25f, 150f, 1.5f, 0.15f, 2, 7, 5, new Color(0.43f, 0.43f, 0.51f, 1f));
+	public SpellMirrorChargeLevel level3 = new SpellMirrorChargeLevel(35f, 150f, 1.5f, 0.2f, 4, 10, 3, new Color(0.28f, 0.28f, 0.28f, 1f));
 	[Min] public float maxCharge = 5;
 	
 	[Disable] public Vector2 startPosition;
@@ -131,15 +131,28 @@ public class SpellMirrorCastCasting : State, IInputListener {
 	}
 }
 
-[System.Serializable]
+
 public class SpellMirrorChargeLevel {
 	
-	[Min] public float minBounce;
-	[Min] public float maxBounce;
-	[Min] public float velocityInherit;
-	[Min] public float hotness;
-	[Min] public float threshold;
-	[Min] public float speed;
+	public float minBounce;
+	public float maxBounce;
+	public float velocityInherit;
+	public float hotness;
+	public float threshold;
+	public float speed;
 	public int bounces;
 	public Color color = Color.white;
+	
+	public SpellMirrorChargeLevel(float minBounce, float maxBounce, float velocityInherit, float hotness, float threshold, float speed, int bounces, Color color)
+	{
+		this.minBounce = minBounce;
+		this.maxBounce = maxBounce;
+		this.velocityInherit = velocityInherit;
+		this.hotness = hotness;
+		this.threshold = threshold;
+		this.speed = speed;
+		this.bounces = bounces;
+		this.color = color;
+		
+	}
 }
