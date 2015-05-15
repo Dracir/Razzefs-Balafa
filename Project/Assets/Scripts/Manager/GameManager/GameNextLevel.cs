@@ -25,13 +25,11 @@ public class GameNextLevel : State {
 	
 	public override void OnEnter(){
 		base.OnEnter();
-		Debug.Log("Enter");
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		if(asAwake){
-			Debug.Log("A bien change le level plse");
 			Layer.levelCycle.nextMap();
 			SwitchState<GameLoadingLevel>();
 		}

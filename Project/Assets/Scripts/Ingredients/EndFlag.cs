@@ -11,17 +11,19 @@ public class EndFlag : MonoBehaviour {
 		collider.enabled = true;
 	}
 	
-	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Player") {
-			Debug.Log("Fesons des choses");
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Game.instance.SwitchState<GameNextLevel>();
-			Debug.Log("Fesons des choses genre Next Level");
-			//collider.enabled = false;
+	void OnTriggerStay2D(Collider2D other) {
+		CharacterMotion motion = other.GetComponent<CharacterMotion>();
+		if(motion != null && motion.Grounded){
+			CharacterStatus status = other.GetComponent<CharacterStatus>();
+			StartCoroutine(NextLevelIfStillAlive(status));
 		}
+	}
+	
+	IEnumerator NextLevelIfStillAlive(CharacterStatus status){
+		yield return new WaitForSeconds(1);
+		if(status.isAlive()){
+			Game.instance.SwitchState<GameNextLevel>();
+			collider.enabled = false;
+		}		
 	}
 }

@@ -12,6 +12,7 @@ public class GameLoadingLevel : State {
     }
 	
 	public LevelCycleMenager levelCycle;
+	public DynamicBackground dynamicBackground;
 	
 	public override void OnStart() {
 		base.OnStart();
@@ -31,6 +32,8 @@ public class GameLoadingLevel : State {
 			findPlayersPosition();
 			makePlayers();
 			makeCamera();
+			moveBackground();
+			makeAndSetGametGui();
 			SwitchState<GamePlaying>();
 		}
 	}
@@ -56,12 +59,21 @@ public class GameLoadingLevel : State {
 		}
 	}
 
+	void moveBackground(){
+		if(dynamicBackground != null){
+			dynamicBackground.setMapData(Layer.MapData);
+		}
+	}
 	void makeCamera() {
 		CameraFollowMany follow = Camera.main.GetOrAddComponent<CameraFollowMany>();
 		GameObject flag = levelCycle.currentMapGO.FindChildRecursive("EndFlag");
 		follow.SetFollowing(new [] { flag, Layer.playersGameObject[0], Layer.playersGameObject[1], Layer.playersGameObject[2], Layer.playersGameObject[3] });
 	}
-	
+
+	void makeAndSetGametGui(){
+		Layer.guiGameObject = GameObjectExtend.createClone(Layer.GuiPrefab);
+		
+	}
 	public override void OnExit() {
 		base.OnExit();
 		
