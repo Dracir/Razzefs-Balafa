@@ -19,6 +19,7 @@ public class Game : StateLayer {
 	
 	public LevelCycleMenager levelCycle;
 	
+	public bool useGui;
 	public GameObject GuiPrefab;
 	[Disable] public GameObject guiGameObject;
 	//[Disable] public 

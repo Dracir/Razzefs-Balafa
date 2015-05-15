@@ -18,7 +18,9 @@ public class GamePlaying : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		gameHud = Layer.guiGameObject.GetComponent<GameHUD>();
+		if(Layer.useGui){
+			gameHud = Layer.guiGameObject.GetComponent<GameHUD>();
+		}
 	}
 	
 	public override void OnExit() {
@@ -28,6 +30,9 @@ public class GamePlaying : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		gameHud.Refresh();
+		if(Layer.useGui){
+			gameHud.Refresh();
+		}
+		
 	}
 }
