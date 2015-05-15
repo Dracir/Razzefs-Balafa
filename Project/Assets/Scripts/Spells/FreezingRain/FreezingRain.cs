@@ -36,6 +36,7 @@ public class FreezingRain : MonoBehaviourExtended {
 		set {
 			width = value;
 			halfWidth = width / 2;
+			transform.SetLocalScale(value, Axis.X);
 		}
 	}
 	
@@ -90,16 +91,6 @@ public class FreezingRain : MonoBehaviourExtended {
 		}
 	}
 	
-	bool _particleSystemCached;
-	ParticleSystem _particleSystem;
-	new public ParticleSystem particleSystem { 
-		get { 
-			_particleSystem = _particleSystemCached ? _particleSystem : this.FindComponent<ParticleSystem>();
-			_particleSystemCached = true;
-			return _particleSystem;
-		}
-	}
-	
 	float delay;
 	float counter;
 	float halfWidth;
@@ -120,9 +111,9 @@ public class FreezingRain : MonoBehaviourExtended {
 	
 	void SpawnRaindrop() {
 		Raindrop raindrop;
-		Vector3 position = new Vector3(Random.Range(-halfWidth, halfWidth), 0, 0);
+		Vector3 position = new Vector3(Random.Range(-halfWidth, halfWidth) / Width, 0, 0);
 		float size = Random.Range(minSize, maxSize);
-		Vector3 scale = new Vector3(size, size, 1);
+		Vector3 scale = new Vector3(size / Width, size, 1);
 		
 		raindrop = rainPool.Spawn<Raindrop>(transform, position, Quaternion.identity, scale);
 		raindrop.FreezingRain = this;
