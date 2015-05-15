@@ -3,21 +3,27 @@ using System.Collections;
 using Magicolo;
 
 public class EndFlag : MonoBehaviour {
-
-	bool _collider2DCached;
-	Collider2D _collider2D;
-	new public Collider2D collider2D { 
-		get { 
-			_collider2D = _collider2DCached ? _collider2D : GetComponent<Collider2D>();
-			_collider2DCached = true;
-			return _collider2D;
+	
+	Collider2D collider;
+	
+	void Awake(){
+		collider = GetComponent<Collider2D>();
+		collider.enabled = true;
+	}
+	
+	void OnTriggerStay2D(Collider2D other) {
+		CharacterMotion motion = other.GetComponent<CharacterMotion>();
+		if(motion != null && motion.Grounded){
+			CharacterStatus status = other.GetComponent<CharacterStatus>();
+			StartCoroutine(NextLevelIfStillAlive(status));
 		}
 	}
 	
-	void OnTriggerEnter2D(Collider2D other) {
-		if (other.tag == "Player") {
+	IEnumerator NextLevelIfStillAlive(CharacterStatus status){
+		yield return new WaitForSeconds(1);
+		if(status.isAlive()){
 			Game.instance.SwitchState<GameNextLevel>();
-			collider2D.Remove();
-		}
+			collider.enabled = false;
+		}		
 	}
 }

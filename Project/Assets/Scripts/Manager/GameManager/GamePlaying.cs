@@ -5,6 +5,7 @@ using Magicolo;
 
 public class GamePlaying : State {
 	
+	
     Game Layer {
     	get { return ((Game)layer); }
     }
@@ -13,8 +14,11 @@ public class GamePlaying : State {
     	get { return ((StateMachine)machine); }
     }
 	
+	GameHUD gameHud;
+	
 	public override void OnEnter() {
 		base.OnEnter();
+		gameHud = Layer.guiGameObject.GetComponent<GameHUD>();
 	}
 	
 	public override void OnExit() {
@@ -24,6 +28,6 @@ public class GamePlaying : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
+		gameHud.Refresh();
 	}
 }

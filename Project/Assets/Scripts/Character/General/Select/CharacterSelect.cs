@@ -30,6 +30,7 @@ public class CharacterSelect : StateLayer {
 	public Image background;
 	public GameObject box;
 	public CharacterSelectMenu selectMenu;
+	public Text joinText;
 	
 	[Disable] public int wizardIndexHash = Animator.StringToHash("WizardIndex");
 	
