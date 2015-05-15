@@ -23,6 +23,8 @@ public class GameHUD : MonoBehaviour {
 				//TODO replace the portrait with instruction: "Press [cyclebutton] to change to [picture of spell]" kind of thing
 			}
 		}
+		
+		
 	}
 	
 	void Update () {
@@ -35,6 +37,8 @@ public class GameHUD : MonoBehaviour {
 		for (int i = 0; i < players.Length; i ++){
 			tempDisplays[i].ShowTemp(players[i].Temperature);
 		}
+		
+		//TODO put the hud in the corners
 	}
 	
 }
