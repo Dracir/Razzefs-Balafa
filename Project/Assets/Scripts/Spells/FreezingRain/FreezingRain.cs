@@ -90,6 +90,16 @@ public class FreezingRain : MonoBehaviourExtended {
 		}
 	}
 	
+	bool _particleSystemCached;
+	ParticleSystem _particleSystem;
+	new public ParticleSystem particleSystem { 
+		get { 
+			_particleSystem = _particleSystemCached ? _particleSystem : this.FindComponent<ParticleSystem>();
+			_particleSystemCached = true;
+			return _particleSystem;
+		}
+	}
+	
 	float delay;
 	float counter;
 	float halfWidth;
