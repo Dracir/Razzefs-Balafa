@@ -78,4 +78,8 @@ public class CharacterStatus : StateLayer {
 		circleCollider.enabled = active;
 		boxCollider.enabled = active;
 	}
+
+	public bool isAlive(){
+		return GetState<CharacterLive>().IsActive;
+	}
 }
