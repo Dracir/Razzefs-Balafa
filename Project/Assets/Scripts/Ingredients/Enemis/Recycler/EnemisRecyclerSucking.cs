@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,12 @@ public class EnemisRecyclerSucking : State {
     	get { return (StateMachine)machine; }
     }
 	
+	
+	public override void OnAwake(){
+		base.OnAwake();
+	
+	}
+	
 	public override void OnEnter() {
 		base.OnEnter();
 		
@@ -25,7 +32,7 @@ public class EnemisRecyclerSucking : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
+		Layer.succerAreaEffector.forceDirection = 180 + transform.parent.rotation.z;
 	}
 	
 	public override void TriggerEnter2D(Collider2D collision) {
@@ -35,6 +42,7 @@ public class EnemisRecyclerSucking : State {
 		}else{
 			Recyclable recycable = collision.gameObject.GetComponentInChildren<Recyclable>();
 			if(recycable != null){
+				Debug.Log(collision.transform.gameObject.layer);
 				recycable.recycle();
 			}
 		}

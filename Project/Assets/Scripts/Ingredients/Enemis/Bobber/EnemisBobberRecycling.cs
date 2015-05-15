@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class EnemisRecycler : StateLayer {
+public class EnemisBobberRecycling : State, Recyclable {
 	
+    EnemisBobber Layer {
+    	get { return (EnemisBobber)layer; }
+    }
+    
     StateMachine Machine {
     	get { return (StateMachine)machine; }
     }
 	
-	
-	public AreaEffector2D succerAreaEffector;
-	public BoxCollider2D succerCollider;
-	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		transform.parent.gameObject.Remove();
 	}
 	
 	public override void OnExit() {
@@ -27,4 +27,12 @@ public class EnemisRecycler : StateLayer {
 		base.OnUpdate();
 		
 	}
+
+	#region Recyclable implementation
+
+	public void recycle() {
+		SwitchState<EnemisBobberRecycling>();
+	}
+
+	#endregion
 }
