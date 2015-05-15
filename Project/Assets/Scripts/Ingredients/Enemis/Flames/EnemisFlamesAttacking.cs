@@ -42,7 +42,6 @@ public class EnemisFlamesAttacking : State {
 	
 	public override void TriggerStay2D(Collider2D collision) {
 		base.TriggerStay2D(collision);
-		
 		TemperatureInfo otherTemperature = collision.GetComponentInChildren<TemperatureInfo>();
 		if(otherTemperature != null){
 			otherTemperature.Temperature += Time.deltaTime * Layer.HeatingPerSecond;

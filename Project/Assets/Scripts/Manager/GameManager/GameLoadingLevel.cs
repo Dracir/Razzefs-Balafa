@@ -73,9 +73,11 @@ public class GameLoadingLevel : State {
 	}
 
 	void makeAndSetGametGui() {
-		Layer.guiGameObject = GameObjectExtend.createClone(Layer.GuiPrefab);
-		
+		if(Layer.useGui){
+			Layer.guiGameObject = GameObjectExtend.createClone(Layer.GuiPrefab);
+		}
 	}
+	
 	public override void OnExit() {
 		base.OnExit();
 		

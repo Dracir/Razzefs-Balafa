@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class CharacterDie : StateLayer {
+public class CharacterDie : StateLayer, Recyclable {
 	
 	bool _spriteRendererCached;
 	SpriteRenderer _spriteRenderer;
@@ -34,5 +34,10 @@ public class CharacterDie : StateLayer {
 		
 		portalAnimator = portalGameObject.GetComponent<Animator>();
 		
+	}
+
+	
+	public void recycle(){
+		Layer.Die();
 	}
 }

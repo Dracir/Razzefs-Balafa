@@ -32,19 +32,15 @@ public class EnemisRecyclerSucking : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		Layer.succerAreaEffector.forceDirection = 180 + transform.parent.rotation.z;
+		//Layer.succerPointEffector.forceDirection = 180 + transform.parent.rotation.z;
 	}
-	
+
 	public override void TriggerEnter2D(Collider2D collision) {
 		base.TriggerEnter2D(collision);
-		if(collision.tag == "Player"){
-			
-		}else{
-			Recyclable recycable = collision.gameObject.GetComponentInChildren<Recyclable>();
-			if(recycable != null){
-				Debug.Log(collision.transform.gameObject.layer);
-				recycable.recycle();
-			}
+		Recyclable recycable = collision.gameObject.GetComponentInChildren<Recyclable>();
+		if(recycable != null){
+			//Debug.Log(collision.transform.gameObject.layer);
+			recycable.recycle();
 		}
 	}
 }
