@@ -43,6 +43,7 @@ public class CharacterSelectSelecting : State, IInputListener {
 			case "Cycle":
 				if (input.State == ButtonStates.Down) {
 					InputManager.ReleaseController(Layer.Wizard);
+					Game.instance.playersPrefab[Layer.Id] = null;
 					SwitchState<CharacterSelectIdle>();
 				}
 				

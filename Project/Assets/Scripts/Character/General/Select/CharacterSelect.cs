@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Magicolo;
 
-public class CharacterSelect : StateLayer {
+public class CharacterSelect : StateLayer, IIdentifiable {
 	
 	[SerializeField, PropertyField]
 	Wizardz wizard;
@@ -18,6 +18,16 @@ public class CharacterSelect : StateLayer {
 			wizardAnimator.SetFloat(wizardIndexHash, (int)wizard);
 			wizardName.text = CharacterSelectMenu.GetFormattedWizardName(wizard);
 			spellName.text = CharacterSelectMenu.GetFormattedSpellName(wizard);
+		}
+	}
+
+	[SerializeField, PropertyField] int id;
+	public int Id {
+		get {
+			return id;
+		}
+		set {
+			id = value;
 		}
 	}
 	
