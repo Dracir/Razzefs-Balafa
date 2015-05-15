@@ -118,7 +118,7 @@ public class MirrorBall : MonoBehaviourExtended {
 		TemperatureInfo collisionTemperature = collision.gameObject.FindComponent<TemperatureInfo>();
 		
 		if (collisionRigidbody != null) {
-			collisionRigidbody.SetVelocity(collisionRigidbody.velocity.normalized * Mathf.Clamp(collisionRigidbody.velocity.magnitude + rigidbody2D.velocity.magnitude * VelocityInherit, MinBounce, MaxBounce));
+			BounceCollider(collisionRigidbody);
 		}
 		
 		if (collisionTemperature != null) {
@@ -132,6 +132,24 @@ public class MirrorBall : MonoBehaviourExtended {
 		if (Bounces == 0) {
 			Explode();
 		}
+	}
+	
+	void OnTriggerEnter2D(Collider2D collision) {
+		Raindrop raindrop = collision.GetComponent<Raindrop>();
+		
+		if (raindrop != null) {
+			BounceTrigger(raindrop.rigidbody2D);
+		}
+	}
+	
+	void BounceCollider(Rigidbody2D colliderRigidbody) {
+		colliderRigidbody.SetVelocity(colliderRigidbody.velocity.normalized * Mathf.Clamp(colliderRigidbody.velocity.magnitude + rigidbody2D.velocity.magnitude * VelocityInherit, MinBounce, MaxBounce));
+	}
+	
+	void BounceTrigger(Rigidbody2D triggerRigidbody) {
+		triggerRigidbody.SetVelocity(Vector3.Reflect(triggerRigidbody.velocity, (transform.position - triggerRigidbody.transform.position).normalized));
+		
+		BounceCollider(triggerRigidbody);
 	}
 }
 
