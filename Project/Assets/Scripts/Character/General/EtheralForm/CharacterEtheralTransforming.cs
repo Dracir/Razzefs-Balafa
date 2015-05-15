@@ -23,12 +23,18 @@ public class CharacterEtheralTransforming : State {
 		base.OnEnter();
 		t = timeToTransformToTheEtheralFormOfTheWizard;
 		staringColor = Layer.Layer.spriteRenderer.color;
+		
+		CharacterStatus character = Layer.Layer;
+		character.spriteRenderer.color = new Color(1,1,1,1f);
+		character.spriteRenderer.sprite = Layer.Layer.holdFlyingSprite;
+		character.rigidBody.isKinematic = true;
+		character.setColliders(false);
 	}
 	
 	public override void OnUpdate(){
 		base.OnUpdate();
 		
-		Layer.Layer.spriteRenderer.color = Interpolation.smoothStep(staringColor,targetColor,t/timeToTransformToTheEtheralFormOfTheWizard);
+		Layer.Layer.spriteRenderer.color = Interpolation.smoothStep(targetColor,staringColor,t/timeToTransformToTheEtheralFormOfTheWizard);
 		t -= Time.deltaTime;
 		if(t <= 0) {
 			Layer.SwitchState<CharacterEtheralMoving>();

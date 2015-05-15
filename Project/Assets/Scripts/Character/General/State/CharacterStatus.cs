@@ -63,6 +63,8 @@ public class CharacterStatus : StateLayer {
 	}
 	
 	public CharacterDetail detail;
+	public Sprite holdFlyingSprite;
+	
 	public override void OnAwake(){
 		base.OnAwake();
 		detail = GetComponent<CharacterDetail>();

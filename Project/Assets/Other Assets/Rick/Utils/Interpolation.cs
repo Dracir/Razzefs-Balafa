@@ -17,4 +17,9 @@ public static class Interpolation {
 		float tpro = t = t*t * (3f - 2f*t);
 		return Color.Lerp(from, to, tpro);
 	}
+	
+	public static Quaternion smoothStep(Quaternion from, Quaternion to, float t){
+		float tpro = t = t*t * (3f - 2f*t);
+		return Quaternion.Lerp(from, to, tpro);
+	}
 }

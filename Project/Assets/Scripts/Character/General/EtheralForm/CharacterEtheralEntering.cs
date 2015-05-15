@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Magicolo;
 
-public class CharacterEtheralMoving : State {
+public class CharacterEtheralEntering : State {
 	
     CharacterEtheral Layer {
     	get { return (CharacterEtheral)layer; }
@@ -13,26 +13,27 @@ public class CharacterEtheralMoving : State {
     	get { return (StateMachine)machine; }
     }
 	
-	[Disable] public Vector3 target;
-	Vector3 startingPosition;
+	public Vector3 targetRotation;
+	Vector3 startingRotation;
+	
+	Vector3 startingScale;
 	
 	[Disable] public float t;
-	[Disable] public float timeToTravel;
-	public float speed;
+	public float timeToEnter;
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		timeToTravel = (target - transform.position).magnitude / speed;
-		startingPosition = transform.position;
-		t = timeToTravel;
+		t = timeToEnter;
+		startingScale = transform.localScale;
 	}
 	
 	public override void OnUpdate(){
 		base.OnUpdate();
 		t -= Time.deltaTime;
-		transform.position = Interpolation.smoothStep(target, startingPosition, t/timeToTravel);
+		transform.rotation = Quaternion.Euler(Interpolation.smoothStep(targetRotation, Vector3.zero, t/timeToEnter));
+		transform.localScale = Interpolation.smoothStep(Vector3.zero, startingScale, t/timeToEnter);
 		if(t <= 0){
-			SwitchState<CharacterEtheralEntering>();
+			SwitchState<CharacterEtheralStay>();
 		}
 	}
 	
