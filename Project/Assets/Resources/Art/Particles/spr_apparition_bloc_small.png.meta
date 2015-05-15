@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 71f6f5de2ef9c924eaee4216b76aaf8e
-timeCreated: 1429856652
-licenseType: Free
+timeCreated: 1431718529
+licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: spr_apparition_bloc_small_0
@@ -71,7 +71,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_1
@@ -81,7 +81,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_2
@@ -91,7 +91,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_3
@@ -101,7 +101,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_4
@@ -111,7 +111,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_5
@@ -121,7 +121,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_6
@@ -131,7 +131,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_7
@@ -141,7 +141,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_8
@@ -151,7 +151,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_9
@@ -161,7 +161,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_10
@@ -171,7 +171,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_11
@@ -181,7 +181,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_12
@@ -191,7 +191,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_13
@@ -201,7 +201,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_small_14
@@ -211,7 +211,7 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 

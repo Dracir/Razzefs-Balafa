@@ -17,17 +17,11 @@ public class EnemisBobberExplosing : State {
 		GetComponent<SpriteRenderer>().enabled = false;
 		//GetComponent<Animator>().SetTrigger("Activating");
 		
-		Collider2D [] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.activationLayers.value );
+		Collider2D [] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.damageLayers.value );
 		foreach (var otherCollider in colliders) {
-			Transform otherTranform = otherCollider.transform.parent;
-			TemperatureInfo otherTemperature = otherTranform.GetComponent<TemperatureInfo>();
-			if(otherTemperature){
-				float distance = (otherTranform.position - transform.parent.position).magnitude;
-				if(distance <= Layer.explosionRadius){
-					float t = distance / Layer.explosionRadius;
-					float damage = Mathf.Lerp(Layer.maxHeatDamage, 0 , t*t*(3f-2f*t));
-					otherTemperature.Temperature = damage;
-				} 
+			TemperatureKiller killer = otherCollider.GetComponent<TemperatureKiller>();
+			if(killer){
+				killer.fireDamage(transform.parent.position, Layer.maxHeatDamage, Layer.explosionRadius);
 			}
 		}
 		

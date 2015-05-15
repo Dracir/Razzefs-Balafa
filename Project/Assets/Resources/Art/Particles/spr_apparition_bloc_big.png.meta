@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 5b2e106f18bf44f4d8948f0ce647c7c4
-timeCreated: 1429855963
-licenseType: Free
+timeCreated: 1431718640
+licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: spr_apparition_bloc_big_0
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 96
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -65,7 +65,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_1
@@ -75,7 +75,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_2
@@ -85,7 +85,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_3
@@ -95,7 +95,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_4
@@ -105,7 +105,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_5
@@ -115,7 +115,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_6
@@ -125,7 +125,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_7
@@ -135,7 +135,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: spr_apparition_bloc_big_8
@@ -145,7 +145,7 @@ TextureImporter:
         y: 0
         width: 96
         height: 96
-      alignment: 0
+      alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
