@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 static class VectorFunctions {
-
+	
 	/// <summary>
 	/// Convert the specified angle (0 to 180 or -1 to -181) to a positive one (0 to 359).
 	/// </summary>
@@ -22,11 +22,11 @@ static class VectorFunctions {
 	/// Vector.
 	/// </param>
 	static public float PointDirection(Vector2 vector){
-		 float angle = Mathf.Acos(vector.x / vector.magnitude) * Mathf.Rad2Deg;
-			
-			if (vector.y < 0){
-				angle *= -1;
-			}
+		float angle = Mathf.Acos(vector.x / vector.magnitude) * Mathf.Rad2Deg;
+		
+		if (vector.y < 0){
+			angle *= -1;
+		}
 		return angle;
 	}
 	
@@ -96,7 +96,7 @@ static class VectorFunctions {
 		float sn = Mathf.Sin(Mathf.Deg2Rad * 90);
 		
 		Vector3 up = new Vector3(direction.x * cs - direction.y * sn, direction.x * sn + direction.y * cs);
-			
+		
 		Quaternion newLook = Quaternion.LookRotation(new Vector3(0, 0, 1), up);
 		
 		return newLook;
@@ -104,5 +104,48 @@ static class VectorFunctions {
 	
 	static public Quaternion Look2D(Vector3 direction){
 		return Look2D(new Vector2(direction.x, direction.y));
+	}
+	
+	/// <summary>
+	/// Find the midpoint between two points.
+	/// </summary>
+	/// <param name="first">First point.</param>
+	/// <param name="second">Second point.</param>
+	static public Vector2 Midpoint (Vector2 first, Vector2 second){
+		return Midpoint (new Vector2[2] { first, second });
+	}
+
+	
+	/// <summary>
+	/// Find the midpoint between a set of objects' positions in 2D space.
+	/// </summary>
+	/// <param name="objects"> Array of objects</param>
+	static public Vector2 Midpoint (Transform[] objects){
+		Vector2[] positions = new Vector2[objects.Length];
+		for (int i = 0; i < objects.Length; i ++){
+			positions[i] = (Vector2) objects[i].position;
+		}
+		return Midpoint (positions);
+	}
+
+	/// <summary>
+	/// Find the midpoint between a set of points.
+	/// </summary>
+	/// <param name="points"> Array of points</param>
+	static public Vector2 Midpoint (Vector2[] points){
+		int no = points.Length;
+		if (no == 0){
+			Debug.LogWarning ("There's no points in your argument dawg.");
+			return Vector2.zero;
+		}
+		float xTotal = 0;
+		float yTotal = 0;
+
+		for (int i = 0; i < points.Length; i ++){
+			xTotal += points[i].x;
+			yTotal += points[i].y;
+		}
+
+		return new Vector2(xTotal / no, yTotal / no);
 	}
 }
