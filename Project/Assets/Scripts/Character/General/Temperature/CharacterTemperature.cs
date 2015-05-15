@@ -99,7 +99,7 @@ public class CharacterTemperature : StateLayer {
 	
 	public override void CollisionEnter2D(Collision2D collision) {
 		base.CollisionEnter2D(collision);
-		Debug.Log("Should b gettin hottah");
+		
 		temperatureInfo.Temperature += Mathf.Max(collision.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
 	}
 	
