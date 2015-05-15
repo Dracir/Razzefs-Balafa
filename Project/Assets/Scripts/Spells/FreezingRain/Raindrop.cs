@@ -69,9 +69,13 @@ public class Raindrop : MonoBehaviourExtended {
 		   	return;	
 		}
 		
-		TemperatureInfo temperature = collision.FindComponent<TemperatureInfo>();
-		Effector2D effector = collision.GetComponent<Effector2D>();
-		MirrorBall mirror = collision.GetComponent<MirrorBall>();
+		hitWith(collision.gameObject);
+	}
+	
+	public void hitWith(GameObject hit){
+		TemperatureInfo temperature = hit.FindComponent<TemperatureInfo>();
+		Effector2D effector = hit.GetComponent<Effector2D>();
+		MirrorBall mirror = hit.GetComponent<MirrorBall>();
 	
 		if (temperature != null) {
 			temperature.Temperature -= FreezingRain.Coldness;
