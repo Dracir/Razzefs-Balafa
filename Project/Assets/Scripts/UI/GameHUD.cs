@@ -16,7 +16,7 @@ public class GameHUD : MonoBehaviour {
 		
 		for (int i = tempDisplays.Count - 1; i >= 0; i--){
 			bool playerExists = players.Length >= i + 1;
-			Debug.Log("PLayer exists?" + playerExists);
+			//Debug.Log("PLayer exists?" + playerExists);
 			if (!playerExists){
 				//tempDisplays[i].gameObject.SetActive(false);
 				Destroy(tempDisplays[i].gameObject);
