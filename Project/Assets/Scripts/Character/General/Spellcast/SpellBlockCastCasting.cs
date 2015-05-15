@@ -137,7 +137,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 			
 			if (block != null) {
 				currentBlockArea -= block.Area;
-				block.gameObject.Remove();
+				block.Explode();
 			}
 		}
 	}
