@@ -55,6 +55,11 @@ public class Raindrop : MonoBehaviourExtended {
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision) {
+		/*if(collision.gameObject.layer == LayerMask.NameToLayer("Trigger")) {
+			Debug.Log("Dont die");
+			return;
+		} 
+		Debug.Log(collision.gameObject.layer);*/
 		TemperatureInfo temperature = collision.collider.FindComponent<TemperatureInfo>();
 		
 //		if (collision.collider.GetComponent<Effector2D>() == null && collision.collider.GetComponent<MirrorBall>() == null) {

@@ -62,16 +62,25 @@ public class CharacterStatus : StateLayer {
 		get { return ((StateMachine)machine); }
 	}
 	
+	public CharacterDetail detail;
+	public override void OnAwake(){
+		base.OnAwake();
+		detail = GetComponent<CharacterDetail>();
+	}
+	
+	
 	public void Die() {
 		if (!invincible) {
 			SwitchState<CharacterDie>().SwitchState<CharacterDieDying>();
 		}
 	}
 	
-	
-	
 	public void setColliders(bool active){
 		circleCollider.enabled = active;
 		boxCollider.enabled = active;
+	}
+
+	public bool isAlive(){
+		return GetState<CharacterLive>().IsActive;
 	}
 }

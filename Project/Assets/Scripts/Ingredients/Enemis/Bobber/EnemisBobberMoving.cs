@@ -31,7 +31,10 @@ public class EnemisBobberMoving : State {
 	public override void TriggerEnter2D(Collider2D collision) {
 		base.TriggerEnter2D(collision);
 	
-		SwitchState<EnemisBobberActivating>();
+		if(collision.tag == "Player"){
+			SwitchState<EnemisBobberActivating>();
+		}
+		
 	}
 	
 	

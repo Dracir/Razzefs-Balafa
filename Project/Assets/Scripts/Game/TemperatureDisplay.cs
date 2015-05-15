@@ -17,6 +17,7 @@ public class TemperatureDisplay : MonoBehaviour {
 	}
 	
 	public void ShowTemp (float value){
+		if(slider == null) return;
 		slider.value = value;
 	}
 	
