@@ -12,7 +12,6 @@ public class CharacterTemperature : StateLayer {
 	public float forceTemperatureThreshold = 15f;
 	public float forceToTemperatureRatio = 50f;
 
-	
 	[SerializeField, Disable] bool frozen;
 	public bool Frozen {
 		get {
@@ -31,6 +30,8 @@ public class CharacterTemperature : StateLayer {
 			}
 		}
 	}
+	
+	[Disable] public float initialMoveSpeed;
 	
 	bool _animatorCached;
 	Animator _animator;
@@ -72,12 +73,34 @@ public class CharacterTemperature : StateLayer {
 		}
 	}
 	
+	bool _characterMoveMovingCached;
+	CharacterMoveMoving _characterMoveMoving;
+	public CharacterMoveMoving characterMoveMoving { 
+		get { 
+			_characterMoveMoving = _characterMoveMovingCached ? _characterMoveMoving : this.FindComponent<CharacterMoveMoving>();
+			_characterMoveMovingCached = true;
+			return _characterMoveMoving;
+		}
+	}
+	
 	CharacterLive Layer {
 		get { return ((CharacterLive)layer); }
 	}
 	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
+	}
+	
+	public override void OnAwake() {
+		base.OnAwake();
+		
+		initialMoveSpeed = characterMoveMoving.speed;
+	}
+	
+	public override void CollisionEnter2D(Collision2D collision) {
+		base.CollisionEnter2D(collision);
+		
+		temperatureInfo.Temperature += Mathf.Max(collision.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
 	}
 	
 	public void Freeze() {
@@ -92,10 +115,5 @@ public class CharacterTemperature : StateLayer {
 		
 		animator.enabled = true;
 		rigidbody.mass /= frozenMassModifier;
-	}
-
-	void OnCollisionEnter2D(Collision2D coll){
-		temperatureInfo.Temperature += Mathf.Max(coll.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
-		//Debug.Log (this.gameObject.name + " has collided with force " + coll.relativeVelocity.magnitude + " and has reached temperature " + temperatureInfo.Temperature);
 	}
 }

@@ -27,5 +27,9 @@ namespace RickTools.MapLoader{
 		}
 		#endif
 		#endregion
+		
+		public bool isWithinMap(Vector3 position){
+			return position.x > 0 && position.y > 0 && position.x < width && position.y < height;
+		}
 	}
 }

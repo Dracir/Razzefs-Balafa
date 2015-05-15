@@ -12,7 +12,7 @@ public class CameraFollowMany : MonoBehaviour {
 
 	float lerpAmount = 0.1f;
 	
-	float zoomOutAmount = 0.1f;
+	float zoomOutAmount = 0.3f;
 	
 	//how much of the screen do I want between the players and the flag?
 	float zoomMarginPercentage = 0.7f;

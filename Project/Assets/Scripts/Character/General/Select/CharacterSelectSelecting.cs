@@ -49,12 +49,14 @@ public class CharacterSelectSelecting : State, IInputListener {
 				break;
 			case "Jump":
 				if (input.State == ButtonStates.Down) {
+					Game.instance.playersPrefab[Layer.Id] = Layer.selectMenu.characterPrefabs[(int)Layer.Wizard];
 					SwitchState<CharacterSelectReady>();
 				}
 				
 				break;
 			case "Menu":
 				if (input.State == ButtonStates.Down) {
+					Game.instance.playersPrefab[Layer.Id] = Layer.selectMenu.characterPrefabs[(int)Layer.Wizard];
 					SwitchState<CharacterSelectReady>();
 				}
 				

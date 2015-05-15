@@ -19,6 +19,10 @@ public class Game : StateLayer {
 	
 	public LevelCycleMenager levelCycle;
 	
+	public GameObject GuiPrefab;
+	[Disable] public GameObject guiGameObject;
+	//[Disable] public 
+	
 	public override void OnAwake(){
 		base.OnAwake();
 		if(instance == null){
