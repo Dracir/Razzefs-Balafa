@@ -13,6 +13,12 @@ public class CharacterTemperatureIdle : State {
     	get { return ((StateMachine)machine); }
     }
 	
+	public override void OnEnter() {
+		base.OnEnter();
+		
+		Layer.characterMoveMoving.speed = Layer.initialMoveSpeed;
+	}
+	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		

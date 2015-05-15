@@ -81,7 +81,6 @@ public class CharacterSelectMenu : MonoBehaviourExtended {
 		characterBox.Wizard = GetNextAvailableWizard(Wizardz.Mysterio);
 		InputManager.AssignController(characterBox.Wizard, controller);
 		InputManager.SetController(characterBox.Wizard, characterBox.inputSystem);
-		Game.instance.playersPrefab[characterBox.Id] = characterPrefabs[(int)characterBox.Wizard];
 	}
 	
 	public static string GetFormattedWizardName(Wizardz wizard) {
