@@ -14,6 +14,7 @@ public class EnemisBobber : StateLayer {
 	public float explosionRadius = 1.5f;
 	
 	public LayerMask activationLayers;
+	public LayerMask damageLayers;
 	public float maxHeatDamage = 1;
 	
 	[HideInInspector] public TemperatureInfo temperature;

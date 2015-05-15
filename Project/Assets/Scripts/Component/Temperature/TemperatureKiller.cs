@@ -8,12 +8,17 @@ public class TemperatureKiller : MonoBehaviour {
 	public bool removeIfBlazed;
 	public bool removeIfFrozen;
 	
+	[Tooltip("Position to base fireDamage")]
+	public Transform positionTransform; 
+	
 	void Start () {
 		info = GetComponent<TemperatureInfo>();
 	}
 	
 	
 	void Update () {
+		if(positionTransform == null) return;
+		
 		if(removeIfBlazed && info.wasBlazed){
 			info.wasBlazed = false;
 			gameObject.Remove();
@@ -21,6 +26,17 @@ public class TemperatureKiller : MonoBehaviour {
 			info.wasFrozen = false;
 			gameObject.Remove();
 		}
+	}
+	
+	public void fireDamage(Vector3 position, float heatDamage, float explosionRadius){
+		if(positionTransform == null) return;
+		
+		float distance = (position - positionTransform.position).magnitude;
+		if(distance <= explosionRadius){
+			float t = distance / explosionRadius;
+			float damage = Interpolation.smoothStep( heatDamage, 0, t);
+			info.Temperature = damage;
+		} 
 	}
 }
 

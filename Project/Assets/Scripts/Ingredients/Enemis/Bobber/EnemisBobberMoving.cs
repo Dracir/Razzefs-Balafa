@@ -43,5 +43,9 @@ public class EnemisBobberMoving : State {
 		
 	}
 	
+	void OnCollisionEnter2D(Collision2D collision) {
+		SwitchState<EnemisBobberActivating>();
+	}
+	
 	
 }
