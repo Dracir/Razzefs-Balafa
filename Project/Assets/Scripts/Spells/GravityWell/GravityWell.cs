@@ -50,5 +50,9 @@ public class GravityWell : MonoBehaviourExtended {
 			particleSystem.startLifetime = value / 8;
 		}
 	}
+	
+	public void Explode() {
+		gameObject.Remove();
+	}
 }
 

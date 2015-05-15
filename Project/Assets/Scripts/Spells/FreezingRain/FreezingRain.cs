@@ -139,5 +139,9 @@ public class FreezingRain : MonoBehaviourExtended {
 		
 		dropFXPool.Despawn(particleFX);
 	}
+	
+	public void Explode() {
+		gameObject.Remove();
+	}
 }
 

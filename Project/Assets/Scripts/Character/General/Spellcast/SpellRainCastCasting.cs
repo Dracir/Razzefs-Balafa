@@ -38,6 +38,11 @@ public class SpellRainCastCasting : State, IInputListener {
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
 		castZoneSpriteRenderer = castZoneSprite.GetComponent<SpriteRenderer>();
+		
+		if (activeRain != null) {
+			activeRain.Explode();
+			activeRain = null;
+		}
 	}
 
 	public override void OnExit() {
