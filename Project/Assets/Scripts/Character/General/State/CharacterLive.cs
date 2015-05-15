@@ -29,7 +29,12 @@ public class CharacterLive : StateLayer {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		if(!mapData.isWithinMap(transform.position)){
+		dieIfOutSideMap();
+		
+	}
+
+	void dieIfOutSideMap(){
+		if(mapData != null && !mapData.isWithinMap(transform.position)){
 			Layer.Die();
 		}
 	}
