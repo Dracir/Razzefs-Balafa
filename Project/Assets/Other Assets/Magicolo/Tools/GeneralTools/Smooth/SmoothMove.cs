@@ -17,8 +17,7 @@ namespace Magicolo {
 		[Mask(Axis.XYZ)] public Axis axis = Axis.XYZ;
 		public bool culling = true;
 	
-		[Separator]
-		[Slider] public float randomness;
+		[Slider(BeforeSeparator = true)] public float randomness;
 		public Vector3 speed = Vector3.one;
 	
 		bool _rendererCached;

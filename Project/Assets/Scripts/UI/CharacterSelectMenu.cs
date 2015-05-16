@@ -20,7 +20,7 @@ public class CharacterSelectMenu : MonoBehaviourExtended {
 		}
 		
 		if (!Array.TrueForAll(characterBoxes, characterBox => characterBox.box.activeSelf)) {
-			ControllerInfo controller = InputManager.GetNewController();
+			ControllerInfo controller = InputManager.CheckForNewController();
 		
 			if (controller != null) {
 				AddCharacter(GetAvailableCharacterBox(), controller);

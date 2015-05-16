@@ -59,7 +59,9 @@ namespace Magicolo.EditorTools {
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-			return EditorGUIUtility.singleLineHeight;
+			base.GetPropertyHeight(property, label);
+			
+			return EditorGUIUtility.singleLineHeight + (beforeSeparator ? 16 : 0) + (afterSeparator ? 16 : 0);;
 		}
 	}
 }

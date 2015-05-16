@@ -12,5 +12,7 @@ namespace Magicolo.EditorTools {
 		public bool DisableOnStop;
 		public string DisableBool;
 		public int Indent;
+		public bool BeforeSeparator;
+		public bool AfterSeparator;
 	}
 }

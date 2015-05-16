@@ -29,13 +29,16 @@ namespace Magicolo.EditorTools {
 				iterator.NextVisible(true);
 				
 				EditorGUI.indentLevel += 1;
-				int indent = EditorGUI.indentLevel;
+				int currentIndent = EditorGUI.indentLevel;
+				
 				while (true) {
 					position.height = EditorGUI.GetPropertyHeight(iterator, iterator.displayName.ToGUIContent(), false);
 						
 					totalHeight += position.height;
-					EditorGUI.indentLevel = indent + iterator.depth;
+					
+					EditorGUI.indentLevel = currentIndent + iterator.depth;
 					EditorGUI.PropertyField(position, iterator);
+					
 					position.y += position.height;
 					
 					if (!iterator.NextVisible(iterator.isExpanded)) {
@@ -43,7 +46,7 @@ namespace Magicolo.EditorTools {
 					}
 				}
 				
-				EditorGUI.indentLevel = indent;
+				EditorGUI.indentLevel = currentIndent;
 				EditorGUI.indentLevel -= 1;
 				
 				serialized.ApplyModifiedProperties();
@@ -53,7 +56,9 @@ namespace Magicolo.EditorTools {
 		}
 		
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-			return totalHeight;
+			base.GetPropertyHeight(property, label);
+			
+			return totalHeight + (beforeSeparator ? 16 : 0) + (afterSeparator ? 16 : 0);
 		}
 	}
 }
