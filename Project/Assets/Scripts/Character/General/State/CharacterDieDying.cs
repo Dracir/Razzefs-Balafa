@@ -6,7 +6,6 @@ using Magicolo;
 public class CharacterDieDying : State {
 	
 	public GameObject dyingEmitter;
-	public Sprite dyingSprite;
 	
     CharacterDie Layer {
     	get { return (CharacterDie)layer; }
@@ -20,7 +19,7 @@ public class CharacterDieDying : State {
 		base.OnEnter();
 		CharacterStatus character = Layer.Layer;
 		character.spriteRenderer.color = new Color(0,0,0,0f);
-		character.spriteRenderer.sprite = dyingSprite;
+		character.spriteRenderer.sprite = Layer.Layer.holdFlyingSprite;
 		character.rigidBody.isKinematic = true;
 		character.setColliders(false);
 		character.animator.enabled = false;

@@ -14,17 +14,22 @@ public class EndFlag : MonoBehaviour {
 	
 	void OnTriggerStay2D(Collider2D other) {
 		CharacterMotion motion = other.GetComponent<CharacterMotion>();
-		if(motion != null && motion.Grounded && !checkingForAlive){
-			checkingForAlive = true;
-			CharacterStatus status = other.GetComponent<CharacterStatus>();
-			StartCoroutine(NextLevelIfStillAlive(status));
+		if(motion != null){
+			if(motion.Grounded && !checkingForAlive){
+				checkingForAlive = true;
+				CharacterStatus status = other.GetComponent<CharacterStatus>();
+				StartCoroutine(NextLevelIfStillAlive(status));
+			
+			}
 		}
+		
 	}
 	
 	IEnumerator NextLevelIfStillAlive(CharacterStatus status){
 		yield return new WaitForSeconds(1);
 		if(status.isAlive()){
-			Game.instance.SwitchState<GameNextLevel>();
+			Game.instance.GetComponent<GameLevelEndAnimation>().endFlagLocation = transform.position;
+			Game.instance.SwitchState<GameLevelEndAnimation>();
 			collider.enabled = false;
 		}else{
 			checkingForAlive = false;

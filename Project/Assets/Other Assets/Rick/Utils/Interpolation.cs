@@ -13,5 +13,13 @@ public static class Interpolation {
 		return Mathf.Lerp(fromfloat, toFloat, tpro);
 	}
 	
+	public static Color smoothStep(Color from, Color to, float t){
+		float tpro = t = t*t * (3f - 2f*t);
+		return Color.Lerp(from, to, tpro);
+	}
 	
+	public static Quaternion smoothStep(Quaternion from, Quaternion to, float t){
+		float tpro = t = t*t * (3f - 2f*t);
+		return Quaternion.Lerp(from, to, tpro);
+	}
 }
