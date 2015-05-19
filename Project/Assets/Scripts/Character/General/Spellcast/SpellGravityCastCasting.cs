@@ -5,6 +5,7 @@ using Magicolo;
 
 public class SpellGravityCastCasting : State, IInputListener {
 	
+	[Min] public float heatCost = 0.1F;
 	[Min] public int maxSize = 8;
 	
 	[Disable] public Vector2 startPosition;
@@ -92,5 +93,8 @@ public class SpellGravityCastCasting : State, IInputListener {
 		activeGravityWell = (Instantiate(Layer.gravityWell, startPosition, Quaternion.Euler(0, 0, currentAngle)) as GameObject).GetComponent<GravityWell>();
 		activeGravityWell.Angle = currentAngle;
 		activeGravityWell.Length = currentSize;
+		
+		Layer.TemperatureInfo.Temperature += heatCost;
+		Layer.AudioPlayer.Play("SpellCastGravity");
 	}
 }

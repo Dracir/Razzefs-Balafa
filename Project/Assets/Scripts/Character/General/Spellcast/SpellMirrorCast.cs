@@ -20,6 +20,18 @@ public class SpellMirrorCast : StateLayer {
 		}
 	}
 	
+	public TemperatureInfo TemperatureInfo {
+		get {
+			return Layer.temperatureInfo;
+		}
+	}
+		
+	public AudioPlayer AudioPlayer {
+		get {
+			return Layer.audioPlayer;
+		}
+	}
+	
     CharacterCast Layer {
     	get { return (CharacterCast)layer; }
     }

@@ -5,7 +5,8 @@ using Magicolo;
 
 public class SpellRainCastCasting : State, IInputListener {
 	
-	public int maxSize = 6;
+	[Min] public float heatCost = 0.1F;
+	[Min] public int maxSize = 6;
 	[Range(0, 0.5F)] public float margin = 0.25F;
 	public LayerMask layerMask;
 	public Color validColor = new Color(0, 1, 0, 0.125F);
@@ -107,5 +108,8 @@ public class SpellRainCastCasting : State, IInputListener {
 		
 		activeRain = (Instantiate(Layer.rain, position, Quaternion.identity) as GameObject).GetComponent<FreezingRain>();
 		activeRain.Width = Mathf.Abs(currentSize);
+		
+		Layer.TemperatureInfo.Temperature += heatCost;
+		Layer.AudioPlayer.Play("SpellCastRain");
 	}
 }

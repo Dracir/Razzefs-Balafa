@@ -82,6 +82,16 @@ public class CharacterTemperature : StateLayer {
 		}
 	}
 	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : GetComponentInChildren<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
+		}
+	}
+	
 	CharacterLive Layer {
 		get { return ((CharacterLive)layer); }
 	}
@@ -107,6 +117,7 @@ public class CharacterTemperature : StateLayer {
 		
 		animator.enabled = false;
 		rigidbody.isKinematic = true;
+		audioPlayer.Play("Freeze");
 	}
 	
 	public void Unfreeze() {
@@ -114,5 +125,6 @@ public class CharacterTemperature : StateLayer {
 		
 		animator.enabled = true;
 		rigidbody.isKinematic = false;
+		audioPlayer.Play("UnFreeze");
 	}
 }

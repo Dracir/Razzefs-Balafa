@@ -119,6 +119,16 @@ public class CharacterMotion : StateLayer {
 		}
 	}
 	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : GetComponentInChildren<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
+		}
+	}
+	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}

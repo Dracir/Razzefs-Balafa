@@ -5,6 +5,7 @@ using Magicolo;
 
 public class SpellMirrorCastCasting : State, IInputListener {
 	
+	[Min] public float heatCost = 0.1F;
 	[Min] public float distance = 2;
 	[Min] public float fadeSpeed = 5;
 	public SpellMirrorChargeLevel level1 = new SpellMirrorChargeLevel(15f, 150f, 1f, 0.1f, 0, 0, -1, new Color(0.48f, 0.67f, 0.75f, 1f));
@@ -128,6 +129,9 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		activeBall.Color = currentChargeLevel.color;
 		
 		currentCharge = 0;
+		
+		Layer.TemperatureInfo.Temperature += heatCost;
+		Layer.AudioPlayer.Play("SpellCastMirror");
 	}
 }
 
@@ -143,8 +147,7 @@ public class SpellMirrorChargeLevel {
 	public int bounces;
 	public Color color = Color.white;
 	
-	public SpellMirrorChargeLevel(float minBounce, float maxBounce, float velocityInherit, float hotness, float threshold, float speed, int bounces, Color color)
-	{
+	public SpellMirrorChargeLevel(float minBounce, float maxBounce, float velocityInherit, float hotness, float threshold, float speed, int bounces, Color color) {
 		this.minBounce = minBounce;
 		this.maxBounce = maxBounce;
 		this.velocityInherit = velocityInherit;
@@ -153,6 +156,5 @@ public class SpellMirrorChargeLevel {
 		this.speed = speed;
 		this.bounces = bounces;
 		this.color = color;
-		
 	}
 }

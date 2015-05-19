@@ -121,6 +121,7 @@ namespace Magicolo.AudioTools {
 		
 		Tweener volumeTweener;
 		Tweener pitchTweener;
+		IEnumerator stopRoutine;
 		float initialVolume;
 		float initialPitch;
 		
@@ -132,6 +133,7 @@ namespace Magicolo.AudioTools {
 		void Awake() {
 			volumeTweener = Source.DOFade(Source.volume, 0);
 			pitchTweener = DOTween.To(() => Source.pitch, value => Source.pitch = value, Source.pitch, 0);
+			stopRoutine = StopAfterDelay(0);
 			
 			initialVolume = Source.volume;
 			initialPitch = Source.pitch;
@@ -149,6 +151,7 @@ namespace Magicolo.AudioTools {
 		
 		public void Play() {
 			volumeTweener.Kill();
+			StopCoroutine(stopRoutine);
 			
 			InitializeSource();
 			
@@ -165,7 +168,8 @@ namespace Magicolo.AudioTools {
 			}
 
 			Source.Play();
-			StartCoroutine(StopAfterDelay(Length - FadeOut));
+			stopRoutine = StopAfterDelay(Length - FadeOut);
+			StartCoroutine(stopRoutine);
 			
 			if (onPlayCallback != null) {
 				onPlayCallback();

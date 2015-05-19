@@ -48,6 +48,8 @@ public class CharacterJumpJumping : State, IInputListener {
 			
 			Layer.Rigidbody.SetVelocity(velocity);
 		}
+		
+		Layer.AudioPlayer.Play("Jump");
 	}
 	
 	public override void OnExit() {

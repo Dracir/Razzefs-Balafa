@@ -60,6 +60,7 @@ namespace Magicolo.AudioTools {
 		}
 		
 		void BuildSourceDict() {
+			setups = new List<AudioSetup>(audioPlayer.GetComponentsInChildren<AudioSetup>());
 			nameSetupDict = new Dictionary<string, AudioSetup>();
 			
 			foreach (AudioSetup setup in setups) {

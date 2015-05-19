@@ -33,6 +33,16 @@ public class CharacterCast : StateLayer, IInputListener {
 		}
 	}
 	
+	bool _temperatureInfoCached;
+	TemperatureInfo _temperatureInfo;
+	public TemperatureInfo temperatureInfo { 
+		get { 
+			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : this.FindComponent<TemperatureInfo>();
+			_temperatureInfoCached = true;
+			return _temperatureInfo;
+		}
+	}
+	
 	bool _cursorRendererCached;
 	SpriteRenderer _cursorRenderer;
 	public SpriteRenderer cursorRenderer { 
@@ -40,6 +50,16 @@ public class CharacterCast : StateLayer, IInputListener {
 			_cursorRenderer = _cursorRendererCached ? _cursorRenderer : cursor.GetComponent<SpriteRenderer>();
 			_cursorRendererCached = true;
 			return _cursorRenderer;
+		}
+	}
+	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : GetComponentInChildren<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
 		}
 	}
 	

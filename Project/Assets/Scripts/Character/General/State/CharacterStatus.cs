@@ -58,6 +58,16 @@ public class CharacterStatus : StateLayer {
 		}
 	}
 	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : GetComponentInChildren<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
+		}
+	}
+	
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}
@@ -74,6 +84,8 @@ public class CharacterStatus : StateLayer {
 	public void Die() {
 		if (!invincible) {
 			SwitchState<CharacterDie>().SwitchState<CharacterDieDying>();
+			audioPlayer.Play("Death1");
+			audioPlayer.Play("Death2");
 		}
 	}
 	

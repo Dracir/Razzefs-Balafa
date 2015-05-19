@@ -53,6 +53,12 @@ public class CharacterJump : StateLayer {
 		}
 	}
 	
+	public AudioPlayer AudioPlayer {
+		get {
+			return Layer.audioPlayer;
+		}
+	}
+	
 	CharacterMotion Layer {
 		get { return ((CharacterMotion)layer); }
 	}

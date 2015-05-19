@@ -44,6 +44,13 @@ public class InputManager : MonoBehaviourExtended {
     
 	void Awake() {
 		DontDestroyOnLoad(this);
+		instance = this;
+	}
+	
+	void Start() {
+		if (Instance != null && Instance != this) {
+			gameObject.Remove();
+		}
 	}
 	
 	public static void SetController(Wizardz wizard, InputSystem system) {
