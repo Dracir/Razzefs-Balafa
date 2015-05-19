@@ -295,12 +295,12 @@ namespace Magicolo.GeneralTools {
 		}
 
 		public static void UpdateCallbacks(StateMachine machine) {
-			BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+			BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 			int callerMask = 0;
 			
 			foreach (StateLayer layer in machine.GetComponents<StateLayer>()) {
 				foreach (MethodInfo method in layer.GetType().GetMethods(flags)) {
-					if (CallbackNames.Contains(method.Name)) {
+					if (method.DeclaringType != typeof(StateLayer) && CallbackNames.Contains(method.Name)) {
 						callerMask |= 1 << (Array.IndexOf(CallbackNames, method.Name) + 2);
 					}
 				}
@@ -308,7 +308,7 @@ namespace Magicolo.GeneralTools {
 			
 			foreach (State state in machine.GetComponents<State>()) {
 				foreach (MethodInfo method in state.GetType().GetMethods(flags)) {
-					if (CallbackNames.Contains(method.Name)) {
+					if (method.DeclaringType != typeof(State) && CallbackNames.Contains(method.Name)) {
 						callerMask |= 1 << (Array.IndexOf(CallbackNames, method.Name) + 2);
 					}
 				}

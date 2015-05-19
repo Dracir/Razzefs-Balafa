@@ -46,7 +46,11 @@ namespace Magicolo {
 				return d;
 			}
 		
-			return Math.Round(d * (1D / step)) / (1D / step);
+			if (step == 1){
+				return Math.Round(d);
+			}
+		
+			return Math.Round(d * (1D / step)) * step;
 		}
 	
 		public static double Round(this double d) {

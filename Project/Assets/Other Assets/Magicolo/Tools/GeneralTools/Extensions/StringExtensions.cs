@@ -117,6 +117,30 @@ namespace Magicolo {
 			return capitalized;
 		}
 	
+		public static string[] SplitWords(this string s, int minWordLength) {
+			List<string> words = new List<string>();
+			int lastCapitalIndex = 0;
+			int counter = 0;
+			
+			for (int i = 0; i < s.Length; i++) {
+				if (counter >= minWordLength && (char.IsUpper(s[i]) || char.IsNumber(s[i]))) {
+					words.Add(s.Substring(lastCapitalIndex, counter));
+					lastCapitalIndex = i;
+					counter = 0;
+				}
+				
+				counter += 1;
+			}
+			
+			words.Add(s.Substring(lastCapitalIndex));
+			
+			return words.ToArray();
+		}
+
+		public static string[] SplitWords(this string s) {
+			return SplitWords(s, 1);
+		}
+		
 		public static T Capitalized<T>(this T stringArray) where T : IList<string> {
 			for (int i = 0; i < stringArray.Count; i++) {
 				stringArray[i] = stringArray[i].Capitalized();

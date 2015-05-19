@@ -41,7 +41,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 		currentSize = 1;
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
-		castZoneSprite.SetLocalScale(currentSize, Axis.XY);
+		castZoneSprite.SetLocalScale(currentSize, Axes.XY);
 		castZoneSpriteRenderer = castZoneSprite.GetComponent<SpriteRenderer>();
 	}
 
@@ -100,7 +100,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 	
 	void NextSize() {
 		currentSize = (currentSize + 1).Wrap(maxSize + 1);
-		castZoneSprite.SetLocalScale(currentSize, Axis.XY);
+		castZoneSprite.SetLocalScale(currentSize, Axes.XY);
 	}
 	
 	void Cast() {

@@ -36,7 +36,7 @@ public class FreezingRain : MonoBehaviourExtended {
 		set {
 			width = value;
 			halfWidth = width / 2;
-			transform.SetLocalScale(value, Axis.X);
+			transform.SetLocalScale(value, Axes.X);
 		}
 	}
 	

@@ -35,14 +35,14 @@ public class ModelMoveRotating : State {
 		
 		if (Mathf.Abs(currentFacingAngle - targetFacingAngle) > 0.0001F) {
 			currentFacingAngle = Mathf.LerpAngle(modelTransform.localEulerAngles.y, targetFacingAngle, speed * Time.deltaTime);
-			modelTransform.RotateLocalTowards(currentFacingAngle, speed, Axis.Y);
+			modelTransform.RotateLocalTowards(currentFacingAngle, speed, Axes.Y);
 		}
 	}
 	
 	public override void OnFixedUpdate() {
 		if (Mathf.Abs(currentAngle - targetAngle) > 0.0001F) {
 			currentAngle = Mathf.LerpAngle(transform.localEulerAngles.z, targetAngle, speed * Time.fixedDeltaTime);
-			Layer.rigidbody.RotateTowards(currentAngle, speed, Axis.Z);
+			Layer.rigidbody.RotateTowards(currentAngle, speed, Axes.Z);
 		}
 	}
 }

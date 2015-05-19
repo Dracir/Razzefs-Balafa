@@ -22,7 +22,7 @@ namespace Magicolo {
 		}
 	
 		public static bool Intersects(this Rect rect, Rect otherRect) {
-			return !((rect.x > otherRect.xMax) || (rect.xMax < otherRect.x) || (rect.y > otherRect.yMax) || (rect.yMax < otherRect.y));
+			return !((rect.xMin > otherRect.xMax) || (rect.xMax < otherRect.xMin) || (rect.yMin > otherRect.yMax) || (rect.yMax < otherRect.yMin));
 		}
 	
 		public static Rect Intersect(this Rect rect, Rect otherRect) {

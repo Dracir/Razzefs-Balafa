@@ -37,7 +37,7 @@ public class GravityWell : MonoBehaviourExtended {
 	
 	public float Angle {
 		set {
-			transform.SetLocalEulerAngles(value, Axis.Z);
+			transform.SetLocalEulerAngles(value, Axes.Z);
 			areaEffector2D.forceDirection = value;
 			particleSystem.startRotation = (-value + 90) * Mathf.Deg2Rad;
 		}

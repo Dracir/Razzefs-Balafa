@@ -9,7 +9,8 @@ namespace Magicolo.MechanicsTools {
 		public LineOfSightInfo info;
 		public int x;
 		public int y;
-		public float radius;
+		public float minRadius;
+		public float maxRadius;
 		public float strength;
 		public float preFalloff;
 		public float falloff;
@@ -25,13 +26,14 @@ namespace Magicolo.MechanicsTools {
 		public List<LineOfSightInfo>[,] lineInfos;
 		public int childrenCount;
 		
-		public PrimaryLineOfSight(LineOfSightInfo info, int x, int y, float radius, float strength, float preFalloff, float falloff, bool inverted, float[,] alphaMap, float[,] heightMap, List<LineOfSightInfo>[,] lineInfos) {
+		public PrimaryLineOfSight(LineOfSightInfo info, int x, int y, float minRadius, float maxRadius, float strength, float preFalloff, float falloff, bool inverted, float[,] alphaMap, float[,] heightMap, List<LineOfSightInfo>[,] lineInfos) {
 			this.info = info;
 			this.x = x;
 			this.y = y;
-			this.radius = radius;
-			this.halfRadius = radius / 2;
-			this.eighthRadius = radius / 8;
+			this.minRadius = minRadius;
+			this.maxRadius = maxRadius;
+			this.halfRadius = maxRadius / 2;
+			this.eighthRadius = maxRadius / 8;
 			this.strength = strength;
 			this.preFalloff = preFalloff;
 			this.falloff = falloff;
@@ -55,7 +57,7 @@ namespace Magicolo.MechanicsTools {
 				if (point.distance > halfRadius) {
 					alpha *= falloff - (point.distance - halfRadius) / halfRadius;
 				}
-				else if (point.distance > eighthRadius) {
+				else if (point.distance > minRadius) {
 					alpha *= preFalloff;
 				}
 			}

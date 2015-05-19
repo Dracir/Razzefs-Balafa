@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 namespace Magicolo {
@@ -44,8 +45,12 @@ namespace Magicolo {
 			if (step <= 0) {
 				return f;
 			}
+			
+			if (step == 1){
+				return (float)Math.Round((double)f);
+			}
 		
-			return Mathf.Round(f * (1F / step)) / (1F / step);
+			return (float)Math.Round(f * (1D / step)) * step;
 		}
 	
 		public static float Round(this float f) {

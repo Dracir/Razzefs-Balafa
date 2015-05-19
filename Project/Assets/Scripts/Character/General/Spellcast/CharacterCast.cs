@@ -106,7 +106,7 @@ public class CharacterCast : StateLayer, IInputListener {
 	public void UpdateCursor() {
 		targetPosition += currentAxis * sensibility;
 		targetPosition = Camera.main.ClampToScreen((Vector3)targetPosition + transform.position) - transform.position;
-		cursor.TranslateLocalTowards(targetPosition, smooth, Axis.XY);
+		cursor.TranslateLocalTowards(targetPosition, smooth, Axes.XY);
 	}
 
 	public void Enable() {

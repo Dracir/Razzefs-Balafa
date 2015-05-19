@@ -79,7 +79,7 @@ public class SpellRainCastCasting : State, IInputListener {
 	
 	void UpdateCastZone() {
 		currentSize = Mathf.Clamp(endPosition.x - startPosition.x, -maxSize, maxSize);
-		castZoneSprite.SetLocalScale(currentSize, Axis.X);
+		castZoneSprite.SetLocalScale(currentSize, Axes.X);
 		
 		Vector2 pointA = new Vector2(startPosition.x - 0.5F + margin, startPosition.y - 0.5F + margin);
 		Vector2 pointB = new Vector2(startPosition.x + currentSize - 0.5F - margin, startPosition.y + 0.5F - margin);

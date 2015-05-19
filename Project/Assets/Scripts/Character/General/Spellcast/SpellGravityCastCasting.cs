@@ -79,8 +79,8 @@ public class SpellGravityCastCasting : State, IInputListener {
 		currentSize = Mathf.Min(difference.magnitude, maxSize);
 		currentAngle = -difference.Angle();
 		
-		castZone.SetLocalEulerAngles(currentAngle, Axis.Z);
-		castZoneSprite.SetLocalScale(currentSize, Axis.X);
+		castZone.SetLocalEulerAngles(currentAngle, Axes.Z);
+		castZoneSprite.SetLocalScale(currentSize, Axes.X);
 		castZonePortal.gameObject.SetActive(currentSize >= 1);
 	}
 	

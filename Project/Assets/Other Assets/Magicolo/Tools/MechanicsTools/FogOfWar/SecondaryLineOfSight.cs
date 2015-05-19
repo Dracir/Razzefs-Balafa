@@ -32,7 +32,7 @@ namespace Magicolo.MechanicsTools {
 				if (point.distance > parent.halfRadius) {
 					alpha *= parent.falloff - (point.distance - parent.halfRadius) / parent.halfRadius;
 				}
-				else if (point.distance > parent.eighthRadius) {
+				else if (point.distance > parent.minRadius) {
 					alpha *= parent.preFalloff;
 				}
 			}

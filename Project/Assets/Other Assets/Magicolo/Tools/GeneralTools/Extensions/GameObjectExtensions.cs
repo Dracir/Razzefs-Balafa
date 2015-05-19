@@ -6,26 +6,39 @@ using System.Collections;
 namespace Magicolo {
 	public static class GameObjectExtensions {
 
-		public static GameObject[] GetChildren(this GameObject parent) {
-			List<GameObject> children = new List<GameObject>();
+		public static GameObject[] GetParents(this GameObject child) {
+			Transform[] parentsTransform = child.transform.GetParents();
+			GameObject[] parents = new GameObject[parentsTransform.Length];
 			
-			foreach (Transform child in parent.transform.GetChildren()) {
-				children.Add(child.gameObject);
+			for (int i = 0; i < parentsTransform.Length; i++) {
+				parents[i] = parentsTransform[i].gameObject;
 			}
 			
-			return children.ToArray();
+			return parents;
+		}
+		
+		public static GameObject[] GetChildren(this GameObject parent) {
+			Transform[] childrenTransform = parent.transform.GetChildren();
+			GameObject[] children = new GameObject[childrenTransform.Length];
+			
+			for (int i = 0; i < childrenTransform.Length; i++) {
+				children[i] = childrenTransform[i].gameObject;
+			}
+			
+			return children;
 		}
 	
 		public static GameObject[] GetChildrenRecursive(this GameObject parent) {
-			List<GameObject> children = new List<GameObject>();
+			Transform[] childrenTransform = parent.transform.GetChildrenRecursive();
+			GameObject[] children = new GameObject[childrenTransform.Length];
 			
-			foreach (Transform child in parent.transform.GetChildrenRecursive()) {
-				children.Add(child.gameObject);
+			for (int i = 0; i < childrenTransform.Length; i++) {
+				children[i] = childrenTransform[i].gameObject;
 			}
 			
-			return children.ToArray();
+			return children;
 		}
-	
+		
 		public static int GetChildCount(this GameObject parent) {
 			return parent.transform.childCount;
 		}
@@ -82,48 +95,105 @@ namespace Magicolo {
 			return gameObject.transform.GetHierarchyDepth();
 		}
 	
-		public static T FindComponent<T>(this GameObject gameObject) where T : Component {
-			return (T)gameObject.FindComponent(typeof(T));
+		public static T GetComponentInChildrenExclusive<T>(this GameObject gameObject) where T : Component {
+			return (T)gameObject.GetComponentInChildrenExclusive(typeof(T));
 		}
 		
-		public static Component FindComponent(this GameObject gameObject, Type componentType) {
-			Component component = gameObject.GetComponentInParent(componentType);
+		public static Component GetComponentInChildrenExclusive(this GameObject gameObject, Type componentType) {
+			Component component = null;
 			
-			if (component == null) {
-				foreach (GameObject child in gameObject.GetChildrenRecursive()) {
-					component = child.GetComponent(componentType);
+			foreach (GameObject child in gameObject.GetChildren()) {
+				component = child.GetComponentInChildren(componentType);
 				
-					if (component != null) {
-						break;
-					}
+				if (component != null) {
+					break;
 				}
 			}
 			
 			return component;
 		}
 		
-		public static T[] FindComponents<T>(this GameObject gameObject) where T : Component {
+		public static T[] GetComponentsInChildrenExclusive<T>(this GameObject gameObject) where T : Component {
 			List<T> components = new List<T>();
 			
-			components.AddRange(gameObject.GetComponentsInParent<T>());
-			
-			foreach (GameObject child in gameObject.GetChildrenRecursive()) {
-				components.AddRange(child.GetComponents<T>());
+			foreach (GameObject child in gameObject.GetChildren()) {
+				components.AddRange(child.GetComponentsInChildren<T>());
 			}
 			
 			return components.ToArray();
 		}
 		
-		public static Component[] FindComponents(this GameObject gameObject, Type componentType) {
+		public static Component[] GetComponentsInChildrenExclusive(this GameObject gameObject, Type componentType) {
 			List<Component> components = new List<Component>();
 			
-			components.AddRange(gameObject.GetComponentsInParent(componentType));
-			
-			foreach (GameObject child in gameObject.GetChildrenRecursive()) {
-				components.AddRange(child.GetComponents(componentType));
+			foreach (GameObject child in gameObject.GetChildren()) {
+				components.AddRange(child.GetComponentsInChildren(componentType));
 			}
 			
 			return components.ToArray();
+		}
+		
+		public static T GetComponentInParentExclusive<T>(this GameObject gameObject) where T : Component {
+			return (T)gameObject.GetComponentInParentExclusive(typeof(T));
+		}
+		
+		public static Component GetComponentInParentExclusive(this GameObject gameObject, Type componentType) {
+			Transform parent = gameObject.transform.parent;
+			return parent != null ? parent.GetComponentInParent(componentType) : null;
+		}
+		
+		public static T[] GetComponentsInParentExclusive<T>(this GameObject gameObject) where T : Component {
+			Transform parent = gameObject.transform.parent;
+			return parent != null ? parent.GetComponentsInParent<T>() : new T[0];
+		}
+		
+		public static Component[] GetComponentsInParentExclusive(this GameObject gameObject, Type componentType) {
+			Transform parent = gameObject.transform.parent;
+			return parent != null ? parent.GetComponentsInParent(componentType) : new Component[0];
+		}
+		
+		public static T FindComponent<T>(this GameObject gameObject) where T : Component {
+			return (T)gameObject.FindComponent(typeof(T));
+		}
+		
+		public static Component FindComponent(this GameObject gameObject, Type componentType) {
+			Component component = gameObject.GetComponent(componentType);
+		
+			if (component == null) {
+				component = gameObject.GetComponentInParentExclusive(componentType);
+			}
+			
+			if (component == null) {
+				component = gameObject.GetComponentInChildrenExclusive(componentType);
+			}
+			
+			return component;
+		}
+		
+		public static T[] FindComponents<T>(this GameObject gameObject) where T : Component {
+			T[] selfComponents = gameObject.GetComponents<T>();
+			T[] parentsComponents = gameObject.GetComponentsInParentExclusive<T>();
+			T[] childrenComponents = gameObject.GetComponentsInChildrenExclusive<T>();
+			
+			T[] components = new T[selfComponents.Length + parentsComponents.Length + childrenComponents.Length];
+			selfComponents.CopyTo(components, 0);
+			parentsComponents.CopyTo(components, selfComponents.Length);
+			childrenComponents.CopyTo(components, selfComponents.Length + parentsComponents.Length);
+
+			return components;
+		}
+		
+		public static Component[] FindComponents(this GameObject gameObject, Type componentType) {
+			Component[] selfComponents = gameObject.GetComponents(componentType);
+			Component[] parentsComponents = gameObject.GetComponentsInParentExclusive(componentType);
+			Component[] childrenComponents = gameObject.GetComponentsInChildrenExclusive(componentType);
+			
+			Component[] components = new Component[selfComponents.Length + parentsComponents.Length + childrenComponents.Length];
+			selfComponents.CopyTo(components, 0);
+			parentsComponents.CopyTo(components, selfComponents.Length);
+			childrenComponents.CopyTo(components, selfComponents.Length + parentsComponents.Length);
+
+			return components;
 		}
 		
 		public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component {

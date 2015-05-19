@@ -7,14 +7,8 @@ namespace Magicolo {
 	[AddComponentMenu("Magicolo/Smooth/Move")]
 	public class SmoothMove : MonoBehaviourExtended {
 
-		public enum MoveModes {
-			Position,
-			Rotation,
-			Scale,
-		}
-	
-		public MoveModes mode;
-		[Mask(Axis.XYZ)] public Axis axis = Axis.XYZ;
+		[Mask] public TransformModes mode = TransformModes.Position;
+		[Mask(Axes.XYZ)] public Axes axis = Axes.XYZ;
 		public bool culling = true;
 	
 		[Slider(BeforeSeparator = true)] public float randomness;
@@ -35,17 +29,23 @@ namespace Magicolo {
 		}
 		
 		void Update() {
+			if (mode == TransformModes.None || axis == Axes.None) {
+				return;
+			}
+			
 			if (!culling || renderer.isVisible) {
-				switch (mode) {
-					case MoveModes.Position:
-						transform.TranslateLocal(speed, axis);
-						break;
-					case MoveModes.Rotation:
-						transform.RotateLocal(speed, axis);
-						break;
-					case MoveModes.Scale:
-						transform.ScaleLocal(speed, axis);
-						break;
+				if (mode.Contains(TransformModes.Position)) {
+					transform.TranslateLocal(speed, axis);
+				}
+				
+				if (mode.Contains(TransformModes.Rotation)) {
+					transform.RotateLocal(speed, axis);
+					
+				}
+				
+				if (mode.Contains(TransformModes.Scale)) {
+					transform.ScaleLocal(speed, axis);
+					
 				}
 			}
 		}

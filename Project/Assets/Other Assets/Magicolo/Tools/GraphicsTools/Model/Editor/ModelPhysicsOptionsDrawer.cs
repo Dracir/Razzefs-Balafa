@@ -132,7 +132,7 @@ namespace Magicolo.GraphicsTools {
 					boneCollider = bone.AddChild(bone.name + "Collider");
 					boneCollider.transform.SetPosition(model.transform.position);
 					boneCollider.transform.rotation = Quaternion.identity;
-					boneCollider.transform.SetScale(-model.transform.localScale.x, Axis.X);
+					boneCollider.transform.SetScale(-model.transform.localScale.x, Axes.X);
 					
 				}
 				

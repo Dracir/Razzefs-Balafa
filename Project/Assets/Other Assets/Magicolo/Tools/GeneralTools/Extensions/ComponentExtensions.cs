@@ -9,12 +9,52 @@ namespace Magicolo {
 			return component.gameObject.AddComponent<T>();
 		}
 	
+		public static T GetComponentInChildrenExclusive<T>(this Component component) where T : Component {
+			return component.gameObject.GetComponentInChildrenExclusive<T>();
+		}
+		
+		public static Component GetComponentInChildrenExclusive(this Component component, System.Type componentType) {
+			return component.gameObject.GetComponentInChildrenExclusive(componentType);
+		}
+		
+		public static T[] GetComponentsInChildrenExclusive<T>(this Component component) where T : Component {
+			return component.gameObject.GetComponentsInChildrenExclusive<T>();
+		}
+		
+		public static Component[] GetComponentsInChildrenExclusive(this Component component, System.Type componentType) {
+			return component.gameObject.GetComponentsInChildrenExclusive(componentType);
+		}
+		
+		public static T GetComponentInParentExclusive<T>(this Component component) where T : Component {
+			return component.gameObject.GetComponentInParentExclusive<T>();
+		}
+		
+		public static Component GetComponentInParentExclusive(this Component component, System.Type componentType) {
+			return component.gameObject.GetComponentInParentExclusive(componentType);
+		}
+		
+		public static T[] GetComponentsInParentExclusive<T>(this Component component) where T : Component {
+			return component.gameObject.GetComponentsInParentExclusive<T>();
+		}
+		
+		public static Component[] GetComponentsInParentExclusive(this Component component, System.Type componentType) {
+			return component.gameObject.GetComponentsInParentExclusive(componentType);
+		}
+		
 		public static T FindComponent<T>(this Component component) where T : Component {
 			return component.gameObject.FindComponent<T>();
 		}
 		
 		public static Component FindComponent(this Component component, System.Type componentType) {
 			return component.gameObject.FindComponent(componentType);
+		}
+		
+		public static T[] FindComponents<T>(this Component component) where T : Component {
+			return component.gameObject.FindComponents<T>();
+		}
+		
+		public static Component[] FindComponents(this Component component, System.Type componentType) {
+			return component.gameObject.FindComponents(componentType);
 		}
 		
 		public static T GetOrAddComponent<T>(this Component component) where T : Component {
@@ -37,20 +77,37 @@ namespace Magicolo {
 			return depth;
 		}
 	
-		public static GameObject[] GetChildren(this Component parent) {
-			var children = new List<GameObject>();
-			foreach (var child in parent.transform.GetChildren()) {
-				children.Add(child.gameObject);
+		public static GameObject[] GetParents(this Component child) {
+			Transform[] parentsTransform = child.transform.GetParents();
+			GameObject[] parents = new GameObject[parentsTransform.Length];
+			
+			for (int i = 0; i < parentsTransform.Length; i++) {
+				parents[i] = parentsTransform[i].gameObject;
 			}
-			return children.ToArray();
+			
+			return parents;
+		}
+		
+		public static GameObject[] GetChildren(this Component parent) {
+			Transform[] childrenTransform = parent.transform.GetChildren();
+			GameObject[] children = new GameObject[childrenTransform.Length];
+			
+			for (int i = 0; i < childrenTransform.Length; i++) {
+				children[i] = childrenTransform[i].gameObject;
+			}
+			
+			return children;
 		}
 	
 		public static GameObject[] GetChildrenRecursive(this Component parent) {
-			var children = new List<GameObject>();
-			foreach (var child in parent.transform.GetChildrenRecursive()) {
-				children.Add(child.gameObject);
+			Transform[] childrenTransform = parent.transform.GetChildrenRecursive();
+			GameObject[] children = new GameObject[childrenTransform.Length];
+			
+			for (int i = 0; i < childrenTransform.Length; i++) {
+				children[i] = childrenTransform[i].gameObject;
 			}
-			return children.ToArray();
+			
+			return children;
 		}
 	
 		public static int GetChildCount(this Component parent) {

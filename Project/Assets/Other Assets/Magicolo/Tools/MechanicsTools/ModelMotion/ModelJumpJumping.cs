@@ -29,16 +29,16 @@ public class ModelJumpJumping : State, IInputListener {
 		Layer.animator.Play(Layer.jumpingHash, 1);
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.rigidbody.SetVelocity(minHeight, Axis.Y);
+			Layer.rigidbody.SetVelocity(minHeight, Axes.Y);
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.rigidbody.SetVelocity(minHeight, Axis.X);
+			Layer.rigidbody.SetVelocity(minHeight, Axes.X);
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.rigidbody.SetVelocity(-minHeight, Axis.Y);
+			Layer.rigidbody.SetVelocity(-minHeight, Axes.Y);
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.rigidbody.SetVelocity(-minHeight, Axis.X);
+			Layer.rigidbody.SetVelocity(-minHeight, Axes.X);
 		}
 		else {
 			Vector3 velocity = Layer.rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
@@ -62,7 +62,7 @@ public class ModelJumpJumping : State, IInputListener {
 		counter -= Time.fixedDeltaTime;
 		
 		if (counter > 0) {
-			Layer.rigidbody.Accelerate(direction * increment * (counter / duration), Axis.XY);
+			Layer.rigidbody.Accelerate(direction * increment * (counter / duration), Axes.XY);
 		}
 		else {
 			SwitchState("Falling");

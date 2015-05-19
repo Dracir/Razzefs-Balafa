@@ -35,7 +35,7 @@ public class Block : MonoBehaviourExtended, Recyclable {
 		set {
 			size = value;
 			GetComponent<Rigidbody2D>().mass = 2.Pow(size);
-			spriteTransform.SetLocalScale(size, Axis.XY);
+			spriteTransform.SetLocalScale(size, Axes.XY);
 			spriteAnimator.SetFloat(sizeHash, value);
 		}
 	}
