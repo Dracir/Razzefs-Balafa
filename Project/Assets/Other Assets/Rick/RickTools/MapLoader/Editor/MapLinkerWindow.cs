@@ -52,6 +52,8 @@ namespace RickTools.MapLoader{
 			showAnalyseTilset();
 			if(linker.tilesets.Count > 0){
 				CustomEditorBase.Separator();
+				showMapGameObject();
+				CustomEditorBase.Separator();
 				showTilesetSelector();
 				if(selectedTileset != null){
 					scroolPos = EditorGUILayout.BeginScrollView(scroolPos);
@@ -70,7 +72,10 @@ namespace RickTools.MapLoader{
 			
 			
 		}
-	
+
+		void showMapGameObject() {
+			EditorGUILayout.PropertyField(linkerSO.FindProperty("allMapsPrefabsToHave"), new GUIContent("Prefabs"),true);
+		}	
 		
 		
 		void showAnalyseTilset() {
