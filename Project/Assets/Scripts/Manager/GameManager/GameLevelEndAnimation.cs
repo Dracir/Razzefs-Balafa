@@ -22,8 +22,8 @@ public class GameLevelEndAnimation : State {
 	public override void OnEnter() {
 		base.OnEnter();
 		switchingLevel = false;
-		int index = 0;
-		foreach (var player in Layer.playersGameObject) {
+		for (int index = 0; index < 4; index++) {
+			var player = Layer.playersGameObject[index];
 			if(player != null){
 				gotToTheFlag[index] = false;
 				player.GetComponent<CharacterEtheralMoving>().target = endFlagLocation;
@@ -32,7 +32,6 @@ public class GameLevelEndAnimation : State {
 			}else{
 				gotToTheFlag[index] = true;
 			}
-			index++;
 		}
 	}
 

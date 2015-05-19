@@ -34,5 +34,9 @@ public class GamePlaying : State {
 			gameHud.Refresh();
 		}
 		
+		if(Input.GetKeyDown(KeyCode.F8)){
+			Layer.nextMap();
+		}
+		
 	}
 }
