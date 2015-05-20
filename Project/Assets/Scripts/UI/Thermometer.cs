@@ -11,9 +11,12 @@ public class Thermometer : MonoBehaviourExtended {
 	public Slider hotSlider;
 	public Slider preColdSlider;
 	public Slider coldSlider;
+	public Image background;
 	public Image[] imagesToFade = new Image[0];
 	[Min] public float fillSpeed = 2;
 	[Min] public float fillDelay = 0.5F;
+	[Min] public float flashIntensity = 1.5F;
+	[Min] public float flashFadeSpeed = 4;
 	[Min] public float activeAlpha = 0.75F;
 	[Min] public float activeFadeSpeed = 2;
 	[Min] public float activeThreshold = 0.05F;
@@ -21,7 +24,7 @@ public class Thermometer : MonoBehaviourExtended {
 	[Min] public float inactiveFadeSpeed = 0.25F;
 	[Min] public float inactiveDelay = 2;
 	
-	float temperature = 0;
+	float temperature;
 	public float Temperature {
 		get { 
 			return temperature; 
@@ -31,9 +34,11 @@ public class Thermometer : MonoBehaviourExtended {
 			Coldness = Mathf.Abs(Mathf.Clamp(value, -1, 0));
 			
 			if ((value == 0 && temperature != 0) || Mathf.Abs(temperature - value) > activeThreshold) {
+				FlashBackground(value, temperature);
+				
 				temperature = value;
-			
-				UdpateTemperature();
+				
+				UdpateThermometer();
 			}
 		}
 	}
@@ -65,13 +70,35 @@ public class Thermometer : MonoBehaviourExtended {
 			image.DOFade(inactiveAlpha, 0);
 		}
 		
+		background.DOFade(inactiveAlpha, 0);
 		preHotSlider.value = 0;
 		hotSlider.value = 0;
 		preColdSlider.value = 0;
 		coldSlider.value = 0;
 	}
 	
-	void UdpateTemperature() {
+	void FlashBackground(float currentTemperature, float oldTemperature) {
+//		float difference = currentTemperature - oldTemperature;
+		float difference = (preHotSlider.value - hotSlider.value) - (preColdSlider.value - coldSlider.value);
+		float flashDuration = 1F / flashFadeSpeed;
+		
+		if (difference > 0) {
+			Color backgroundColor = new Color(1, 0, 0, difference * flashIntensity);
+				
+			background.DOKill();
+			background.DOColor(backgroundColor, flashDuration);
+			background.DOFade(0, 1F / activeFadeSpeed).SetDelay(flashDuration);
+		}
+		else if (difference < 0) {
+			Color backgroundColor = new Color(0, 0, 1, difference * -flashIntensity);
+				
+			background.DOKill();
+			background.DOColor(backgroundColor, flashDuration);
+			background.DOFade(0, 1F / activeFadeSpeed).SetDelay(flashDuration);
+		}
+	}
+	
+	void UdpateThermometer() {
 		hotSlider.DOKill();
 		hotSlider.DOValue(hotness, 1F / fillSpeed).SetDelay(fillDelay);
 		coldSlider.DOKill();
