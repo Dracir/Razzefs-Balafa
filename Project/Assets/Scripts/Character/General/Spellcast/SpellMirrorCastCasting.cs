@@ -5,12 +5,13 @@ using Magicolo;
 
 public class SpellMirrorCastCasting : State, IInputListener {
 	
-	[Min] public float heatCost = 0.1F;
+	[Min] public float baseHeatCost = 0.05F;
+	[Min] public float heatCostPerCharge = 0.1F;
 	[Min] public float distance = 2;
 	[Min] public float fadeSpeed = 5;
-	public SpellMirrorChargeLevel level1 = new SpellMirrorChargeLevel(15f, 150f, 1f, 0.1f, 0, 0, -1, new Color(0.48f, 0.67f, 0.75f, 1f));
-	public SpellMirrorChargeLevel level2 = new SpellMirrorChargeLevel(25f, 150f, 1.5f, 0.15f, 2, 7, 5, new Color(0.43f, 0.43f, 0.51f, 1f));
-	public SpellMirrorChargeLevel level3 = new SpellMirrorChargeLevel(35f, 150f, 1.5f, 0.2f, 4, 10, 3, new Color(0.28f, 0.28f, 0.28f, 1f));
+	public SpellMirrorChargeLevel level1 = new SpellMirrorChargeLevel(1, 15f, 150f, 1f, 0.1f, 0, 0, -1, new Color(0.48f, 0.67f, 0.75f, 1f));
+	public SpellMirrorChargeLevel level2 = new SpellMirrorChargeLevel(2, 25f, 150f, 1.5f, 0.15f, 1, 7, 5, new Color(0.43f, 0.43f, 0.51f, 1f));
+	public SpellMirrorChargeLevel level3 = new SpellMirrorChargeLevel(3, 35f, 150f, 1.5f, 0.2f, 2, 10, 3, new Color(0.28f, 0.28f, 0.28f, 1f));
 	[Min] public float maxCharge = 5;
 	
 	[Disable] public Vector2 startPosition;
@@ -130,7 +131,7 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		
 		currentCharge = 0;
 		
-		Layer.TemperatureInfo.Temperature += heatCost;
+		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerCharge * currentChargeLevel.level;
 		Layer.AudioPlayer.Play("SpellCastMirror");
 	}
 }
@@ -138,6 +139,7 @@ public class SpellMirrorCastCasting : State, IInputListener {
 
 public class SpellMirrorChargeLevel {
 	
+	public int level;
 	public float minBounce;
 	public float maxBounce;
 	public float velocityInherit;
@@ -147,7 +149,8 @@ public class SpellMirrorChargeLevel {
 	public int bounces;
 	public Color color = Color.white;
 	
-	public SpellMirrorChargeLevel(float minBounce, float maxBounce, float velocityInherit, float hotness, float threshold, float speed, int bounces, Color color) {
+	public SpellMirrorChargeLevel(int level, float minBounce, float maxBounce, float velocityInherit, float hotness, float threshold, float speed, int bounces, Color color) {
+		this.level = level;
 		this.minBounce = minBounce;
 		this.maxBounce = maxBounce;
 		this.velocityInherit = velocityInherit;
