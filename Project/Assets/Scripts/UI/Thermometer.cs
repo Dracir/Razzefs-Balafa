@@ -34,10 +34,7 @@ public class Thermometer : MonoBehaviourExtended {
 			Coldness = Mathf.Abs(Mathf.Clamp(value, -1, 0));
 			
 			if ((value == 0 && temperature != 0) || Mathf.Abs(temperature - value) > activeThreshold) {
-				FlashBackground(value, temperature);
-				
-				temperature = value;
-				
+				FlashBackground();
 				UdpateThermometer();
 			}
 		}
@@ -77,8 +74,7 @@ public class Thermometer : MonoBehaviourExtended {
 		coldSlider.value = 0;
 	}
 	
-	void FlashBackground(float currentTemperature, float oldTemperature) {
-//		float difference = currentTemperature - oldTemperature;
+	void FlashBackground() {
 		float difference = (preHotSlider.value - hotSlider.value) - (preColdSlider.value - coldSlider.value);
 		float flashDuration = 1F / flashFadeSpeed;
 		
