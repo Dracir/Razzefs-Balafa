@@ -32,6 +32,8 @@ public class CharacterTemperature : StateLayer {
 	
 	[Disable] public float initialMoveSpeed;
 	
+	bool hasCollidedThisFrame = false;
+	
 	bool _animatorCached;
 	Animator _animator;
 	public Animator animator { 
@@ -110,7 +112,6 @@ public class CharacterTemperature : StateLayer {
 		base.CollisionEnter2D(collision);
 		CollisionHeat(collision);
 	}
-	bool hasCollidedThisFrame = false;
 	void CollisionHeat(Collision2D collision)
 	{
 		if (collision.gameObject.tag == "MirrorBall" || hasCollidedThisFrame)
