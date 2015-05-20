@@ -82,8 +82,6 @@ public class CharacterStatus : StateLayer {
 	
 	
 	public void Die() {
-		Logger.Log("WHY ME!!!");
-		
 		if (!invincible) {
 			SwitchState<CharacterDie>().SwitchState<CharacterDieDying>();
 			audioPlayer.Play("Death1");

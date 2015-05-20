@@ -119,11 +119,17 @@ public class CharacterTemperature : StateLayer {
 		}
 		
 		float otherMass = collision.rigidbody == null ? 1 : collision.rigidbody.mass;
-		float force = collision.relativeVelocity.magnitude * otherMass;
+		
+		float otherForce = collision.rigidbody == null? 0 : collision.rigidbody.velocity.magnitude * otherMass;
+		float myForce = rigidbody.velocity.magnitude * rigidbody.mass;
+		float force = otherForce + myForce;
+		
+		//float force = collision.relativeVelocity.magnitude * otherMass;
 		
 		if (force < forceTemperatureThreshold) {
 			return;
 		}
+		Debug.Log(string.Format("other force: {0}, my force: {1}, relative velocity: {2}, my velocity: {3}", new string[] { otherForce.ToString(), myForce.ToString(), collision.relativeVelocity.ToString(), rigidbody.velocity.ToString()}));
 		
 		float damages = force / forceToTemperatureRatio;
 		

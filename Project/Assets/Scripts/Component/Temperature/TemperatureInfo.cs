@@ -13,12 +13,17 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		}
 		set {
 			temperature = Mathf.Clamp(value, -1, 1);
+			
+			if (thermometer != null) {
+				thermometer.Temperature = Temperature;
+			}
 		}
 	}
 	
 	[Range(-1, 0)] public float freezingThreshold = -0.5F;
 	[Range(0, 1)] public float blazingThreshold = 0.5F;
 	[Min] public float resistance = 1;
+	public Thermometer thermometer;
 	
 	[Disable] public bool wasFrozen;
 	[Disable] public bool wasBlazed;
@@ -69,6 +74,14 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		get {
 			return 0;
 		}
+	}
+	
+	public void Heat(float amount) {
+		Temperature += amount / resistance;
+	}
+	
+	public void Cool(float amount) {
+		Temperature -= amount / resistance;
 	}
 	
 	void Update() {
