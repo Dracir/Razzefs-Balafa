@@ -108,10 +108,26 @@ public class CharacterTemperature : StateLayer {
 	
 	public override void CollisionEnter2D(Collision2D collision) {
 		base.CollisionEnter2D(collision);
-		
-		temperatureInfo.Temperature += Mathf.Max(collision.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
+		CollisionHeat(collision);
 	}
-	
+	bool hasCollidedThisFrame = false;
+	void CollisionHeat(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "MirrorBall" || hasCollidedThisFrame)
+			return;
+		
+		float otherMass = collision.rigidbody == null? 1 : collision.rigidbody.mass;
+		float force = collision.relativeVelocity.magnitude * otherMass;
+		if (force < forceTemperatureThreshold)
+			return;
+		float damages = force / forceToTemperatureRatio;
+		if (damages > 0){
+			Debug.Log("Damages: " + damages);
+			Debug.Log("velocity before subtraction: " + collision.relativeVelocity.magnitude * otherMass);
+		}
+		temperatureInfo.Temperature += damages; 
+		hasCollidedThisFrame = true;
+	}
 	public void Freeze() {
 		Layer.GetState<CharacterMotion>().Disable();
 		
@@ -126,5 +142,10 @@ public class CharacterTemperature : StateLayer {
 		animator.enabled = true;
 		rigidbody.isKinematic = false;
 		audioPlayer.Play("UnFreeze");
+	}
+	 public override void OnUpdate()
+	{
+		base.OnUpdate();
+		hasCollidedThisFrame = false;
 	}
 }
