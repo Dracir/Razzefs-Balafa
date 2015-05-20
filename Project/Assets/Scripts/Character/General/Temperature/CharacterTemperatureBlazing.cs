@@ -27,7 +27,8 @@ public class CharacterTemperatureBlazing : State {
 		
 		if (Layer.temperatureInfo.wasBlazed) {
 			Layer.temperatureInfo.wasBlazed = false;
-			Layer.temperatureInfo.Temperature = 0;
+			Layer.temperatureInfo.ResetTemperature();
+			
 			SwitchState<CharacterTemperatureIdle>();
 			characterStatus.Die();
 		}

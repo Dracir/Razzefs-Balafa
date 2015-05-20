@@ -84,6 +84,14 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		Temperature -= amount / resistance;
 	}
 	
+	public void ResetTemperature() {
+		temperature = 0;
+		
+		if (thermometer != null) {
+			thermometer.ResetThermometer();
+		}
+	}
+	
 	void Update() {
 		wasFrozen |= Temperature <= -1;
 		wasBlazed |= Temperature >= 1;
