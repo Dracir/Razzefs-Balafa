@@ -160,11 +160,11 @@ namespace Magicolo {
 			Component component = gameObject.GetComponent(componentType);
 		
 			if (component == null) {
-				component = gameObject.GetComponentInParentExclusive(componentType);
+				component = gameObject.GetComponentInChildrenExclusive(componentType);
 			}
 			
 			if (component == null) {
-				component = gameObject.GetComponentInChildrenExclusive(componentType);
+				component = gameObject.GetComponentInParentExclusive(componentType);
 			}
 			
 			return component;

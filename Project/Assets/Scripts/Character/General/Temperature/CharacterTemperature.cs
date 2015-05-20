@@ -36,7 +36,7 @@ public class CharacterTemperature : StateLayer {
 	Animator _animator;
 	public Animator animator { 
 		get { 
-			_animator = _animatorCached ? _animator : GetComponent<Animator>();
+			_animator = _animatorCached ? _animator : this.FindComponent<Animator>();
 			_animatorCached = true;
 			return _animator;
 		}
@@ -46,7 +46,7 @@ public class CharacterTemperature : StateLayer {
 	Rigidbody2D _rigidbody;
 	new public Rigidbody2D rigidbody { 
 		get { 
-			_rigidbody = _rigidbodyCached ? _rigidbody : GetComponent<Rigidbody2D>();
+			_rigidbody = _rigidbodyCached ? _rigidbody : this.FindComponent<Rigidbody2D>();
 			_rigidbodyCached = true;
 			return _rigidbody;
 		}
@@ -56,7 +56,7 @@ public class CharacterTemperature : StateLayer {
 	TemperatureInfo _temperatureInfo;
 	public TemperatureInfo temperatureInfo { 
 		get { 
-			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : GetComponent<TemperatureInfo>();
+			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : this.FindComponent<TemperatureInfo>();
 			_temperatureInfoCached = true;
 			return _temperatureInfo;
 		}
@@ -66,7 +66,7 @@ public class CharacterTemperature : StateLayer {
 	SpriteRenderer _spriteRenderer;
 	public SpriteRenderer spriteRenderer { 
 		get { 
-			_spriteRenderer = _spriteRendererCached ? _spriteRenderer : GetComponentInChildren<SpriteRenderer>();
+			_spriteRenderer = _spriteRendererCached ? _spriteRenderer : this.FindComponent<SpriteRenderer>();
 			_spriteRendererCached = true;
 			return _spriteRenderer;
 		}
@@ -86,7 +86,7 @@ public class CharacterTemperature : StateLayer {
 	AudioPlayer _audioPlayer;
 	public AudioPlayer audioPlayer { 
 		get { 
-			_audioPlayer = _audioPlayerCached ? _audioPlayer : GetComponentInChildren<AudioPlayer>();
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : this.FindComponent<AudioPlayer>();
 			_audioPlayerCached = true;
 			return _audioPlayer;
 		}
@@ -100,6 +100,8 @@ public class CharacterTemperature : StateLayer {
 		get { return ((StateMachine)machine); }
 	}
 	
+	bool hasCollidedThisFrame = false;
+	
 	public override void OnAwake() {
 		base.OnAwake();
 		
@@ -110,24 +112,30 @@ public class CharacterTemperature : StateLayer {
 		base.CollisionEnter2D(collision);
 		CollisionHeat(collision);
 	}
-	bool hasCollidedThisFrame = false;
-	void CollisionHeat(Collision2D collision)
-	{
-		if (collision.gameObject.tag == "MirrorBall" || hasCollidedThisFrame)
+	
+	void CollisionHeat(Collision2D collision) {
+		if (collision.gameObject.tag == "MirrorBall" || hasCollidedThisFrame) {
 			return;
+		}
 		
-		float otherMass = collision.rigidbody == null? 1 : collision.rigidbody.mass;
+		float otherMass = collision.rigidbody == null ? 1 : collision.rigidbody.mass;
 		float force = collision.relativeVelocity.magnitude * otherMass;
-		if (force < forceTemperatureThreshold)
+		
+		if (force < forceTemperatureThreshold) {
 			return;
+		}
+		
 		float damages = force / forceToTemperatureRatio;
-		if (damages > 0){
+		
+		if (damages > 0) {
 			Debug.Log("Damages: " + damages);
 			Debug.Log("velocity before subtraction: " + collision.relativeVelocity.magnitude * otherMass);
 		}
+		
 		temperatureInfo.Temperature += damages; 
 		hasCollidedThisFrame = true;
 	}
+	
 	public void Freeze() {
 		Layer.GetState<CharacterMotion>().Disable();
 		
@@ -143,9 +151,10 @@ public class CharacterTemperature : StateLayer {
 		rigidbody.isKinematic = false;
 		audioPlayer.Play("UnFreeze");
 	}
-	 public override void OnUpdate()
-	{
+	
+	public override void OnUpdate() {
 		base.OnUpdate();
+		
 		hasCollidedThisFrame = false;
 	}
 }

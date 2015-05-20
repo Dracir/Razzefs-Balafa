@@ -57,7 +57,7 @@ public class CharacterCast : StateLayer, IInputListener {
 	AudioPlayer _audioPlayer;
 	public AudioPlayer audioPlayer { 
 		get { 
-			_audioPlayer = _audioPlayerCached ? _audioPlayer : GetComponentInChildren<AudioPlayer>();
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : this.FindComponent<AudioPlayer>();
 			_audioPlayerCached = true;
 			return _audioPlayer;
 		}
