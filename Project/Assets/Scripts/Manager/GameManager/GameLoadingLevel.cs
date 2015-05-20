@@ -68,7 +68,8 @@ public class GameLoadingLevel : State {
 	}
 	void makeCamera() {
 		CameraFollowMany follow = Camera.main.GetOrAddComponent<CameraFollowMany>();
-		follow.SetFollowing(new [] { Layer.playersGameObject[0], Layer.playersGameObject[1], Layer.playersGameObject[2], Layer.playersGameObject[3] });
+		GameObject flag = levelCycle.currentMapGO.FindChildRecursive("EndFlag");
+		follow.SetFollowing(new [] { flag, Layer.playersGameObject[0], Layer.playersGameObject[1], Layer.playersGameObject[2], Layer.playersGameObject[3] });
 	}
 
 	void makeAndSetGametGui() {
