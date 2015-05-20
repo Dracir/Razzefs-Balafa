@@ -48,12 +48,12 @@ public class CharacterStatus : StateLayer {
 		}
 	}
 	
-	bool _AnimatorCached;
+	bool _animatorCached;
 	Animator _animator;
 	public Animator animator { 
 		get { 
-			_animator = _AnimatorCached ? _animator : this.FindComponent<Animator>();
-			_AnimatorCached = true;
+			_animator = _animatorCached ? _animator : this.FindComponent<Animator>();
+			_animatorCached = true;
 			return _animator;
 		}
 	}

@@ -34,6 +34,8 @@ public class Thermometer : MonoBehaviourExtended {
 			Coldness = Mathf.Abs(Mathf.Clamp(value, -1, 0));
 			
 			if ((value == 0 && temperature != 0) || Mathf.Abs(temperature - value) > activeThreshold) {
+				temperature = value;
+				
 				FlashBackground();
 				UdpateThermometer();
 			}
@@ -63,15 +65,7 @@ public class Thermometer : MonoBehaviourExtended {
 	}
 	
 	void Awake() {
-		foreach (Image image in imagesToFade) {
-			image.DOFade(inactiveAlpha, 0);
-		}
-		
-		background.DOFade(inactiveAlpha, 0);
-		preHotSlider.value = 0;
-		hotSlider.value = 0;
-		preColdSlider.value = 0;
-		coldSlider.value = 0;
+		ResetThermometer();
 	}
 	
 	void FlashBackground() {
@@ -105,6 +99,24 @@ public class Thermometer : MonoBehaviourExtended {
 			image.DOFade(activeAlpha, 1F / activeFadeSpeed);
 			image.DOFade(inactiveAlpha, 1F / inactiveFadeSpeed).SetDelay(inactiveDelay);
 		}
+	}
+
+	public void ResetThermometer() {
+		foreach (Image image in imagesToFade) {
+			image.DOKill();
+			image.DOFade(inactiveAlpha, 0);
+		}
+		
+		background.DOKill();
+		background.DOFade(inactiveAlpha, 0);
+		
+		preHotSlider.value = 0;
+		hotSlider.DOKill();
+		hotSlider.DOValue(0, 0);
+		
+		preColdSlider.value = 0;
+		coldSlider.DOKill();
+		coldSlider.DOValue(0, 0);
 	}
 }
 
