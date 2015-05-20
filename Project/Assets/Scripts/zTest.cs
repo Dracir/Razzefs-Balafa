@@ -28,4 +28,8 @@ public class zTest : MonoBehaviourExtended {
 			Logger.Log(InputSystem.GetKeysPressed());
 		}
 	}
+	
+	void OnTransformParentChanged() {
+		Logger.Log("DONT TOUCH ME!!!");
+	}
 }
