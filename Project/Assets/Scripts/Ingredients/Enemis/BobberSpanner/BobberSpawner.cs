@@ -11,12 +11,12 @@ public class BobberSpawner : StateLayer {
 	
 	public float reloadTime;
 	public Pool bobberPool;
-	public TemperatureInfo temperature;
+	[Disable]public TemperatureInfo temperature;
 	
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		temperature = GetComponent<TemperatureInfo>();
 	}
 	
 	public override void OnExit() {

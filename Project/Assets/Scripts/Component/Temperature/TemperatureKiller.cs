@@ -11,7 +11,7 @@ public class TemperatureKiller : MonoBehaviour {
 	[Tooltip("Position to base fireDamage")]
 	public Transform positionTransform; 
 	
-	void Start () {
+	void Awake () {
 		info = GetComponent<TemperatureInfo>();
 	}
 	
