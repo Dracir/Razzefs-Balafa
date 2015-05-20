@@ -6,6 +6,7 @@ using Magicolo;
 public class EnemisFlamesFrozen : State {
 	
 	TemperatureInfo temperatureInfo;
+	public GameObject[] childFire;
 	
     EnemisFlames Layer {
     	get { return (EnemisFlames)layer; }
@@ -22,12 +23,16 @@ public class EnemisFlamesFrozen : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		foreach (var child in childFire) {
+			child.SetActive(false);
+		}
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
-		
+		foreach (var child in childFire) {
+			child.SetActive(true);
+		}
 	}
 	
 	public override void OnUpdate() {
