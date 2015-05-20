@@ -3,9 +3,6 @@ using System.Collections;
 using Magicolo;
 using RickTools.MapLoader;
 
-
-// TODO SET PLAYERS POSITIONS
-
 [System.Serializable]
 public class LevelCycleMenager : MonoBehaviour {
 
