@@ -18,17 +18,13 @@ public class CharacterLive : StateLayer {
 	
 	public override void OnEnter() {
 		base.OnEnter();
+		
 		mapData = Game.instance.MapData;
-		
-	}
-	
-	public override void OnExit() {
-		base.OnExit();
-		
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
+		
 		dieIfOutSideMap();
 		
 	}
