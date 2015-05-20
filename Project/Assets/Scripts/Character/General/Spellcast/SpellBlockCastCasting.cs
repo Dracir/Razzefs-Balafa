@@ -5,7 +5,8 @@ using Magicolo;
 
 public class SpellBlockCastCasting : State, IInputListener {
 	
-	[Min] public float heatCost = 0.1F;
+	[Min] public float baseHeatCost = 0.05F;
+	[Min] public float heatCostPerSize = 0.1F;
 	[Min] public int maxSize = 3;
 	[Min] public int maxArea = 10;
 	[Range(0, 0.5F)] public float margin = 0.25F;
@@ -119,7 +120,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 		
 		activeBlocks.Enqueue(block);
 		
-		Layer.TemperatureInfo.Temperature += heatCost;
+		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerSize * currentSize;
 		Layer.AudioPlayer.Play("SpellCastBlock").ApplyOptions(AudioOption.Pitch(1.25F / currentSize), AudioOption.RandomPitch(0.5F));
 	}
 
