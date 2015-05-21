@@ -120,7 +120,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 		
 		activeBlocks.Enqueue(block);
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerSize * currentSize;
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * currentSize);
 		Layer.AudioPlayer.Play("SpellCastBlock").ApplyOptions(AudioOption.Pitch(1.25F / currentSize), AudioOption.RandomPitch(0.5F));
 	}
 

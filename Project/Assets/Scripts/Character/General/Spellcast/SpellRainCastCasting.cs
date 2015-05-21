@@ -110,7 +110,7 @@ public class SpellRainCastCasting : State, IInputListener {
 		activeRain = (Instantiate(Layer.rain, position, Quaternion.identity) as GameObject).GetComponent<FreezingRain>();
 		activeRain.Width = Mathf.Abs(currentSize);
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerSize * Mathf.Abs(currentSize);
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * Mathf.Abs(currentSize));
 		Layer.AudioPlayer.Play("SpellCastRain");
 	}
 }

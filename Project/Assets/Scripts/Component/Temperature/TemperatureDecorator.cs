@@ -19,7 +19,7 @@ public class TemperatureDecorator : MonoBehaviour {
 	
 		Color targetColor;
 		
-		if(temperatureInfo.IsHot){
+		if(temperatureInfo.IsWarm){
 			targetColor = temperatureInfo.IsBlazing ? Color.red :  new Color(1, 1 - temperatureInfo.Hotness, 1 - temperatureInfo.Coldness);
 		}else{
 			targetColor = temperatureInfo.IsFreezing ? Color.blue : new Color(1 - temperatureInfo.Coldness, 1 - temperatureInfo.Coldness, 1);

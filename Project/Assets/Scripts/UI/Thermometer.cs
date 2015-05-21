@@ -77,15 +77,15 @@ public class Thermometer : MonoBehaviourExtended {
 				
 			background.DOKill();
 			background.DOColor(backgroundColor, flashDuration);
-			background.DOFade(0, 1F / activeFadeSpeed).SetDelay(flashDuration);
 		}
 		else if (difference < 0) {
 			Color backgroundColor = new Color(0, 0, 1, difference * -flashIntensity);
 				
 			background.DOKill();
 			background.DOColor(backgroundColor, flashDuration);
-			background.DOFade(0, 1F / activeFadeSpeed).SetDelay(flashDuration);
 		}
+		
+		background.DOFade(0, 1F / activeFadeSpeed).SetDelay(flashDuration);
 	}
 	
 	void UdpateThermometer() {
@@ -108,7 +108,7 @@ public class Thermometer : MonoBehaviourExtended {
 		}
 		
 		background.DOKill();
-		background.DOFade(inactiveAlpha, 0);
+		background.DOFade(0, 0);
 		
 		preHotSlider.value = 0;
 		hotSlider.DOKill();

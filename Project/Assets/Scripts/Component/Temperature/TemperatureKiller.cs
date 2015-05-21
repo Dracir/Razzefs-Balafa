@@ -35,7 +35,7 @@ public class TemperatureKiller : MonoBehaviour {
 		if(distance <= explosionRadius){
 			float t = distance / explosionRadius;
 			float damage = Interpolation.smoothStep( heatDamage, 0, t);
-			info.Temperature = damage;
+			info.Heat(damage);
 		} 
 	}
 }

@@ -95,7 +95,7 @@ public class SpellGravityCastCasting : State, IInputListener {
 		activeGravityWell.Angle = currentAngle;
 		activeGravityWell.Length = currentSize;
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerSize * currentSize;
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * currentSize);
 		Layer.AudioPlayer.Play("SpellCastGravity");
 	}
 }

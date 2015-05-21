@@ -122,7 +122,7 @@ public class MirrorBall : MonoBehaviourExtended {
 		}
 		
 		if (collisionTemperature != null) {
-			collisionTemperature.Temperature += Hotness;
+			collisionTemperature.Heat(Hotness);
 		}
 		
 		if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) {

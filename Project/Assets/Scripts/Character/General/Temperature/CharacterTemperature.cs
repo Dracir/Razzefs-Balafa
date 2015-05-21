@@ -138,7 +138,7 @@ public class CharacterTemperature : StateLayer {
 			Debug.Log("velocity before subtraction: " + collision.relativeVelocity.magnitude * otherMass);
 		}
 		
-		temperatureInfo.Temperature += damages; 
+		temperatureInfo.Heat(damages);
 		hasCollidedThisFrame = true;
 	}
 	

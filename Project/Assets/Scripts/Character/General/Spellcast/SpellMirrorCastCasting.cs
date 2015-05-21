@@ -131,7 +131,7 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		
 		currentCharge = 0;
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerCharge * currentChargeLevel.level;
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerCharge * currentChargeLevel.level);
 		Layer.AudioPlayer.Play("SpellCastMirror");
 	}
 }
