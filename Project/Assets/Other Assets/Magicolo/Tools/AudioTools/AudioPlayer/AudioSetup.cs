@@ -168,8 +168,11 @@ namespace Magicolo.AudioTools {
 			}
 
 			Source.Play();
-			stopRoutine = StopAfterDelay(Length - FadeOut);
-			StartCoroutine(stopRoutine);
+			
+			if (!Source.loop) {
+				stopRoutine = StopAfterDelay(Length - FadeOut);
+				StartCoroutine(stopRoutine);
+			}
 			
 			if (onPlayCallback != null) {
 				onPlayCallback();

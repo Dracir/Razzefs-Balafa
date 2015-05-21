@@ -11,7 +11,10 @@ public class CharacterCast : StateLayer, IInputListener {
 	
 	[Disable] public Vector2 currentAxis;
 	[Disable] public Vector2 targetPosition;
+	[Disable] public Vector2 cursorOffset;
 	[Disable] public int currentSpell;
+	[Disable] public float minCursorRange;
+	[Disable] public float maxCursorRange;
 	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
@@ -125,8 +128,9 @@ public class CharacterCast : StateLayer, IInputListener {
 	
 	public void UpdateCursor() {
 		targetPosition += currentAxis * sensibility;
-		targetPosition = Camera.main.ClampToScreen((Vector3)targetPosition + transform.position) - transform.position;
-		cursor.TranslateLocalTowards(targetPosition, smooth, Axes.XY);
+		targetPosition = targetPosition.ClampMagnitude(minCursorRange, maxCursorRange);
+		
+		cursor.TranslateLocalTowards(targetPosition + cursorOffset, smooth, Axes.XY);
 	}
 
 	public void Enable() {
