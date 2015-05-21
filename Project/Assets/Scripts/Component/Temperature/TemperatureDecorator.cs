@@ -12,34 +12,35 @@ public class TemperatureDecorator : MonoBehaviour {
 	
 	public GameObject frozenEffectPrefab;
 	public Color frozenColor = Color.blue;
-	[Disable]public ParticleSystem frozenSystem;
+	[Disable]public GameObject frozenSystem;
 	
 	public GameObject blazedEffectPrefab;
 	public Color blazedColor = Color.red;
-	[Disable]public ParticleSystem blazingSystem;
+	[Disable]public GameObject blazingSystem;
 	
-	int currentTemperatureMod = 0;
+	[Disable]public  int currentTemperatureMod = 0;
 	
-	// Use this for initialization
+	
 	void Start () {
 		temperatureInfo = GetComponent<TemperatureInfo>();
 		if(frozenEffectPrefab != null){
-			frozenSystem = GameObjectExtend.createClone(frozenEffectPrefab,transform, transform.position).GetComponent<ParticleSystem>();
+			frozenSystem = GameObjectExtend.createClone(frozenEffectPrefab,transform, transform.position);
+			frozenSystem.transform.Translate(new Vector3(0,0,-0.1f));
+			frozenSystem.gameObject.SetActive(false);
 		}
 		if(blazedEffectPrefab != null){
-			blazingSystem = GameObjectExtend.createClone(blazedEffectPrefab,transform, transform.position).GetComponent<ParticleSystem>();
+			blazingSystem = GameObjectExtend.createClone(blazedEffectPrefab,transform, transform.position);
+			blazingSystem.transform.Translate(new Vector3(0,0,-0.1f));
+			blazingSystem.SetActive(false);
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
 	
-		Color targetColor;
-		
+	void Update () {
 		switch(currentTemperatureMod){
-				case -1 : handleBlazed(); break;
+				case -1 : handleFrozen(); break;
 				case  0 : handleNeutral(); break;
-				case  1 : handleFrozen(); break;
+				case  1 : handleBlazed(); break;
 		}
 	}
 
@@ -72,19 +73,19 @@ public class TemperatureDecorator : MonoBehaviour {
 
 	void switchToBlazed() {
 		currentTemperatureMod = 1;
-		if(blazingSystem != null) blazingSystem.Play();
+		if(blazingSystem != null) blazingSystem.SetActive(true);
 	}
 
 	void switchToFrozen() {
 		currentTemperatureMod = -1;
-		if(frozenSystem != null) frozenSystem.Play();
+		if(frozenSystem != null) frozenSystem.SetActive(true);
 	}
 
 	void switchToNeutral() {
 		currentTemperatureMod = 0;
 		changeColorsTo( Color.white );
-		if(blazingSystem != null) blazingSystem.Stop();
-		if(frozenSystem != null) frozenSystem.Stop();
+		if(blazingSystem != null) blazingSystem.SetActive(false);
+		if(frozenSystem != null) frozenSystem.SetActive(false);
 	}
 	
 	void changeColorsTo(Color color){
