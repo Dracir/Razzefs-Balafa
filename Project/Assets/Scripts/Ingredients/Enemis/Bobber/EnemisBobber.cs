@@ -17,21 +17,21 @@ public class EnemisBobber : StateLayer {
 	public LayerMask damageLayers;
 	public float maxHeatDamage = 1;
 	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : transform.parent.GetComponentInChildren<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
+		}
+	}
+	
 	[HideInInspector] public TemperatureInfo temperature;
 	public ParticleSystem explosion;
 	
 	public override void OnAwake() {
 		base.OnAwake();
 		temperature = GetComponent<TemperatureInfo>();
-	}
-	
-	public override void OnEnter() {
-		base.OnEnter();
-		
-	}
-	
-	public override void OnUpdate() {
-		base.OnUpdate();
-		
 	}
 }

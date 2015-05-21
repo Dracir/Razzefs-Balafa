@@ -5,13 +5,13 @@ using Magicolo;
 
 public class EnemisBobberActivating : State {
 	
-    EnemisBobber Layer {
-    	get { return (EnemisBobber)layer; }
-    }
+	EnemisBobber Layer {
+		get { return (EnemisBobber)layer; }
+	}
     
-    StateMachine Machine {
-    	get { return (StateMachine)machine; }
-    }
+	StateMachine Machine {
+		get { return (StateMachine)machine; }
+	}
 	
 	public float t;
 	
@@ -20,13 +20,18 @@ public class EnemisBobberActivating : State {
 		t = Layer.activationTime;
 		GetComponent<Animator>().SetTrigger("Activating");
 		GetComponent<CircleCollider2D>().enabled = false;
+		
+		Layer.audioPlayer.Play("Scream");
+		Layer.audioPlayer.Play("Beep");
+		Layer.audioPlayer.Play("Beep", 0.15F);
+		Layer.audioPlayer.Play("Beep", 0.3F);
 	}
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
 		t -= Time.deltaTime;
-		if(t<=0){
+		if (t <= 0) {
 			SwitchState<EnemisBobberExplosing>();
 		}
 	}

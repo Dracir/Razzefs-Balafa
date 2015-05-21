@@ -5,33 +5,36 @@ using Magicolo;
 
 public class EnemisBobberExplosing : State {
 	
-    EnemisBobber Layer {
-    	get { return (EnemisBobber)layer; }
-    }
+	EnemisBobber Layer {
+		get { return (EnemisBobber)layer; }
+	}
     
-    StateMachine Machine {
-    	get { return (StateMachine)machine; }
-    }
+	StateMachine Machine {
+		get { return (StateMachine)machine; }
+	}
 	
 	public override void OnEnter() {
+		transform.parent.GetComponent<Collider2D>().enabled = false;
 		GetComponent<SpriteRenderer>().enabled = false;
 		//GetComponent<Animator>().SetTrigger("Activating");
 		
-		Collider2D [] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.damageLayers.value );
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.damageLayers.value);
 		foreach (var otherCollider in colliders) {
 			TemperatureKiller killer = otherCollider.GetComponent<TemperatureKiller>();
-			if(killer){
+			
+			if (killer != null) {
 				killer.fireDamage(transform.parent.position, Layer.maxHeatDamage, Layer.explosionRadius);
 			}
 		}
 		
-		StartCoroutine(DespawnAfterPlaying(Layer.explosion));
+		StartCoroutine(DespawnAfterPlaying(Layer.explosion, Layer.audioPlayer.Play("Explosion1"), Layer.audioPlayer.Play("Explosion2"), Layer.audioPlayer.Play("Explosion3")));
 	}
 	
-	IEnumerator DespawnAfterPlaying(ParticleSystem particleFX) {
+	IEnumerator DespawnAfterPlaying(ParticleSystem particleFX, params AudioSourceItem[] sources) {
 		particleFX.Simulate(0);
 		particleFX.Play();
-		while(particleFX.isPlaying){
+		
+		while (particleFX.isPlaying || !System.Array.TrueForAll(sources, source => source.State == AudioStates.Stopped)) {
 			yield return new WaitForSeconds(0.1f);
 		}
 		

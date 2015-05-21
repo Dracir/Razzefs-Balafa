@@ -23,7 +23,7 @@ public class CharacterTemperatureBlazing : State {
 		
 		Layer.spriteRenderer.color = Layer.spriteRenderer.color.Lerp(new Color(1, 1 - Layer.temperatureInfo.Hotness, 1 - Layer.temperatureInfo.Coldness), Time.deltaTime * Layer.fadeSpeed, Channels.RGB);
 		CharacterStatus characterStatus = (CharacterStatus)Layer.layer.layer;
-		Layer.characterMoveMoving.speed = Layer.initialMoveSpeed * (Layer.temperatureInfo.Hotness + 1);
+		Layer.characterMoveMoving.speed = Layer.initialMoveSpeed + Layer.initialMoveSpeed * Layer.temperatureInfo.Hotness * Layer.heatSpeedBoost;
 		
 		if (Layer.temperatureInfo.wasBlazed) {
 			Layer.temperatureInfo.wasBlazed = false;

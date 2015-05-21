@@ -151,7 +151,10 @@ namespace Magicolo.AudioTools {
 		
 		public void Play() {
 			volumeTweener.Kill();
-			StopCoroutine(stopRoutine);
+			
+			if (stopRoutine != null) {
+				StopCoroutine(stopRoutine);
+			}
 			
 			InitializeSource();
 			
