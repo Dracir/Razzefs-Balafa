@@ -27,7 +27,6 @@ public class GameLoadingLevel : State {
 	
 	public override void OnUpdate() {
 		base.OnUpdate();
-		
 		if (levelCycle.levelLoaded) {
 			findPlayersPosition();
 			makePlayers();
