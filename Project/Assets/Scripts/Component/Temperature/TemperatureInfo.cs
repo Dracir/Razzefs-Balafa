@@ -22,8 +22,8 @@ public class TemperatureInfo : MonoBehaviourExtended {
 	
 	[Range(-1, 0)] public float freezingThreshold = -0.5F;
 	[Range(0, 1)] public float blazingThreshold = 0.5F;
-	[Min] public float resistance = 1;
-	[Min] public float ambientResistance = 1;
+	[Min] public float resistance = 25;
+	[Min] public float ambientResistance = 25;
 	public Thermometer thermometer;
 	
 	[Disable] public bool wasFrozen;
