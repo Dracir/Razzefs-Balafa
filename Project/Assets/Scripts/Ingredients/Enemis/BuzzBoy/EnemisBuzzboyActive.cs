@@ -18,9 +18,17 @@ public class EnemisBuzzboyActive : State {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		if (!Layer.stationnary) {
+		
+		if(Layer.temperature.IsFreezing){
+			SwitchState<EnemisBuzzboyFrozen>();
+			
+		}else if(Layer.temperature.IsBlazing){
+			SwitchState<EnemisBuzzboyBlazed>();
+			
+		}else if (!Layer.stationnary) {
 			transform.parent.position += transform.parent.right * Time.deltaTime * Layer.movementSpeed;
 		}
+			
 		
 	}
 	
@@ -37,5 +45,4 @@ public class EnemisBuzzboyActive : State {
 			transform.parent.Rotate(0, 0, 180);
 		}
 	}
-	
 }
