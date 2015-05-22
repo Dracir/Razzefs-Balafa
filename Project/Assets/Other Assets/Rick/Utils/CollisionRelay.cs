@@ -10,7 +10,7 @@ public class CollisionRelay : MonoBehaviour {
 	
 	
 	void OnCollisionEnter2D(Collision2D collision) {
-		if(sendOnCollisionEnter2D){
+		if(sendOnCollisionEnter2D){		
 			gameObjectToRelayTo.SendMessage("OnCollisionEnter2D",collision);
 		}
 		

@@ -33,8 +33,12 @@ public class TemperatureKiller : MonoBehaviour {
 		
 		float distance = (position - positionTransform.position).magnitude;
 		if(distance <= explosionRadius){
-			float t = (distance / explosionRadius);
-			float damage = heatDamage * t.Pow(3);
+			float t = 1 - (distance / explosionRadius);
+			float damage = heatDamage * t.Pow(1.5f);
+			if(transform.name.Equals("Harry")){
+				Debug.Log(transform.name + " : " + distance + " - " + damage);
+			}
+			
 			info.Heat(damage);
 		} 
 	}
