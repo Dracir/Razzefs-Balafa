@@ -34,9 +34,12 @@ public class Block : MonoBehaviourExtended, Recyclable {
 		}
 		set {
 			size = value;
-			GetComponent<Rigidbody2D>().mass = 2.Pow(size);
-			spriteTransform.SetLocalScale(size, Axis.XY);
+			Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+			rigidbody.mass = 2.Pow(size);
+			spriteTransform.SetLocalScale(size, Axes.XY);
 			spriteAnimator.SetFloat(sizeHash, value);
+			GetComponentInChildren<TemperatureInfo>().resistance *= rigidbody.mass;
+			// Changed this so the 'resistance' becomes resistance/unit squared   -Trav
 		}
 	}
 	

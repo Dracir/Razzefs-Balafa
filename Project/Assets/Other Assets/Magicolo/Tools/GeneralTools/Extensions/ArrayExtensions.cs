@@ -7,6 +7,11 @@ using System.Collections;
 namespace Magicolo {
 	public static class ArrayExtensions {
 
+		public static void Add<T>(this T[] array, T value) {
+			Array.Resize(ref array, array.Length + 1);
+			array[array.Length - 1] = value;
+		}
+		
 		public static bool Contains<T>(this T[] array, T value) {
 			return array.Any(t => object.Equals(t, value));
 		}
@@ -157,7 +162,11 @@ namespace Magicolo {
 			int[] intArray = new int[array.Count];
 			
 			for (int i = 0; i < array.Count; i++) {
-				intArray[i] = array[i].GetHashCode();
+				T element = array[i];
+				
+				if (element is ValueType || element != null) {
+					intArray[i] = array[i].GetHashCode();
+				}
 			}
 			
 			return intArray;
@@ -167,7 +176,11 @@ namespace Magicolo {
 			float[] floatArray = new float[array.Count];
 			
 			for (int i = 0; i < array.Count; i++) {
-				floatArray[i] = (float)(array[i].GetHashCode());
+				T element = array[i];
+				
+				if (element is ValueType || element != null) {
+					floatArray[i] = (float)(array[i].GetHashCode());
+				}
 			}
 			
 			return floatArray;
@@ -177,7 +190,11 @@ namespace Magicolo {
 			double[] doubleArray = new double[array.Count];
 			
 			for (int i = 0; i < array.Count; i++) {
-				doubleArray[i] = (double)(array[i].GetHashCode());
+				T element = array[i];
+				
+				if (element is ValueType || element != null) {
+					doubleArray[i] = (double)(array[i].GetHashCode());
+				}
 			}
 			
 			return doubleArray;
@@ -187,7 +204,11 @@ namespace Magicolo {
 			string[] stringArray = new string[array.Count];
 			
 			for (int i = 0; i < array.Count; i++) {
-				stringArray[i] = array[i].ToString();
+				T element = array[i];
+				
+				if (element is ValueType || element != null) {
+					stringArray[i] = array[i].ToString();
+				}
 			}
 			
 			return stringArray;

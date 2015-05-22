@@ -53,7 +53,7 @@ public class EnemisFlamesAttacking : State {
 		base.TriggerStay2D(collision);
 		TemperatureInfo otherTemperature = collision.GetComponentInChildren<TemperatureInfo>();
 		if(otherTemperature != null){
-			otherTemperature.Temperature += Time.deltaTime * Layer.HeatingPerSecond;
+			otherTemperature.Heat(Time.deltaTime * Layer.HeatingPerSecond);
 		}
 	}
 }

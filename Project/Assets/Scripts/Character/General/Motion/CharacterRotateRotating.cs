@@ -24,7 +24,7 @@ public class CharacterRotateRotating : State {
 		}
 		
 		Layer.currentFacingDirection = Mathf.Lerp(Layer.spriteTransform.localScale.x, Layer.targetFacingDirection, speed * Time.deltaTime);
-		Layer.spriteTransform.ScaleLocalTowards(Layer.currentFacingDirection, speed, Axis.X);
+		Layer.spriteTransform.ScaleLocalTowards(Layer.currentFacingDirection, speed, Axes.X);
 	}
 	
 	public override void OnFixedUpdate() {

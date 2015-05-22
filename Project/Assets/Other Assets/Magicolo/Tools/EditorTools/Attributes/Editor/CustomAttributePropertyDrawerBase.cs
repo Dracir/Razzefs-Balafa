@@ -15,12 +15,15 @@ namespace Magicolo.EditorTools {
 		public bool disableOnPlay;
 		public bool disableOnStop;
 		public string disableBool;
+		public bool beforeSeparator;
+		public bool afterSeparator;
 		public int indent;
 		public int index;
-		public Event currentEvent;
 	
 		public bool drawPrefixLabel = true;
+		public bool isArray;
 		public float scrollbarThreshold;
+		public bool boolDisabled;
 		public GUIContent currentLabel = GUIContent.none;
 	
 		public SerializedProperty arrayProperty;
@@ -44,29 +47,18 @@ namespace Magicolo.EditorTools {
 		public override void Begin(Rect position, SerializedProperty property, GUIContent label) {
 			base.Begin(position, property, label);
 			
-			noFieldLabel = ((CustomAttributeBase)attribute).NoFieldLabel;
-			noPrefixLabel = ((CustomAttributeBase)attribute).NoPrefixLabel;
-			noIndex = ((CustomAttributeBase)attribute).NoIndex;
-			prefixLabel = ((CustomAttributeBase)attribute).PrefixLabel;
-			disableOnPlay = ((CustomAttributeBase)attribute).DisableOnPlay;
-			disableOnStop = ((CustomAttributeBase)attribute).DisableOnStop;
-			disableBool = ((CustomAttributeBase)attribute).DisableBool;
-			indent = ((CustomAttributeBase)attribute).Indent;
-			
 			scrollbarThreshold = Screen.width - position.width > 19 ? 298 : 313;
-			currentEvent = Event.current;
 			
-			bool inverseBool = !string.IsNullOrEmpty(disableBool) && disableBool.StartsWith("!");
-			bool boolDisabled = !string.IsNullOrEmpty(disableBool) && property.serializedObject.targetObject.GetValueFromMemberAtPath<bool>(inverseBool ? disableBool.Substring(1) : disableBool);
-			boolDisabled = inverseBool ? !boolDisabled : boolDisabled;
+			if (beforeSeparator) {
+				position.y += 4;
+				EditorGUI.LabelField(position, GUIContent.none, new GUIStyle("RL DragHandle"));
+				position.y += 12;
+			}
 			
 			EditorGUI.BeginDisabledGroup((Application.isPlaying && disableOnPlay) || (!Application.isPlaying && disableOnStop) || boolDisabled);
 			EditorGUI.indentLevel += indent;
 			
-			if (typeof(IList).IsAssignableFrom(fieldInfo.FieldType)) {
-				index = AttributeUtility.GetIndexFromLabel(label);
-				arrayProperty = property.GetParent();
- 			
+			if (isArray) {
 				if (noIndex) {
 					if (string.IsNullOrEmpty(prefixLabel)) {
 						label.text = label.text.Substring(0, label.text.Length - 2);
@@ -76,7 +68,6 @@ namespace Magicolo.EditorTools {
 					prefixLabel += " " + index;
 				}
 			}
-		
 		
 			if (drawPrefixLabel) {
 				if (!noPrefixLabel) {
@@ -105,14 +96,23 @@ namespace Magicolo.EditorTools {
 			
 			EditorGUI.indentLevel -= indent;
 			EditorGUI.EndDisabledGroup();
+			
+			if (afterSeparator) {
+				currentPosition.y += 4;
+				EditorGUI.LabelField(currentPosition, "", new GUIStyle("RL DragHandle"));
+				currentPosition.y += 12;
+			}
 		}
 	
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-			return EditorGUI.GetPropertyHeight(property, label, true);
+			InitializeParameters(property, label);
+			
+			return EditorGUI.GetPropertyHeight(property, label, true) + (beforeSeparator ? 16 : 0) + (afterSeparator ? 16 : 0);
 		}
 	
 		public PropertyDrawer GetPropertyDrawer(Type propertyAttributeType, params object[] arguments) {
 			Type propertyDrawerType = GetPropertyDrawerMethod.Invoke(null, new object[] { propertyAttributeType }) as Type;
+			
 			if (propertyDrawerType != null) {
 				PropertyAttribute propertyAttribute = Activator.CreateInstance(propertyAttributeType, arguments) as PropertyAttribute;
 				PropertyDrawer propertyDrawer = Activator.CreateInstance(propertyDrawerType) as PropertyDrawer;
@@ -120,11 +120,37 @@ namespace Magicolo.EditorTools {
 				propertyDrawer.SetValueToMember("m_FieldInfo", fieldInfo);
 				return propertyDrawer;
 			}
+			
 			return null;
 		}
 	
 		public PropertyDrawer GetPropertyDrawer(Attribute propertyAttribute, params object[] arguments) {
 			return GetPropertyDrawer(propertyAttribute.GetType(), arguments);
+		}
+		
+		void InitializeParameters(SerializedProperty property, GUIContent label) {
+			CustomAttributeBase customAttribute = (CustomAttributeBase)attribute;
+			
+			noFieldLabel = customAttribute.NoFieldLabel;
+			noPrefixLabel = customAttribute.NoPrefixLabel;
+			noIndex = customAttribute.NoIndex;
+			prefixLabel = customAttribute.PrefixLabel;
+			disableOnPlay = customAttribute.DisableOnPlay;
+			disableOnStop = customAttribute.DisableOnStop;
+			disableBool = customAttribute.DisableBool;
+			indent = customAttribute.Indent;
+			beforeSeparator = customAttribute.BeforeSeparator;
+			afterSeparator = customAttribute.AfterSeparator;
+			isArray = typeof(IList).IsAssignableFrom(fieldInfo.FieldType);
+			
+			if (isArray) {
+				index = AttributeUtility.GetIndexFromLabel(label);
+				arrayProperty = property.GetParent();
+			}
+			
+			bool inverseBool = !string.IsNullOrEmpty(disableBool) && disableBool.StartsWith("!");
+			boolDisabled = !string.IsNullOrEmpty(disableBool) && property.serializedObject.targetObject.GetValueFromMemberAtPath<bool>(inverseBool ? disableBool.Substring(1) : disableBool);
+			boolDisabled = inverseBool ? !boolDisabled : boolDisabled;
 		}
 	}
 }

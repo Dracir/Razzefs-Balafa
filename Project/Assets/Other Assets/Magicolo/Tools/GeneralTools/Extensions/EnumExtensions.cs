@@ -20,7 +20,7 @@ namespace Magicolo {
 		}
 
 		#region Axis
-		public static bool Contains(this Axis axis, Axis otherAxis) {
+		public static bool Contains(this Axes axis, Axes otherAxis) {
 			return (axis & otherAxis) != 0;
 		}
 		#endregion
@@ -28,6 +28,12 @@ namespace Magicolo {
 		#region Channels
 		public static bool Contains(this Channels channels, Channels otherChannels) {
 			return (channels & otherChannels) != 0;
+		}
+		#endregion
+		
+		#region TransformModes
+		public static bool Contains(this TransformModes mode, TransformModes otherMode) {
+			return (mode & otherMode) != 0;
 		}
 		#endregion
 	}

@@ -11,7 +11,7 @@ public class TemperatureKiller : MonoBehaviour {
 	[Tooltip("Position to base fireDamage")]
 	public Transform positionTransform; 
 	
-	void Start () {
+	void Awake () {
 		info = GetComponent<TemperatureInfo>();
 	}
 	
@@ -33,9 +33,9 @@ public class TemperatureKiller : MonoBehaviour {
 		
 		float distance = (position - positionTransform.position).magnitude;
 		if(distance <= explosionRadius){
-			float t = distance / explosionRadius;
-			float damage = Interpolation.smoothStep( heatDamage, 0, t);
-			info.Temperature = damage;
+			float t = (distance / explosionRadius);
+			float damage = heatDamage * t.Pow(3);
+			info.Heat(damage);
 		} 
 	}
 }

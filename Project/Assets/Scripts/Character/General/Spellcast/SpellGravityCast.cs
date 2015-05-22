@@ -5,6 +5,8 @@ using Magicolo;
 
 public class SpellGravityCast : StateLayer {
 	
+	[Min] public float minCursorRange;
+	[Min] public float maxCursorRange = 10;
 	public GameObject castZone;
 	public GameObject gravityWell;
 	
@@ -14,9 +16,63 @@ public class SpellGravityCast : StateLayer {
 		}
 	}
 	
+	public Vector2 CursorOffset {
+		get {
+			return Layer.cursorOffset;
+		}
+		set {
+			Layer.cursorOffset = value;
+		}
+	}
+	
+	public Vector2 WorldCursorTarget {
+		get {
+			return Layer.targetPosition + (Vector2)transform.position;
+		}
+	}
+	
+	public Vector2 LocalCursorTarget {
+		get {
+			return Layer.targetPosition;
+		}
+		set {
+			Layer.targetPosition = value;
+		}
+	}
+	
+	public float MinCursorRange {
+		get {
+			return Layer.minCursorRange;
+		}
+		set {
+			Layer.minCursorRange = value;
+		}
+	}
+	
+	public float MaxCursorRange {
+		get {
+			return Layer.maxCursorRange;
+		}
+		set {
+			Layer.maxCursorRange = value;
+		}
+	}
+	
 	public InputSystem InputSystem { 
 		get { 
 			return Layer.inputSystem;
+		}
+	}
+	
+	public TemperatureInfo TemperatureInfo {
+		get {
+			return Layer.temperatureInfo;
+		}
+	}
+		
+	public AudioPlayer AudioPlayer {
+		get {
+			return Layer.audioPlayer;
 		}
 	}
 	
@@ -28,6 +84,13 @@ public class SpellGravityCast : StateLayer {
 		get { return (StateMachine)machine; }
 	}
 
+	public override void OnEnter() {
+		base.OnEnter();
+		
+		Layer.minCursorRange = minCursorRange;
+		Layer.maxCursorRange = maxCursorRange;
+	}
+	
 	public override void OnExit() {
 		base.OnExit();
 		

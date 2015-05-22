@@ -7,8 +7,6 @@ using Magicolo.MechanicsTools;
 
 // TODO Add reduced update rates option
 // TODO Add heightAgents for dynamic lighting
-// TODO Pool colliders
-// TODO FogAgent should be a MonoBehaviour?
 
 namespace Magicolo {
 	[RequireComponent(typeof(SpriteRenderer))]
@@ -16,8 +14,8 @@ namespace Magicolo {
 	public class FogOfWar : MonoBehaviourExtended {
 
 		[SerializeField, PropertyField(typeof(RangeAttribute), 1, 25)]
-		float definition;
-		public float Definition {
+		int definition;
+		public int Definition {
 			get {
 				return definition;
 			}
@@ -28,7 +26,7 @@ namespace Magicolo {
 					CreateTexture();
 					CreateHeightMap();
 					CreateLineInfos();
-					UpdateFow = true;
+					UpdateFogOfWar = true;
 				}
 			}
 		}
@@ -44,7 +42,7 @@ namespace Magicolo {
 				
 				if (Application.isPlaying) {
 					spriteRenderer.material.renderQueue = renderQueue;
-					UpdateFow = true;
+					UpdateFogOfWar = true;
 				}
 			}
 		}
@@ -60,7 +58,7 @@ namespace Magicolo {
 				
 				if (Application.isPlaying) {
 					CreateTexture();
-					UpdateFow = true;
+					UpdateFogOfWar = true;
 				}
 			}
 		}
@@ -76,13 +74,36 @@ namespace Magicolo {
 				
 				if (Application.isPlaying) {
 					CreateTexture();
-					UpdateFow = true;
+					UpdateFogOfWar = true;
 				}
 			}
 		}
 		
-		[Range(0, 25)] public float fadeSpeed = 5;
-		[Range(0, 1)] public float flicker = 0.05F;
+		[SerializeField, PropertyField(typeof(RangeAttribute), 0, 25)]
+		float fadeSpeed = 5;
+		public float FadeSpeed {
+			get {
+				return fadeSpeed;
+			}
+			set {
+				fadeSpeed = value;
+				
+				UpdateFogOfWar = true;
+			}
+		}
+		
+		[SerializeField, PropertyField(typeof(RangeAttribute), 0, 1)]
+		float flicker;
+		public float Flicker {
+			get {
+				return flicker;
+			}
+			set {
+				flicker = value;
+				
+				UpdateFogOfWar = true;
+			}
+		}
 		
 		[SerializeField, PropertyField]
 		bool inverted;
@@ -95,19 +116,8 @@ namespace Magicolo {
 				
 				if (Application.isPlaying) {
 					CreateTexture();
-					UpdateFow = true;
+					UpdateFogOfWar = true;
 				}
-			}
-		}
-		
-		[SerializeField, PropertyField]
-		bool manualUpdate;
-		public bool ManualUpdate {
-			get {
-				return manualUpdate;
-			}
-			set {
-				manualUpdate = value;
 			}
 		}
 		
@@ -122,7 +132,7 @@ namespace Magicolo {
 				
 				if (Application.isPlaying) {
 					CreateHeightMap();
-					UpdateFow = true;
+					UpdateFogOfWar = true;
 				}
 			}
 		}
@@ -138,25 +148,17 @@ namespace Magicolo {
 			}
 		}
 		
-		[SerializeField, Empty(PrefixLabel = "Agent")] List<FogAgent> fogAgents;
-		
-		bool updateFow = true;
-		public bool UpdateFow {
+		bool updateFogOfWar = true;
+		public bool UpdateFogOfWar {
 			get {
-				return updateFow;
+				return updateFogOfWar;
 			}
 			set {
-				updateFow = value;
-			}
-		}
-		
-		bool _spriteRendererCached;
-		SpriteRenderer _spriteRenderer;
-		public SpriteRenderer spriteRenderer {
-			get {
-				_spriteRenderer = _spriteRendererCached ? _spriteRenderer : GetComponent<SpriteRenderer>();
-				_spriteRendererCached = true;
-				return _spriteRenderer;
+				updateFogOfWar = value;
+				
+				if (updateFogOfWar) {
+					updateCount = 1;
+				}
 			}
 		}
 		
@@ -174,13 +176,24 @@ namespace Magicolo {
 			}
 		}
 		
-		Rect currentArea;
+		Rect area;
 		public Rect Area {
 			get {
-				return currentArea;
+				return area;
 			}
 		}
 		
+		bool _spriteRendererCached;
+		SpriteRenderer _spriteRenderer;
+		public SpriteRenderer spriteRenderer {
+			get {
+				_spriteRenderer = _spriteRendererCached ? _spriteRenderer : GetComponent<SpriteRenderer>();
+				_spriteRendererCached = true;
+				return _spriteRenderer;
+			}
+		}
+		
+		float updateCount;
 		int mapDiagonal;
 		Texture2D texture;
 		Vector3 currentPosition;
@@ -190,45 +203,69 @@ namespace Magicolo {
 		Color[] currentPixels;
 		float[,] currentAlphaMap;
 		float[,] currentHeightMap;
+		Thread updateThread;
+		AutoResetEvent updateWaitHandle;
 		List<LineOfSightInfo>[,] currentLineInfos;
+		
+		List<FogAgent> fogAgents;
+		List<FogAgent> FogAgents {
+			get {
+				fogAgents = fogAgents ?? new List<FogAgent>();
+				return fogAgents;
+			}
+		}
 		
 		void Awake() {
 			spriteRenderer.material.renderQueue = renderQueue;
-			UpdateAgents();
+			UpdateArea();
 			CreateTexture();
 			CreateHeightMap();
 			CreateLineInfos();
 		}
 		
+		void OnEnable() {
+			UpdateFogOfWar = true;
+		}
+		
 		void Start() {
+			UpdateFogOfWar = true;
 			StartCoroutine(UpdateRoutine());
 		}
 		
-		void UpdateAgents() {
+		void OnBecameVisible() {
+			UpdateFogOfWar = true;
+		}
+		
+		void OnBecameInvisible() {
+			UpdateFogOfWar = true;
+		}
+		
+		void UpdateArea() {
+			CleanUp();
+			
 			currentScale = transform.lossyScale;
 			currentPosition = transform.position - currentScale / 2;
-			currentArea = new Rect(currentPosition.x, currentPosition.y, currentScale.x, currentScale.y);
-			
-			foreach (FogAgent fogAgent in fogAgents) {
-				fogAgent.Update();
-			}
-			
+			area = new Rect(currentPosition.x, currentPosition.y, currentScale.x, currentScale.y);
 		}
 		
 		IEnumerator UpdateRoutine() {
 			while (true) {
-				if (!ManualUpdate) {
-					UpdateFow = true;
-				}
+				UpdateArea();
 				
-				if (UpdateFow && enabled && spriteRenderer.isVisible && gameObject.activeInHierarchy) {
+				updateFogOfWar |= updateCount >= 0;
+				
+				if (updateFogOfWar && spriteRenderer.isVisible && gameObject.activeInHierarchy) {
 					deltaTime = Time.deltaTime;
-					flickerAmount = (Random.value * 2 - 1) * flicker;
-						
-					UpdateAgents();
+					flickerAmount = (Random.value * 2 - 1) * Flicker;
 					
-					Thread updateThread = new Thread(new ThreadStart(UpdateFowAsync));
-					updateThread.Start();
+					if (updateThread == null) {
+						updateWaitHandle = new AutoResetEvent(false);
+						updateThread = new Thread(new ThreadStart(UpdateFowAsync));
+						updateThread.Start();
+					}
+					else {
+						updateWaitHandle.Set();
+					}
 					
 					while (updateThread.ThreadState == ThreadState.Running) {
 						yield return new WaitForSeconds(0);
@@ -237,7 +274,8 @@ namespace Magicolo {
 					texture.SetPixels(currentPixels);
 					texture.Apply();
 					
-					UpdateFow = false;
+					updateFogOfWar = false;
+					updateCount -= FadeSpeed * deltaTime;
 				}
 				
 				yield return new WaitForSeconds(0);
@@ -245,31 +283,35 @@ namespace Magicolo {
 		}
 		
 		void UpdateFowAsync() {
-			try {
-				float[,] alphaMap = new float[mapWidth, mapHeight];
+			while (true) {
+				try {
+					float[,] alphaMap = new float[mapWidth, mapHeight];
+					
+					UpdateAlphaMap(currentAlphaMap);
+					UpdateTexture(currentAlphaMap);
+					
+					currentAlphaMap = alphaMap;
+				}
+				catch (System.Exception exception) {
+					Logger.LogError(exception);
+				}
 				
-				UpdateAlphaMap(currentAlphaMap);
-				UpdateTexture(currentAlphaMap);
-				
-				currentAlphaMap = alphaMap;
-			}
-			catch (System.Exception exception) {
-				Logger.LogError(exception);
+				updateWaitHandle.WaitOne();
 			}
 		}
 		
 		void UpdateAlphaMap(float[,] alphaMap) {
-			for (int i = fogAgents.Count - 1; i >= 0; i--) {
-				ModifyFog(alphaMap, fogAgents[i]);
+			for (int i = FogAgents.Count - 1; i >= 0; i--) {
+				ModifyFog(alphaMap, FogAgents[i]);
 			}
 		}
 		
 		void UpdateTexture(float[,] alphaMap) {
 			int xLength = alphaMap.GetLength(0);
 			int yLength = alphaMap.GetLength(1);
-			float adjustedFadeSpeed = fadeSpeed * deltaTime;
+			float adjustedFadeSpeed = FadeSpeed * deltaTime;
 			
-			if (currentPixels.Length == xLength * yLength) {
+			if (currentPixels.Length >= xLength * yLength) {
 				int pixelCounter = 0;
 				
 				for (int y = 0; y < yLength; y++) {
@@ -295,14 +337,17 @@ namespace Magicolo {
 			}
 		}
 		
-		void ModifyFog(float[,] alphaMap, Vector3 position, float sightRadius, float strength, float preFalloff, float falloff, bool invert) {
+		void ModifyFog(float[,] alphaMap, Vector3 position, float minRadius, float maxRadius, float cone, float angle, float strength, float preFalloff, float falloff, bool invert) {
 			Vector2 texturePosition = WorldToPixel(position);
-			float pixelSightRadius = Mathf.Min(sightRadius * Definition, Mathf.Floor(mapDiagonal / 2 - 1));
-			bool insideRect = currentArea.Contains(position);
+			float minPixelRadius = Mathf.Min(minRadius * Definition, Mathf.Floor(mapDiagonal / 2 - 1));
+			float maxPixelRadius = Mathf.Min(maxRadius * Definition, Mathf.Floor(mapDiagonal / 2 - 1));
+			float adjustedPrefalloff = preFalloff.Pow(1F / Definition);
+			float adjustedFalloff = falloff.Pow(1F / Definition);
+			bool insideRect = Area.Contains(position);
 			int x = (int)texturePosition.x.Round();
 			int y = (int)texturePosition.y.Round();
 			
-			if (pixelSightRadius <= 0 || strength <= 0 || fadeSpeed <= 0) {
+			if (maxPixelRadius <= 0 || cone <= 0 || strength <= 0 || FadeSpeed <= 0) {
 				return;
 			}
 			
@@ -311,25 +356,31 @@ namespace Magicolo {
 			}
 			
 			List<LineOfSightInfo> centerInfos = currentLineInfos[0, 0];
+			float halfCone = cone / 2;
 			
 			for (int i = 0; i < centerInfos.Count; i++) {
-				PrimaryLineOfSight lineOfSight = new PrimaryLineOfSight(centerInfos[i], x, y, pixelSightRadius, strength, preFalloff, falloff, invert, alphaMap, currentHeightMap, currentLineInfos);
+				float lineAngle = i * 45;
+				float deltaAngle = Mathf.Abs(Mathf.DeltaAngle(lineAngle, angle));
+				float difference = deltaAngle - halfCone;
+				float adjustedStrength = strength * (1 - Mathf.Clamp01(difference / 45)) * Mathf.Clamp01(halfCone / 45);
 				
-				if (insideRect || (position.x < currentArea.xMin && lineOfSight.info.directionX >= 0) || (position.x > currentArea.xMax && lineOfSight.info.directionX <= 0) || (position.y < currentArea.yMin && lineOfSight.info.directionY >= 0) || (position.y > currentArea.yMax && lineOfSight.info.directionY <= 0)) {
+				PrimaryLineOfSight lineOfSight = new PrimaryLineOfSight(centerInfos[i], x, y, minPixelRadius, maxPixelRadius, adjustedStrength, adjustedPrefalloff, adjustedFalloff, invert, alphaMap, currentHeightMap, currentLineInfos);
+				
+				if (insideRect || (position.x < Area.xMin && lineOfSight.info.directionX >= 0) || (position.x > Area.xMax && lineOfSight.info.directionX <= 0) || (position.y < Area.yMin && lineOfSight.info.directionY >= 0) || (position.y > Area.yMax && lineOfSight.info.directionY <= 0)) {
 					lineOfSight.Complete();
 				}
 			}
 		}
 		
 		void ModifyFog(float[,] alphaMap, FogAgent fogAgent) {
-			if (fogAgent != null && fogAgent.Rect.Intersects(currentArea)) {
-				ModifyFog(alphaMap, fogAgent.Position, fogAgent.SightRadius, fogAgent.Strength, fogAgent.PreFalloff, fogAgent.Falloff, fogAgent.Inverted);
+			if (fogAgent != null && (fogAgent.IsStatic || fogAgent.IsInView)) {
+				ModifyFog(alphaMap, fogAgent.Position, fogAgent.MinRadius, fogAgent.MaxRadius, fogAgent.Cone, fogAgent.Angle, fogAgent.Strength, fogAgent.PreFalloff, fogAgent.Falloff, fogAgent.Inverted);
 			}
 		}
 		
 		void CreateTexture() {
-			mapWidth = (int)(transform.lossyScale.x * Definition).Round();
-			mapHeight = (int)(transform.lossyScale.y * Definition).Round();
+			mapWidth = Mathf.Abs((int)(transform.lossyScale.x * Definition).Round());
+			mapHeight = Mathf.Abs((int)(transform.lossyScale.y * Definition).Round());
 			mapDiagonal = (int)Mathf.Ceil(Mathf.Sqrt(mapWidth * mapWidth + mapHeight * mapHeight)) * 2;
 			currentAlphaMap = new float[mapWidth, mapHeight];
 			texture = new Texture2D(mapWidth, mapHeight, TextureFormat.RGBA32, false);
@@ -353,7 +404,7 @@ namespace Magicolo {
 			if (GenerateHeightMap) {
 				for (int y = 0; y < mapHeight; y++) {
 					for (int x = 0; x < mapWidth; x++) {
-						Vector3 position = new Vector3(currentArea.xMin + (x + 0.5F) / Definition, currentArea.yMin + (y + 0.5F) / Definition, transform.position.z);
+						Vector3 position = new Vector3(Area.xMin + (x + 0.5F) / Definition, Area.yMin + (y + 0.5F) / Definition, transform.position.z);
 						
 						if (Physics.Raycast(position - Vector3.forward * 100, Vector3.forward, Mathf.Infinity, LayerMask)) {
 							currentHeightMap[x, y] = 1;
@@ -398,38 +449,42 @@ namespace Magicolo {
 			}
 		}
 		
+		void CleanUp() {
+			for (int i = FogAgents.Count - 1; i >= 0; i--) {
+				if (FogAgents[i] == null) {
+					FogAgents.RemoveAt(i);
+				}
+			}
+		}
+		
 		public Vector2 WorldToPixel(Vector3 worldPoint) {
 			return new Vector2((worldPoint.x - currentPosition.x) * Definition, (worldPoint.y - currentPosition.y) * Definition);
 		}
 		
 		public void AddAgent(FogAgent agent) {
-			fogAgents.Add(agent);
-			UpdateFow = true;
+			FogAgents.Add(agent);
+			UpdateFogOfWar = true;
 		}
 		
 		public void RemoveAgent(FogAgent agent) {
-			fogAgents.Remove(agent);
-			UpdateFow = true;
+			FogAgents.Remove(agent);
+			UpdateFogOfWar = true;
 		}
 		
 		public void RemoveAgent(int index) {
-			fogAgents.RemoveAt(index);
-			UpdateFow = true;
+			FogAgents.RemoveAt(index);
+			UpdateFogOfWar = true;
 		}
 		
 		public FogAgent[] GetAgents() {
-			return fogAgents.ToArray();
-		}
-		
-		public FogAgent GetAgent(Transform agentTransform) {
-			return GetAgent(fogAgents.FindIndex(agent => agent.Transform = agentTransform));
+			return FogAgents.ToArray();
 		}
 		
 		public FogAgent GetAgent(int index) {
 			FogAgent agent = null;
 			
 			try {
-				agent = fogAgents[index];
+				agent = FogAgents[index];
 			}
 			catch {
 				Logger.LogError(string.Format("Fog agent at index {0} could not be found.", index));
@@ -440,7 +495,7 @@ namespace Magicolo {
 		
 		public void SetAgents(FogAgent[] fogAgents) {
 			this.fogAgents = new List<FogAgent>(fogAgents);
-			UpdateFow = true;
+			UpdateFogOfWar = true;
 		}
 		
 		public Color GetColor(Vector3 worldPoint) {
@@ -477,7 +532,7 @@ namespace Magicolo {
 		}
 		
 		public void SetAlpha(Vector3 worldPoint, float alpha) {
-			if (currentArea.Contains(worldPoint)) {
+			if (Area.Contains(worldPoint)) {
 				SetAlpha(WorldToPixel(worldPoint), alpha);
 			}
 		}
@@ -495,7 +550,7 @@ namespace Magicolo {
 		}
 		
 		public void SetHeight(Vector3 worldPoint, float height) {
-			if (currentArea.Contains(worldPoint)) {
+			if (Area.Contains(worldPoint)) {
 				SetHeight(WorldToPixel(worldPoint), height);
 			}
 		}
@@ -509,7 +564,7 @@ namespace Magicolo {
 		}
 		
 		public bool IsFogged(Vector3 worldPoint) {
-			return currentArea.Contains(worldPoint) && IsFogged(WorldToPixel(worldPoint), 0);
+			return Area.Contains(worldPoint) && IsFogged(WorldToPixel(worldPoint), 0);
 		}
 		
 		public bool IsFogged(Vector2 pixel) {
@@ -517,7 +572,7 @@ namespace Magicolo {
 		}
 		
 		public bool IsFogged(Vector3 worldPoint, float alphaThreshold) {
-			return currentArea.Contains(worldPoint) && IsFogged(WorldToPixel(worldPoint), alphaThreshold);
+			return Area.Contains(worldPoint) && IsFogged(WorldToPixel(worldPoint), alphaThreshold);
 		}
 		
 		public bool IsFogged(Vector2 pixel, float alphaThreshold) {

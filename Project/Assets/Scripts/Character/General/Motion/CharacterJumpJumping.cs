@@ -30,16 +30,16 @@ public class CharacterJumpJumping : State, IInputListener {
 		Layer.Animator.Play(Layer.JumpingHash, 1);
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.Rigidbody.SetVelocity(minHeight, Axis.Y);
+			Layer.Rigidbody.SetVelocity(minHeight, Axes.Y);
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.Rigidbody.SetVelocity(minHeight, Axis.X);
+			Layer.Rigidbody.SetVelocity(minHeight, Axes.X);
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.Rigidbody.SetVelocity(-minHeight, Axis.Y);
+			Layer.Rigidbody.SetVelocity(-minHeight, Axes.Y);
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.Rigidbody.SetVelocity(-minHeight, Axis.X);
+			Layer.Rigidbody.SetVelocity(-minHeight, Axes.X);
 		}
 		else {
 			Vector3 velocity = Layer.Rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);
@@ -48,6 +48,8 @@ public class CharacterJumpJumping : State, IInputListener {
 			
 			Layer.Rigidbody.SetVelocity(velocity);
 		}
+		
+		Layer.AudioPlayer.Play("Jump");
 	}
 	
 	public override void OnExit() {
@@ -64,7 +66,7 @@ public class CharacterJumpJumping : State, IInputListener {
 		counter -= Time.fixedDeltaTime;
 		
 		if (counter > 0) {
-			Layer.Rigidbody.Accelerate(direction * increment * (counter / duration), Axis.XY);
+			Layer.Rigidbody.Accelerate(direction * increment * (counter / duration), Axes.XY);
 		}
 		else {
 			SwitchState("Falling");

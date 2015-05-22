@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-namespace FMG
-{
+using UnityEngine.Audio;
+namespace FMG {
 	public class OptionsMenu : MonoBehaviour {
 		public Text graphicsText;
 		public string graphicsPrefix = "Graphics: ";
@@ -13,53 +13,49 @@ namespace FMG
 		public string audioOff = "Off";
 
 		public string audioOn = "On";
-
-		public void Awake()
-		{
+		
+		public void OnEnable() {
+			
+		}
+		
+		public void Awake() {
 			//graphicsText.text = graphicsPrefix + QualitySettings.names[QualitySettings.GetQualityLevel()];
 			//updateAudioText();
 		}
 
-		void updateAudioText()
-		{
+		void updateAudioText() {
 			float currentVol = Constants.getAudioVolume();
-			if(currentVol==0)
-			{
-				audioText.text = audioPrefix  + audioOff;
-			}else{
-				audioText.text = audioPrefix  + audioOn;
+			if (currentVol == 0) {
+				audioText.text = audioPrefix + audioOff;
+			}
+			else {
+				audioText.text = audioPrefix + audioOn;
 				
 			}
 
 		}
-		public void onCommand(string str)
-		{
-			if(str.Equals("DeleteData"))
-			{
+		public void onCommand(string str) {
+			if (str.Equals("DeleteData")) {
 				PlayerPrefs.DeleteAll();
 			}
-			if(str.Equals("QualityNext"))
-			{
+			if (str.Equals("QualityNext")) {
 				QualitySettings.IncreaseLevel();
 				graphicsText.text = graphicsPrefix + QualitySettings.names[QualitySettings.GetQualityLevel()];
 			}
-			if(str.Equals("QualityPrev"))
-			{
+			if (str.Equals("QualityPrev")) {
 				QualitySettings.DecreaseLevel();
 				graphicsText.text = graphicsPrefix + QualitySettings.names[QualitySettings.GetQualityLevel()];
 			}
-			if(str.Equals("AudioToggle"))
-			{
-				float currentVol =  Constants.getAudioVolume();
-				if(currentVol==0)
-				{
+			if (str.Equals("AudioToggle")) {
+				float currentVol = Constants.getAudioVolume();
+				if (currentVol == 0) {
 					Constants.setAudioVolume(1);
-				}else{
+				}
+				else {
 					Constants.setAudioVolume(0);
 				}
 				AudioVolume[] audioVolumes = (AudioVolume[])GameObject.FindObjectsOfType(typeof(AudioVolume));
-				for(int i=0; i<audioVolumes.Length; i++)
-				{
+				for (int i = 0; i < audioVolumes.Length; i++) {
 					audioVolumes[i].updateVolume();
 				}
 
@@ -67,13 +63,15 @@ namespace FMG
 			}
 		}
 
-		public void ChangeSFXVolume (float input) {
-			VolumeControl.sfxVolume = input;
-		}
-		public void ChangeMusicVolume (float input) {
+		public void ChangeMusicVolume(float input) {
 			VolumeControl.musicVolume = input;
 		}
-		public void ChangeVoiceVolume (float input) {
+		
+		public void ChangeSFXVolume(float input) {
+			VolumeControl.sfxVolume = input;
+		}
+		
+		public void ChangeVoiceVolume(float input) {
 			VolumeControl.voiceVolume = input;
 		}
 	}

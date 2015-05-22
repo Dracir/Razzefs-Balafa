@@ -78,7 +78,7 @@ public class Raindrop : MonoBehaviourExtended {
 		MirrorBall mirror = hit.GetComponent<MirrorBall>();
 	
 		if (temperature != null) {
-			temperature.Temperature -= FreezingRain.Coldness;
+			temperature.Chill(FreezingRain.Coldness);
 		}
 	
 		if (effector == null && mirror == null) {

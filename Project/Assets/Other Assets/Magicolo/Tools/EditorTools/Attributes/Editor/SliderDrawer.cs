@@ -15,7 +15,9 @@ namespace Magicolo.EditorTools {
 		
 			EditorGUI.BeginChangeCheck();
 			
+			currentPosition.height = 16;
 			object value = property.GetValue();
+			
 			if (value is int) {
 				property.SetValue(EditorGUI.IntSlider(currentPosition, label, (int)value, (int)min, (int)max));
 			}
@@ -34,10 +36,6 @@ namespace Magicolo.EditorTools {
 			}
 			
 			End();
-		}
-		
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-			return 16;
 		}
 	}
 }

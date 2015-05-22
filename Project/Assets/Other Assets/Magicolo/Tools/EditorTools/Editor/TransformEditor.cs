@@ -67,9 +67,9 @@ namespace Magicolo.EditorTools {
 				if (pLocalPosition != t.localPosition) {
 					Vector3 parentScale = t.parent == null ? Vector3.one : t.parent.lossyScale;
 						
-					t.localPosition = t.localPosition.Round(moveX / parentScale.x, Axis.X);
-					t.localPosition = t.localPosition.Round(moveY / parentScale.y, Axis.Y);
-					t.localPosition = t.localPosition.Round(moveZ / parentScale.z, Axis.Z);
+					t.localPosition = t.localPosition.Round(moveX / parentScale.x, Axes.X);
+					t.localPosition = t.localPosition.Round(moveY / parentScale.y, Axes.Y);
+					t.localPosition = t.localPosition.Round(moveZ / parentScale.z, Axes.Z);
 					pLocalPosition = t.localPosition;
 				}
 				if (pLocalRotation != t.localEulerAngles) {
@@ -226,9 +226,9 @@ namespace Magicolo.EditorTools {
 					localEulerAngles.x = localEulerAngles.x.Round(roundValue.x) % 360;
 				}
 				
-				transform.SetLocalEulerAngles(localEulerAngles, Axis.X);
+				transform.SetLocalEulerAngles(localEulerAngles, Axes.X);
 				foreach (Transform t in Selection.transforms) {
-					t.SetLocalEulerAngles(transform.localEulerAngles, Axis.X);
+					t.SetLocalEulerAngles(transform.localEulerAngles, Axes.X);
 					EditorUtility.SetDirty(t);
 				}
 			}
@@ -245,9 +245,9 @@ namespace Magicolo.EditorTools {
 					localEulerAngles.y = localEulerAngles.y.Round(roundValue.y) % 360;
 				}
 				
-				transform.SetLocalEulerAngles(localEulerAngles, Axis.Y);
+				transform.SetLocalEulerAngles(localEulerAngles, Axes.Y);
 				foreach (Transform t in Selection.transforms) {
-					t.SetLocalEulerAngles(transform.localEulerAngles, Axis.Y);
+					t.SetLocalEulerAngles(transform.localEulerAngles, Axes.Y);
 					EditorUtility.SetDirty(t);
 				}
 			}
@@ -264,9 +264,9 @@ namespace Magicolo.EditorTools {
 					localEulerAngles.z = localEulerAngles.z.Round(roundValue.z) % 360;
 				}
 				
-				transform.SetLocalEulerAngles(localEulerAngles, Axis.Z);
+				transform.SetLocalEulerAngles(localEulerAngles, Axes.Z);
 				foreach (Transform t in Selection.transforms) {
-					t.SetLocalEulerAngles(transform.localEulerAngles, Axis.Z);
+					t.SetLocalEulerAngles(transform.localEulerAngles, Axes.Z);
 					EditorUtility.SetDirty(t);
 				}
 			}

@@ -7,6 +7,7 @@ public class zTest : MonoBehaviourExtended {
 
 	[Button("Test", "Test", NoPrefixLabel = true)] public bool test;
 	void Test() {
+		
 	}
 	
 	[Toggle] public bool logPressedKeys;
@@ -21,11 +22,14 @@ public class zTest : MonoBehaviourExtended {
 			return _inputSystem;
 		}
 	}
-	
+
 	void Update() {
 		if (logPressedKeys) {
 			Logger.Log(InputSystem.GetKeysPressed());
 		}
 	}
+	
+	void OnTransformParentChanged() {
+		Logger.Log("DONT TOUCH ME!!!");
+	}
 }
-

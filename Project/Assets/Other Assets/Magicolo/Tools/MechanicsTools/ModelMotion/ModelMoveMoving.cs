@@ -26,16 +26,16 @@ public class ModelMoveMoving : State {
 		currentSpeed = Layer.HorizontalAxis.PowSign(inputPower) * speed;
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.rigidbody.AccelerateTowards(currentSpeed, acceleration, Axis.X);
+			Layer.rigidbody.AccelerateTowards(currentSpeed, acceleration, Axes.X);
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.rigidbody.AccelerateTowards(-currentSpeed, acceleration, Axis.Y);
+			Layer.rigidbody.AccelerateTowards(-currentSpeed, acceleration, Axes.Y);
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.rigidbody.AccelerateTowards(-currentSpeed, acceleration, Axis.X);
+			Layer.rigidbody.AccelerateTowards(-currentSpeed, acceleration, Axes.X);
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.rigidbody.AccelerateTowards(currentSpeed, acceleration, Axis.Y);
+			Layer.rigidbody.AccelerateTowards(currentSpeed, acceleration, Axes.Y);
 		}
 		else {
 			Vector3 velocity = Layer.rigidbody.velocity.Rotate(-Layer.Gravity.Angle + 90);

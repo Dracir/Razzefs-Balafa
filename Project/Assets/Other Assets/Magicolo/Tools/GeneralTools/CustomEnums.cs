@@ -3,7 +3,7 @@
 namespace Magicolo {
 
 	[Flags]
-	public enum Axis {
+	public enum Axes {
 		None = 0,
 		X = 1,
 		Y = 2,
@@ -41,10 +41,67 @@ namespace Magicolo {
 		GBA = 14,
 		RGBA = 15
 	}
-		
+
+	[Flags]
+	public enum TransformModes {
+		None = 0,
+		Position = 1,
+		Rotation = 2,
+		Scale = 4,
+		PositionRotation = 3,
+		PositionScale = 5,
+		RotationScale = 6,
+		PositionRotationScale = 7
+	}
+
+
 	public enum InterpolationModes {
 		Quadratic,
 		Linear
+	}
+	
+	public enum InterpolationTypes {
+		Linear,
+		QuadEaseOut,
+		QuadEaseIn,
+		QuadEaseInOut,
+		QuadEaseOutIn,
+		ExpoEaseOut,
+		ExpoEaseIn,
+		ExpoEaseInOut,
+		ExpoEaseOutIn,
+		CubicEaseOut,
+		CubicEaseIn,
+		CubicEaseInOut,
+		CubicEaseOutIn,
+		QuartEaseOut,
+		QuartEaseIn,
+		QuartEaseInOut,
+		QuartEaseOutIn,
+		QuintEaseOut,
+		QuintEaseIn,
+		QuintEaseInOut,
+		QuintEaseOutIn,
+		CircEaseOut,
+		CircEaseIn,
+		CircEaseInOut,
+		CircEaseOutIn,
+		SineEaseOut,
+		SineEaseIn,
+		SineEaseInOut,
+		SineEaseOutIn,
+		ElasticEaseOut,
+		ElasticEaseIn,
+		ElasticEaseInOut,
+		ElasticEaseOutIn,
+		BounceEaseOut,
+		BounceEaseIn,
+		BounceEaseInOut,
+		BounceEaseOutIn,
+		BackEaseOut,
+		BackEaseIn,
+		BackEaseInOut,
+		BackEaseOutIn
 	}
 	
 	public enum ControllerTypes {

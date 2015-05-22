@@ -5,6 +5,8 @@ using Magicolo;
 
 public class SpellBlockCastCasting : State, IInputListener {
 	
+	[Min] public float baseHeatCost = 0.05F;
+	[Min] public float heatCostPerSize = 0.1F;
 	[Min] public int maxSize = 3;
 	[Min] public int maxArea = 10;
 	[Range(0, 0.5F)] public float margin = 0.25F;
@@ -21,7 +23,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 	[Disable] public Transform castZoneSprite;
 	[Disable] public SpriteRenderer castZoneSpriteRenderer;
 	
-	Queue<Block> activeBlocks = new Queue<Block>();
+	readonly Queue<Block> activeBlocks = new Queue<Block>();
 	
 	SpellBlockCast Layer {
 		get { return (SpellBlockCast)layer; }
@@ -36,12 +38,12 @@ public class SpellBlockCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
-		startPosition = Layer.Cursor.position.Round();
+		startPosition = Layer.WorldCursorTarget.Round();
 		
 		currentSize = 1;
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
-		castZoneSprite.SetLocalScale(currentSize, Axis.XY);
+		castZoneSprite.SetLocalScale(currentSize, Axes.XY);
 		castZoneSpriteRenderer = castZoneSprite.GetComponent<SpriteRenderer>();
 	}
 
@@ -57,7 +59,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		endPosition = Layer.Cursor.position.Round();
+		endPosition = Layer.WorldCursorTarget.Round();
 		
 		UpdateCastZone();
 	}
@@ -100,7 +102,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 	
 	void NextSize() {
 		currentSize = (currentSize + 1).Wrap(maxSize + 1);
-		castZoneSprite.SetLocalScale(currentSize, Axis.XY);
+		castZoneSprite.SetLocalScale(currentSize, Axes.XY);
 	}
 	
 	void Cast() {
@@ -117,6 +119,9 @@ public class SpellBlockCastCasting : State, IInputListener {
 		block.Size = currentSize;
 		
 		activeBlocks.Enqueue(block);
+		
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * currentSize);
+		Layer.AudioPlayer.Play("SpellCastBlock").ApplyOptions(AudioOption.Pitch(1.25F / currentSize), AudioOption.RandomPitch(0.5F));
 	}
 
 	int GetCurrentArea() {

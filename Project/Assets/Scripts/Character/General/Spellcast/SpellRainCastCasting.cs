@@ -5,7 +5,9 @@ using Magicolo;
 
 public class SpellRainCastCasting : State, IInputListener {
 	
-	public int maxSize = 6;
+	[Min] public float baseHeatCost = 0.05F;
+	[Min] public float heatCostPerSize = 0.05F;
+	[Min] public int maxSize = 6;
 	[Range(0, 0.5F)] public float margin = 0.25F;
 	public LayerMask layerMask;
 	public Color validColor = new Color(0, 1, 0, 0.125F);
@@ -33,7 +35,11 @@ public class SpellRainCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
-		startPosition = Layer.Cursor.position.Round();
+		Layer.MaxCursorRange = maxSize;
+		Layer.CursorOffset = Layer.LocalCursorTarget;
+		Layer.LocalCursorTarget = Vector2.zero;
+		
+		startPosition = (Layer.WorldCursorTarget + Layer.CursorOffset).Round();
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
@@ -50,6 +56,9 @@ public class SpellRainCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
+		Layer.MaxCursorRange = Layer.maxCursorRange;
+		Layer.LocalCursorTarget = Layer.CursorOffset;
+		Layer.CursorOffset = Vector2.zero;
 		
 		castZone.gameObject.Remove();
 	}
@@ -57,7 +66,7 @@ public class SpellRainCastCasting : State, IInputListener {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		endPosition = Layer.Cursor.position.Round();
+		endPosition = (Layer.WorldCursorTarget + Layer.CursorOffset).Round();
 		
 		UpdateCastZone();
 	}
@@ -79,7 +88,7 @@ public class SpellRainCastCasting : State, IInputListener {
 	
 	void UpdateCastZone() {
 		currentSize = Mathf.Clamp(endPosition.x - startPosition.x, -maxSize, maxSize);
-		castZoneSprite.SetLocalScale(currentSize, Axis.X);
+		castZoneSprite.SetLocalScale(currentSize, Axes.X);
 		
 		Vector2 pointA = new Vector2(startPosition.x - 0.5F + margin, startPosition.y - 0.5F + margin);
 		Vector2 pointB = new Vector2(startPosition.x + currentSize - 0.5F - margin, startPosition.y + 0.5F - margin);
@@ -107,5 +116,8 @@ public class SpellRainCastCasting : State, IInputListener {
 		
 		activeRain = (Instantiate(Layer.rain, position, Quaternion.identity) as GameObject).GetComponent<FreezingRain>();
 		activeRain.Width = Mathf.Abs(currentSize);
+		
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * Mathf.Abs(currentSize));
+		Layer.AudioPlayer.Play("SpellCastRain");
 	}
 }

@@ -6,11 +6,11 @@ using Magicolo;
 public class CharacterTemperature : StateLayer {
 	
 	[Min] public float fadeSpeed = 3;
-	[Min(0.001F)] public float frozenMassModifier = 10;
+	[Min] public float heatSpeedBoost = 4;
 
 	//To calculate temperature increase from collisions, we find the force of collision, subtract the forceTemperatureThreshold (to a minimum of 0), then divide by forceToTemperatureRatio.
-	public float forceTemperatureThreshold = 25f;
-	public float forceToTemperatureRatio = 75f;
+	public float forceTemperatureThreshold = 25;
+	public float forceToTemperatureRatio = 75;
 
 	[SerializeField, Disable] bool frozen;
 	public bool Frozen {
@@ -37,7 +37,7 @@ public class CharacterTemperature : StateLayer {
 	Animator _animator;
 	public Animator animator { 
 		get { 
-			_animator = _animatorCached ? _animator : GetComponent<Animator>();
+			_animator = _animatorCached ? _animator : this.FindComponent<Animator>();
 			_animatorCached = true;
 			return _animator;
 		}
@@ -47,7 +47,7 @@ public class CharacterTemperature : StateLayer {
 	Rigidbody2D _rigidbody;
 	new public Rigidbody2D rigidbody { 
 		get { 
-			_rigidbody = _rigidbodyCached ? _rigidbody : GetComponent<Rigidbody2D>();
+			_rigidbody = _rigidbodyCached ? _rigidbody : this.FindComponent<Rigidbody2D>();
 			_rigidbodyCached = true;
 			return _rigidbody;
 		}
@@ -57,7 +57,7 @@ public class CharacterTemperature : StateLayer {
 	TemperatureInfo _temperatureInfo;
 	public TemperatureInfo temperatureInfo { 
 		get { 
-			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : GetComponent<TemperatureInfo>();
+			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : this.FindComponent<TemperatureInfo>();
 			_temperatureInfoCached = true;
 			return _temperatureInfo;
 		}
@@ -67,7 +67,7 @@ public class CharacterTemperature : StateLayer {
 	SpriteRenderer _spriteRenderer;
 	public SpriteRenderer spriteRenderer { 
 		get { 
-			_spriteRenderer = _spriteRendererCached ? _spriteRenderer : GetComponentInChildren<SpriteRenderer>();
+			_spriteRenderer = _spriteRendererCached ? _spriteRenderer : this.FindComponent<SpriteRenderer>();
 			_spriteRendererCached = true;
 			return _spriteRenderer;
 		}
@@ -83,6 +83,16 @@ public class CharacterTemperature : StateLayer {
 		}
 	}
 	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : this.FindComponent<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
+		}
+	}
+	
 	CharacterLive Layer {
 		get { return ((CharacterLive)layer); }
 	}
@@ -90,6 +100,8 @@ public class CharacterTemperature : StateLayer {
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}
+	
+	bool hasCollidedThisFrame = false;
 	
 	public override void OnAwake() {
 		base.OnAwake();
@@ -99,21 +111,57 @@ public class CharacterTemperature : StateLayer {
 	
 	public override void CollisionEnter2D(Collision2D collision) {
 		base.CollisionEnter2D(collision);
+		CollisionHeat(collision);
+	}
+	
+	void CollisionHeat(Collision2D collision) {
+		if (collision.gameObject.tag == "MirrorBall" || hasCollidedThisFrame) {
+			return;
+		}
 		
-		temperatureInfo.Temperature += Mathf.Max(collision.relativeVelocity.magnitude - forceTemperatureThreshold, 0f) / forceToTemperatureRatio; 
+		float otherMass = collision.rigidbody == null ? 1 : collision.rigidbody.mass;
+		
+		float otherForce = collision.rigidbody == null? 0 : collision.rigidbody.velocity.magnitude * otherMass;
+		float myForce = rigidbody.velocity.magnitude * rigidbody.mass;
+		float force = otherForce + myForce;
+		
+		//float force = collision.relativeVelocity.magnitude * otherMass;
+		
+		if (force < forceTemperatureThreshold) {
+			return;
+		}
+		Debug.Log(string.Format("other force: {0}, my force: {1}, relative velocity: {2}, my velocity: {3}", new string[] { otherForce.ToString(), myForce.ToString(), collision.relativeVelocity.ToString(), rigidbody.velocity.ToString()}));
+		
+		float damages = force / forceToTemperatureRatio;
+		
+		if (damages > 0) {
+			Debug.Log("Damages: " + damages);
+			Debug.Log("velocity before subtraction: " + collision.relativeVelocity.magnitude * otherMass);
+		}
+		
+		temperatureInfo.Heat(damages);
+		hasCollidedThisFrame = true;
 	}
 	
 	public void Freeze() {
 		Layer.GetState<CharacterMotion>().Disable();
 		
 		animator.enabled = false;
-		rigidbody.mass *= frozenMassModifier;
+		rigidbody.isKinematic = true;
+		audioPlayer.Play("Freeze");
 	}
 	
 	public void Unfreeze() {
 		Layer.GetState<CharacterMotion>().Enable();
 		
 		animator.enabled = true;
-		rigidbody.mass /= frozenMassModifier;
+		rigidbody.isKinematic = false;
+		audioPlayer.Play("UnFreeze");
+	}
+	
+	public override void OnUpdate() {
+		base.OnUpdate();
+		
+		hasCollidedThisFrame = false;
 	}
 }

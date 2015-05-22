@@ -11,7 +11,10 @@ public class CharacterCast : StateLayer, IInputListener {
 	
 	[Disable] public Vector2 currentAxis;
 	[Disable] public Vector2 targetPosition;
+	[Disable] public Vector2 cursorOffset;
 	[Disable] public int currentSpell;
+	[Disable] public float minCursorRange;
+	[Disable] public float maxCursorRange;
 	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
@@ -33,6 +36,16 @@ public class CharacterCast : StateLayer, IInputListener {
 		}
 	}
 	
+	bool _temperatureInfoCached;
+	TemperatureInfo _temperatureInfo;
+	public TemperatureInfo temperatureInfo { 
+		get { 
+			_temperatureInfo = _temperatureInfoCached ? _temperatureInfo : this.FindComponent<TemperatureInfo>();
+			_temperatureInfoCached = true;
+			return _temperatureInfo;
+		}
+	}
+	
 	bool _cursorRendererCached;
 	SpriteRenderer _cursorRenderer;
 	public SpriteRenderer cursorRenderer { 
@@ -40,6 +53,16 @@ public class CharacterCast : StateLayer, IInputListener {
 			_cursorRenderer = _cursorRendererCached ? _cursorRenderer : cursor.GetComponent<SpriteRenderer>();
 			_cursorRendererCached = true;
 			return _cursorRenderer;
+		}
+	}
+	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : this.FindComponent<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
 		}
 	}
 	
@@ -105,8 +128,9 @@ public class CharacterCast : StateLayer, IInputListener {
 	
 	public void UpdateCursor() {
 		targetPosition += currentAxis * sensibility;
-		targetPosition = Camera.main.ClampToScreen((Vector3)targetPosition + transform.position) - transform.position;
-		cursor.TranslateLocalTowards(targetPosition, smooth, Axis.XY);
+		targetPosition = targetPosition.ClampMagnitude(minCursorRange, maxCursorRange);
+		
+		cursor.TranslateLocalTowards(targetPosition + cursorOffset, smooth, Axes.XY);
 	}
 
 	public void Enable() {

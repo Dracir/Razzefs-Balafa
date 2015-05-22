@@ -12,7 +12,7 @@ public class CharacterStatus : StateLayer {
 	SpriteRenderer _spriteRenderer;
 	public SpriteRenderer spriteRenderer { 
 		get { 
-			_spriteRenderer = _spriteRendererCached ? _spriteRenderer : GetComponentInChildren<SpriteRenderer>();
+			_spriteRenderer = _spriteRendererCached ? _spriteRenderer : this.FindComponent<SpriteRenderer>();
 			_spriteRendererCached = true;
 			return _spriteRenderer;
 		}
@@ -22,7 +22,7 @@ public class CharacterStatus : StateLayer {
 	BoxCollider2D _boxCollider;
 	public BoxCollider2D boxCollider { 
 		get { 
-			_boxCollider = _boxColliderCached ? _boxCollider : GetComponentInChildren<BoxCollider2D>();
+			_boxCollider = _boxColliderCached ? _boxCollider : this.FindComponent<BoxCollider2D>();
 			_boxColliderCached = true;
 			return _boxCollider;
 		}
@@ -32,7 +32,7 @@ public class CharacterStatus : StateLayer {
 	CircleCollider2D _circleCollider;
 	public CircleCollider2D circleCollider { 
 		get { 
-			_circleCollider = _circleColliderCached ? _circleCollider : GetComponentInChildren<CircleCollider2D>();
+			_circleCollider = _circleColliderCached ? _circleCollider : this.FindComponent<CircleCollider2D>();
 			_circleColliderCached = true;
 			return _circleCollider;
 		}
@@ -42,19 +42,29 @@ public class CharacterStatus : StateLayer {
 	Rigidbody2D _rigidBody;
 	public Rigidbody2D rigidBody { 
 		get { 
-			_rigidBody = _rigidBodyCached ? _rigidBody : GetComponentInChildren<Rigidbody2D>();
+			_rigidBody = _rigidBodyCached ? _rigidBody : this.FindComponent<Rigidbody2D>();
 			_rigidBodyCached = true;
 			return _rigidBody;
 		}
 	}
 	
-	bool _AnimatorCached;
+	bool _animatorCached;
 	Animator _animator;
 	public Animator animator { 
 		get { 
-			_animator = _AnimatorCached ? _animator : GetComponentInChildren<Animator>();
-			_AnimatorCached = true;
+			_animator = _animatorCached ? _animator : this.FindComponent<Animator>();
+			_animatorCached = true;
 			return _animator;
+		}
+	}
+	
+	bool _audioPlayerCached;
+	AudioPlayer _audioPlayer;
+	public AudioPlayer audioPlayer { 
+		get { 
+			_audioPlayer = _audioPlayerCached ? _audioPlayer : this.FindComponent<AudioPlayer>();
+			_audioPlayerCached = true;
+			return _audioPlayer;
 		}
 	}
 	
@@ -63,6 +73,8 @@ public class CharacterStatus : StateLayer {
 	}
 	
 	public CharacterDetail detail;
+	public Sprite holdFlyingSprite;
+	
 	public override void OnAwake(){
 		base.OnAwake();
 		detail = GetComponent<CharacterDetail>();
@@ -72,6 +84,8 @@ public class CharacterStatus : StateLayer {
 	public void Die() {
 		if (!invincible) {
 			SwitchState<CharacterDie>().SwitchState<CharacterDieDying>();
+			audioPlayer.Play("Death1");
+			audioPlayer.Play("Death2");
 		}
 	}
 	

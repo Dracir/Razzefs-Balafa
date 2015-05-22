@@ -5,6 +5,8 @@ using Magicolo;
 
 public class BobberSpawnerSpawning : State {
 	
+	public Transform spawningPoint;
+	
     BobberSpawner Layer {
     	get { return (BobberSpawner)layer; }
     }
@@ -16,7 +18,9 @@ public class BobberSpawnerSpawning : State {
 	public override void OnEnter() {
 		base.OnEnter();
 		
-		Layer.bobberPool.Spawn();
+		GameObject boober = Layer.bobberPool.Spawn();
+		boober.transform.position = spawningPoint.position;
+		boober.transform.localRotation = transform.parent.localRotation;
 		SwitchState<BobberSpawnerReloading>();
 	}
 	

@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviourExtended {
 		}
 	}
 	
-	[Disable] public List<Joysticks> activeJoysticks = new List<Joysticks>();
+	[Disable] public List<ControllerInfo> activeControllers = new List<ControllerInfo>();
 	
 	bool _inputSystemCached;
 	InputSystem _inputSystem;
@@ -44,6 +44,13 @@ public class InputManager : MonoBehaviourExtended {
     
 	void Awake() {
 		DontDestroyOnLoad(this);
+		instance = this;
+	}
+	
+	void Start() {
+		if (Instance != null && Instance != this) {
+			gameObject.Remove();
+		}
 	}
 	
 	public static void SetController(Wizardz wizard, InputSystem system) {
@@ -62,6 +69,7 @@ public class InputManager : MonoBehaviourExtended {
 		
 		if (joystick != null) {
 			system.GetJoystickInfo("Controller").CopyInput(joystick);
+			system.GetJoystickInfo("Controller").Joystick = joystick.Joystick;
 			return;
 		}
 		
@@ -69,22 +77,12 @@ public class InputManager : MonoBehaviourExtended {
 	}
 	
 	public static void AssignController(Wizardz wizard, ControllerInfo controller) {
-		JoystickInfo joystick = controller as JoystickInfo;
-		
-		if (joystick != null) {
-			Instance.activeJoysticks.Add(joystick.Joystick);
-		}
-		
+		Instance.activeControllers.Add(controller);
 		Instance.WizardControllerDict[wizard] = controller;
 	}
 	
 	public static void ReleaseController(Wizardz wizard) {
-		JoystickInfo joystick = Instance.WizardControllerDict[wizard] as JoystickInfo;
-		
-		if (joystick != null) {
-			Instance.activeJoysticks.Remove(joystick.Joystick);
-		}
-		
+		Instance.activeControllers.Remove(Instance.WizardControllerDict[wizard]);
 		Instance.WizardControllerDict.Remove(wizard);
 	}
 	
@@ -95,22 +93,28 @@ public class InputManager : MonoBehaviourExtended {
 		}
 	}
 	
-	public static ControllerInfo GetNewController() {
-		for (int i = 1; i <= 8; i++) {
-			Joysticks joystick = (Joysticks)i;
-				
-			if (Instance.activeJoysticks.Contains(joystick)) {
-				continue;
-			}
+	public static ControllerInfo CheckForNewController() {
+		ControllerInfo controller = null;
+		
+		if (InputSystem.GetKeysDown(InputSystem.GetKeyboardKeys()).Length > 0) {
+			KeyboardInfo keyboard = Instance.inputSystem.GetKeyboardInfo("Controller");
 			
-			KeyCode[] pressedKeys = InputSystem.GetKeysDown(InputSystem.GetJoystickKeys(joystick));
-			
-			if (pressedKeys.Length > 0) {
-				return Instance.inputSystem.GetJoystickInfo("Controller" + i);
+			if (!Instance.activeControllers.Contains(keyboard)) {
+				controller = keyboard;
 			}
 		}
 		
-		return null;
+		for (int i = 1; i < 9; i++) {
+			if (InputSystem.GetKeysDown(InputSystem.GetJoystickKeys((Joysticks)i)).Length > 0) {
+				JoystickInfo joystick = Instance.inputSystem.GetJoystickInfo("Controller" + i);
+				
+				if (!Instance.activeControllers.Contains(joystick)) {
+					controller = joystick;
+				}
+			}
+		}
+		
+		return controller;
 	}
 }
 

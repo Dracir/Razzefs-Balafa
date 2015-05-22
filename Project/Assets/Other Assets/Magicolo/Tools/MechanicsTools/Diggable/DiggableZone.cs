@@ -33,8 +33,6 @@ namespace Magicolo.MechanicsTools {
 			this.diggable = diggable;
 		
 			smallestZone = size.x <= 1;
-			
-			Initialize();
 		}
 		
 		public void Initialize() {
@@ -42,32 +40,44 @@ namespace Magicolo.MechanicsTools {
 			SetCollider();
 		}
 	
-		public void Update() {
+		public void Update(int x, int y) {
 			if (size.x > 64 || size.y > 64) {
-				Break();
+				Break(-1, -1);
 				return;
 			}
 		
-			for (int y = 0; y < size.y; y++) {
-				for (int x = 0; x < size.x; x++) {
-					Color pixel = diggable.GetPixel(position.x + x, position.y + y);
+			if (rect.Contains(new Vector2(x, y))) {
+				Break(x, y);
+				return;
+			}
+			
+			Initialize();
+		}
+	
+		public void Update() {
+			if (size.x > 64 || size.y > 64) {
+				Break(-1, -1);
+				return;
+			}
+		
+			for (int y = (int)position.y; y < size.y; y++) {
+				for (int x = (int)position.x; x < size.x; x++) {
+					Color pixel = diggable.GetPixel(x, y);
 				
 					if (pixel.a < diggable.AlphaThreshold) {
-						Break();
+						Break(x, y);
 						return;
 					}
 				}
 			}
+			
+			Initialize();
 		}
 	
-		public void Break() {
+		public void Break(int x, int y) {
 			if (smallestZone) {
-				if (Application.isPlaying) {
-					diggable.SpawnFX(position + size / 2);
-				}
-			
 				diggable.ZoneManager.SetZone(position, null);
-				diggable.ZoneManager.DespawnCapsuleCollider(gameObject);
+				diggable.ColliderManager.DespawnCapsuleCollider(gameObject);
 			}
 			else {
 				children = new [] {
@@ -78,10 +88,15 @@ namespace Magicolo.MechanicsTools {
 				};
 		
 				foreach (DiggableZone child in children) {
-					child.Update();
+					if (x == -1 || y == -1) {
+						child.Update();
+					}
+					else {
+						child.Update(x, y);
+					}
 				}
 				
-				diggable.ZoneManager.DespawnBoxCollider(gameObject, size.x);
+				diggable.ColliderManager.DespawnBoxCollider(gameObject, size.x);
 			}
 		}
 		
@@ -93,10 +108,10 @@ namespace Magicolo.MechanicsTools {
 
 		void SetCollider() {
 			if (smallestZone) {
-				gameObject = diggable.ZoneManager.SpawnCapsuleCollider(rect);
+				gameObject = diggable.ColliderManager.SpawnCapsuleCollider(rect);
 			}
 			else {
-				gameObject = diggable.ZoneManager.SpawnBoxCollider(rect);
+				gameObject = diggable.ColliderManager.SpawnBoxCollider(rect);
 			}
 		}
 	}

@@ -61,7 +61,7 @@ public class TotalEradicationRay : MonoBehaviour {
 			
 			TemperatureInfo temperatureInfo = hit.collider.GetComponentInChildren<TemperatureInfo>();
 			if(temperatureInfo != null){
-				temperatureInfo.Temperature += deltaTemprature * Time.deltaTime;
+				temperatureInfo.Heat(deltaTemprature * Time.deltaTime);
 			}
 			
 			//setTrigger(lazerIndex, new Vector2(hit.distance + overLaser ,0.2f), start, rotation, deltaTemprature);

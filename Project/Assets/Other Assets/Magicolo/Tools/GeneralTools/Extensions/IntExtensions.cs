@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Magicolo {
 	public static class IntExtensions {
@@ -23,7 +24,7 @@ namespace Magicolo {
 			if (power == 2) {
 				return i * i;
 			}
-			
+
 			return (int)Mathf.Pow(i, power);
 		}
 	
@@ -36,7 +37,11 @@ namespace Magicolo {
 				return i;
 			}
 		
-			return (int)(Mathf.Round(i * (1F / step)) / (1F / step));
+			if (step == 1){
+				return (int)Math.Round((double)i);
+			}
+		
+			return (int)(Math.Round(i * (1D / step)) * step);
 		}
 	
 		public static int Round(this int i) {

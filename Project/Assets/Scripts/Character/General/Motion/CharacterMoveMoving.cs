@@ -28,19 +28,19 @@ public class CharacterMoveMoving : State {
 		currentAcceleration = Mathf.Max(Layer.Friction, 0.0001F) * acceleration;
 		
 		if (Layer.Gravity.Angle == 90) {
-			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.X);
+			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axes.X);
 			Layer.MoveVelocity = Layer.Rigidbody.velocity.x;
 		}
 		else if (Layer.Gravity.Angle == 180) {
-			Layer.Rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axis.Y);
+			Layer.Rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axes.Y);
 			Layer.MoveVelocity = Layer.Rigidbody.velocity.y;
 		}
 		else if (Layer.Gravity.Angle == 270) {
-			Layer.Rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axis.X);
+			Layer.Rigidbody.AccelerateTowards(-currentSpeed, currentAcceleration, Axes.X);
 			Layer.MoveVelocity = Layer.Rigidbody.velocity.x;
 		}
 		else if (Layer.Gravity.Angle == 0) {
-			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axis.Y);
+			Layer.Rigidbody.AccelerateTowards(currentSpeed, currentAcceleration, Axes.Y);
 			Layer.MoveVelocity = Layer.Rigidbody.velocity.y;
 		}
 		else {

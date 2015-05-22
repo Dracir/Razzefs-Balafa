@@ -4,32 +4,62 @@ using System.Collections;
 namespace Magicolo {
 	public static class ColorExtensions {
 
+		const float epsilon = 0.001F;
+		
 		public static Color SetValues(this Color color, Color values, Channels channels) {
-			return ((Vector4)color).SetValues((Vector4)values, (Axis)channels);
+			color.r = channels.Contains(Channels.R) ? values.r : color.r;
+			color.g = channels.Contains(Channels.G) ? values.g : color.g;
+			color.b = channels.Contains(Channels.B) ? values.b : color.b;
+			color.a = channels.Contains(Channels.A) ? values.a : color.a;
+			
+			return color;
 		}
 		
 		public static Color SetValues(this Color color, Color values) {
-			return ((Vector4)color).SetValues((Vector4)values);
+			return color.SetValues(values, Channels.RGBA);
 		}
 				
 		public static Color Lerp(this Color color, Color target, float time, Channels channels) {
-			return ((Vector4)color).Lerp((Vector4)target, time, (Axis)channels);
+			color.r = channels.Contains(Channels.R) && Mathf.Abs(target.r - color.r) > epsilon ? Mathf.Lerp(color.r, target.r, time) : color.r;
+			color.g = channels.Contains(Channels.G) && Mathf.Abs(target.g - color.g) > epsilon ? Mathf.Lerp(color.g, target.g, time) : color.g;
+			color.b = channels.Contains(Channels.B) && Mathf.Abs(target.b - color.b) > epsilon ? Mathf.Lerp(color.b, target.b, time) : color.b;
+			color.a = channels.Contains(Channels.A) && Mathf.Abs(target.a - color.a) > epsilon ? Mathf.Lerp(color.a, target.a, time) : color.a;
+			
+			return color;
 		}
 			
 		public static Color Lerp(this Color color, Color target, float time) {
-			return ((Vector4)color).Lerp((Vector4)target, time);
+			return color.Lerp(target, time, Channels.RGBA);
 		}
 		
 		public static Color LerpLinear(this Color color, Color target, float time, Channels channels) {
-			return ((Vector4)color).LerpLinear((Vector4)target, time, (Axis)channels);
+			Vector4 difference = target - color;
+			Vector4 direction = Vector4.zero.SetValues(difference, channels);
+			float distance = direction.magnitude;
+					
+			Vector4 adjustedDirection = direction.normalized * time;
+					
+			if (adjustedDirection.magnitude < distance) {
+				color += Vector4.zero.SetValues(adjustedDirection, channels);
+			}
+			else {
+				color = color.SetValues(target, channels);
+			}
+			
+			return color;
 		}
 		
 		public static Color LerpLinear(this Color color, Color target, float time) {
-			return ((Vector4)color).LerpLinear((Vector4)target, time);
+			return color.LerpLinear(target, time, Channels.RGBA);
 		}
 
 		public static Color Oscillate(this Color color, Color frequency, Color amplitude, Color center, float offset, Channels channels) {
-			return ((Vector4)color).Oscillate((Vector4)frequency, (Vector4)amplitude, (Vector4)center, offset, (Axis)channels);
+			color.r = channels.Contains(Channels.R) ? center.r + amplitude.r * Mathf.Sin(frequency.r * Time.time + offset) : color.r;
+			color.g = channels.Contains(Channels.G) ? center.g + amplitude.g * Mathf.Sin(frequency.g * Time.time + offset) : color.g;
+			color.b = channels.Contains(Channels.B) ? center.b + amplitude.b * Mathf.Sin(frequency.b * Time.time + offset) : color.b;
+			color.a = channels.Contains(Channels.A) ? center.a + amplitude.a * Mathf.Sin(frequency.a * Time.time + offset) : color.a;
+			
+			return color;
 		}
 		
 		public static Color Oscillate(this Color color, Color frequency, Color amplitude, Color center, float offset) {
@@ -37,31 +67,46 @@ namespace Magicolo {
 		}
 		
 		public static Color Oscillate(this Color color, Color frequency, Color amplitude, Color center, Channels channels) {
-			return color.Oscillate(frequency, amplitude, center, 0F, channels);
+			return color.Oscillate(frequency, amplitude, center, 0, channels);
 		}
 		
 		public static Color Oscillate(this Color color, Color frequency, Color amplitude, Color center) {
-			return color.Oscillate(frequency, amplitude, center, 0F, Channels.RGBA);
+			return color.Oscillate(frequency, amplitude, center, 0, Channels.RGBA);
 		}
-		
-		public static Color Mult(this Color color, Color otherColor, Channels channels) {
-			return ((Vector4)color).Mult((Vector4)otherColor, (Axis)channels);
-		}
-	
-		public static Color Mult(this Color color, Color otherColor) {
-			return color.Mult(otherColor, Channels.RGBA);
-		}
-	
-		public static Color Div(this Color color, Color otherColor, Channels channels) {
-			return ((Vector4)color).Div((Vector4)otherColor, (Axis)channels);
+
+		public static Color Mult(this Color color, Color otherVector, Channels channels) {
+			color.r = channels.Contains(Channels.R) ? color.r * otherVector.r : color.r;
+			color.g = channels.Contains(Channels.G) ? color.g * otherVector.g : color.g;
+			color.b = channels.Contains(Channels.B) ? color.b * otherVector.b : color.b;
+			color.a = channels.Contains(Channels.A) ? color.a * otherVector.a : color.a;
+			
+			return color;
 		}
 	
-		public static Color Div(this Color color, Color otherColor) {
-			return color.Div(otherColor, Channels.RGBA);
+		public static Color Mult(this Color color, Color otherVector) {
+			return color.Mult(otherVector, Channels.RGBA);
+		}
+	
+		public static Color Div(this Color color, Color otherVector, Channels channels) {
+			color.r = channels.Contains(Channels.R) ? color.r / otherVector.r : color.r;
+			color.g = channels.Contains(Channels.G) ? color.g / otherVector.g : color.g;
+			color.b = channels.Contains(Channels.B) ? color.b / otherVector.b : color.b;
+			color.a = channels.Contains(Channels.A) ? color.a / otherVector.a : color.a;
+			
+			return color;
+		}
+	
+		public static Color Div(this Color color, Color otherVector) {
+			return color.Div(otherVector, Channels.RGBA);
 		}
 	
 		public static Color Pow(this Color color, float power, Channels channels) {
-			return ((Vector4)color).Pow(power, (Axis)channels);
+			color.r = channels.Contains(Channels.R) ? color.r.Pow(power) : color.r;
+			color.g = channels.Contains(Channels.G) ? color.g.Pow(power) : color.g;
+			color.b = channels.Contains(Channels.B) ? color.b.Pow(power) : color.b;
+			color.a = channels.Contains(Channels.A) ? color.a.Pow(power) : color.a;
+			
+			return color;
 		}
 	
 		public static Color Pow(this Color color, float power) {
@@ -69,7 +114,12 @@ namespace Magicolo {
 		}
 	
 		public static Color Round(this Color color, float step, Channels channels) {
-			return ((Vector4)color).Round(step, (Axis)channels);
+			color.r = channels.Contains(Channels.R) ? color.r.Round(step) : color.r;
+			color.g = channels.Contains(Channels.G) ? color.g.Round(step) : color.g;
+			color.b = channels.Contains(Channels.B) ? color.b.Round(step) : color.b;
+			color.a = channels.Contains(Channels.A) ? color.a.Round(step) : color.a;
+			
+			return color;
 		}
 	
 		public static Color Round(this Color color, float step) {
@@ -77,17 +127,40 @@ namespace Magicolo {
 		}
 	
 		public static Color Round(this Color color) {
-			return color.Round(1);
+			return color.Round(1, Channels.RGBA);
 		}
 	
 		public static float Average(this Color color, Channels channels) {
-			return ((Vector4)color).Average((Axis)channels);
+			float average = 0;
+			int axisCount = 0;
+		
+			if (channels.Contains(Channels.R)) {
+				average += color.r;
+				axisCount += 1;
+			}
+		
+			if (channels.Contains(Channels.G)) {
+				average += color.g;
+				axisCount += 1;
+			}
+		
+			if (channels.Contains(Channels.B)) {
+				average += color.b;
+				axisCount += 1;
+			}
+		
+			if (channels.Contains(Channels.A)) {
+				average += color.a;
+				axisCount += 1;
+			}
+		
+			return average / axisCount;
 		}
 	
 		public static float Average(this Color color) {
-			return color.Average(Channels.RGBA);
+			return ((Color)color).Average(Channels.RGBA);
 		}
-	
+
 		public static Color ToHSV(this Color RGBColor) {
 			float R = RGBColor.r;
 			float G = RGBColor.g;

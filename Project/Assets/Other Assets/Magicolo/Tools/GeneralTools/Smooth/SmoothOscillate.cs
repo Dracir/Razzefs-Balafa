@@ -6,26 +6,17 @@ namespace Magicolo {
 	[AddComponentMenu("Magicolo/Smooth/Oscillate")]
 	public class SmoothOscillate : MonoBehaviourExtended {
 
-		public enum OscillationModes {
-			Position,
-			Rotation,
-			Scale,
-		}
-	
-		public OscillationModes mode;
-		[Mask(Axis.XYZ)] public Axis axis = Axis.XYZ;
+		[Mask] public TransformModes mode = TransformModes.Position;
+		[Mask(Axes.XYZ)] public Axes axis = Axes.XYZ;
 		public bool culling = true;
 		
-		[Separator]
-		[Slider] public float frequencyRandomness;
+		[Slider(BeforeSeparator = true)] public float frequencyRandomness;
 		public Vector3 frequency = Vector3.one;
 		
-		[Separator]
-		[Slider] public float amplitudeRandomness;
+		[Slider(BeforeSeparator = true)] public float amplitudeRandomness;
 		public Vector3 amplitude = Vector3.one;
 		
-		[Separator]
-		[Slider] public float centerRandomness;
+		[Slider(BeforeSeparator = true)] public float centerRandomness;
 		public Vector3 center;
 	
 		bool _rendererCached;
@@ -43,17 +34,21 @@ namespace Magicolo {
 		}
 		
 		void Update() {
+			if (mode == TransformModes.None || axis == Axes.None) {
+				return;
+			}
+			
 			if (!culling || renderer.isVisible) {
-				switch (mode) {
-					case OscillationModes.Position:
-						transform.OscillateLocalPosition(frequency, amplitude, center, axis);
-						break;
-					case OscillationModes.Rotation:
-						transform.OscillateLocalEulerAngles(frequency, amplitude, center, axis);
-						break;
-					case OscillationModes.Scale:
-						transform.OscillateLocalScale(frequency, amplitude, center, axis);
-						break;
+				if (mode.Contains(TransformModes.Position)) {
+					transform.OscillateLocalPosition(frequency, amplitude, center, axis);
+				}
+				
+				if (mode.Contains(TransformModes.Rotation)) {
+					transform.OscillateLocalEulerAngles(frequency, amplitude, center, axis);
+				}
+				
+				if (mode.Contains(TransformModes.Scale)) {
+					transform.OscillateLocalScale(frequency, amplitude, center, axis);
 				}
 			}
 		}

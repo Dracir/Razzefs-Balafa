@@ -5,6 +5,8 @@ using Magicolo;
 
 public class SpellGravityCastCasting : State, IInputListener {
 	
+	[Min] public float baseHeatCost = 0.05F;
+	[Min] public float heatCostPerSize = 0.04F;
 	[Min] public int maxSize = 8;
 	
 	[Disable] public Vector2 startPosition;
@@ -29,7 +31,11 @@ public class SpellGravityCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
-		startPosition = Layer.Cursor.position.Round();
+		Layer.MaxCursorRange = maxSize;
+		Layer.CursorOffset = Layer.LocalCursorTarget;
+		Layer.LocalCursorTarget = Vector2.zero;
+		
+		startPosition = (Layer.WorldCursorTarget + Layer.CursorOffset).Round();
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
@@ -46,6 +52,9 @@ public class SpellGravityCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
+		Layer.MaxCursorRange = Layer.maxCursorRange;
+		Layer.LocalCursorTarget = Layer.CursorOffset;
+		Layer.CursorOffset = Vector2.zero;
 		
 		castZone.gameObject.Remove();
 	}
@@ -53,7 +62,7 @@ public class SpellGravityCastCasting : State, IInputListener {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		endPosition = Layer.Cursor.position.Round();
+		endPosition = (Layer.WorldCursorTarget + Layer.CursorOffset).Round();
 		
 		UpdateCastZone();
 	}
@@ -79,8 +88,8 @@ public class SpellGravityCastCasting : State, IInputListener {
 		currentSize = Mathf.Min(difference.magnitude, maxSize);
 		currentAngle = -difference.Angle();
 		
-		castZone.SetLocalEulerAngles(currentAngle, Axis.Z);
-		castZoneSprite.SetLocalScale(currentSize, Axis.X);
+		castZone.SetLocalEulerAngles(currentAngle, Axes.Z);
+		castZoneSprite.SetLocalScale(currentSize, Axes.X);
 		castZonePortal.gameObject.SetActive(currentSize >= 1);
 	}
 	
@@ -92,5 +101,8 @@ public class SpellGravityCastCasting : State, IInputListener {
 		activeGravityWell = (Instantiate(Layer.gravityWell, startPosition, Quaternion.Euler(0, 0, currentAngle)) as GameObject).GetComponent<GravityWell>();
 		activeGravityWell.Angle = currentAngle;
 		activeGravityWell.Length = currentSize;
+		
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * currentSize);
+		Layer.AudioPlayer.Play("SpellCastGravity");
 	}
 }
