@@ -12,6 +12,8 @@ public class EnemisBuzzboyActive : State {
 	StateMachine Machine {
 		get { return ((StateMachine)machine); }
 	}
+	
+	public LayerMask rotatingLayerToInteractWithGenre;
 
 	public override void OnUpdate() {
 		base.OnUpdate();
@@ -22,15 +24,16 @@ public class EnemisBuzzboyActive : State {
 		
 	}
 	
-	public override void TriggerEnter2D(Collider2D collision) {
+	public override void TriggerEnter2D(Collider2D collision){
 		base.TriggerEnter2D(collision);
-		
 		CharacterStatus status = collision.gameObject.GetComponent<CharacterStatus>();
-		
 		if (status != null) {
-			status.Die();
-			
-		}else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) {
+			status.Die();			
+		}
+	}
+	
+	void OnCollisionEnter2D(Collision2D collision){
+		if (rotatingLayerToInteractWithGenre.Contains(collision.gameObject.layer)) {
 			transform.parent.Rotate(0, 0, 180);
 		}
 	}

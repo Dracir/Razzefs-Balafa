@@ -39,6 +39,31 @@ public class CharacterDetail : MonoBehaviourExtended, IIdentifiable {
 		}
 	}
 	
+	void Awake() {
+		if (jTenTrainDeDebugger){
+			IInputListener[] listeners = inputSystem.GetKeyboardInfo("Controller").GetListeners();
+			inputSystem.RemoveKeyboardInfo("Controller");
+			
+			KeyboardButton[] buttons = {
+				new KeyboardButton("Jump", KeyCode.Space),
+				new KeyboardButton("Cycle", KeyCode.E),
+				new KeyboardButton("CastAction", KeyCode.Mouse1),
+				new KeyboardButton("Menu", KeyCode.Return),
+				new KeyboardButton("Cast", KeyCode.Mouse0)
+			};
+			
+			KeyboardAxis[] axes = {
+				new KeyboardAxis("MotionX", "Horizontal"),
+				new KeyboardAxis("MotionY", "Vertical"),
+				new KeyboardAxis("AltMotionX", "Mouse X"),
+				new KeyboardAxis("AltMotionY", "Mouse Y")
+			};
+			
+			KeyboardInfo keyboard = new KeyboardInfo("Controller", buttons, axes, listeners);
+			inputSystem.AddKeyboardInfo(keyboard);
+		}
+	}
+	
 	void Start() {
 		if (!jTenTrainDeDebugger) {
 			InputManager.SetController(wizard, inputSystem);
