@@ -23,7 +23,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 	[Disable] public Transform castZoneSprite;
 	[Disable] public SpriteRenderer castZoneSpriteRenderer;
 	
-	Queue<Block> activeBlocks = new Queue<Block>();
+	readonly Queue<Block> activeBlocks = new Queue<Block>();
 	
 	SpellBlockCast Layer {
 		get { return (SpellBlockCast)layer; }
@@ -38,7 +38,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
-		startPosition = Layer.Cursor.position.Round();
+		startPosition = Layer.WorldCursorTarget.Round();
 		
 		currentSize = 1;
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
@@ -59,7 +59,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		endPosition = Layer.Cursor.position.Round();
+		endPosition = Layer.WorldCursorTarget.Round();
 		
 		UpdateCastZone();
 	}
@@ -120,7 +120,7 @@ public class SpellBlockCastCasting : State, IInputListener {
 		
 		activeBlocks.Enqueue(block);
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerSize * currentSize;
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * currentSize);
 		Layer.AudioPlayer.Play("SpellCastBlock").ApplyOptions(AudioOption.Pitch(1.25F / currentSize), AudioOption.RandomPitch(0.5F));
 	}
 

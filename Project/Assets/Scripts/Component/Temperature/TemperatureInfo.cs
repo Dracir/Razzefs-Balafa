@@ -22,7 +22,8 @@ public class TemperatureInfo : MonoBehaviourExtended {
 	
 	[Range(-1, 0)] public float freezingThreshold = -0.5F;
 	[Range(0, 1)] public float blazingThreshold = 0.5F;
-	[Min] public float resistance = 1;
+	[Min] public float resistance = 25;
+	[Min] public float ambientResistance = 25;
 	public Thermometer thermometer;
 	
 	[Disable] public bool wasFrozen;
@@ -42,13 +43,13 @@ public class TemperatureInfo : MonoBehaviourExtended {
 	
 	public bool IsCool {
 		get {
-			return Temperature < 0 && Temperature > freezingThreshold;
+			return Temperature < 0;
 		}
 	}
 	
 	public bool IsWarm {
 		get {
-			return Temperature > 0 && Temperature < blazingThreshold;
+			return Temperature > 0;
 		}
 	}
 	
@@ -64,12 +65,6 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		}
 	}
 	
-	public bool IsHot {
-		get {
-			return Temperature > 0;
-		}
-	}
-	
 	public float AmbientTemperature {
 		get {
 			return 0;
@@ -80,7 +75,7 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		Temperature += amount / resistance;
 	}
 	
-	public void Cool(float amount) {
+	public void Chill(float amount) {
 		Temperature -= amount / resistance;
 	}
 	
@@ -97,7 +92,7 @@ public class TemperatureInfo : MonoBehaviourExtended {
 		wasBlazed |= Temperature >= 1;
 			
 		float difference = AmbientTemperature - Temperature;
-		float increment = difference == 0 ? 0 : difference.Sign() * Time.deltaTime / resistance;
+		float increment = difference == 0 ? 0 : difference.Sign() * Time.deltaTime / ambientResistance;
 		
 		if (Mathf.Abs(difference) > Mathf.Abs(increment)) {
 			Temperature += increment;

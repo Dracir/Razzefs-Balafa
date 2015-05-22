@@ -15,6 +15,12 @@ namespace Magicolo {
 			}
 		}
 		
+		public bool IsPlaying {
+			get {
+				return State == AudioStates.FadingIn || State == AudioStates.FadingOut || State == AudioStates.Playing;
+			}
+		}
+		
 		public abstract AudioStates State { get; }
 		
 		protected AudioItem(AudioPlayer audioPlayer) {

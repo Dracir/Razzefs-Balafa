@@ -27,6 +27,7 @@ public class EnemisBuzzboyFrozen : State {
 		base.OnUpdate();
 		if( Layer.temperature.IsFreezing ){
 			if(Layer.temperature.wasFrozen){
+				Layer.temperature.wasFrozen = false;
 				SwitchState<EnemisBuzzboyDying>();
 			}
 		}else{

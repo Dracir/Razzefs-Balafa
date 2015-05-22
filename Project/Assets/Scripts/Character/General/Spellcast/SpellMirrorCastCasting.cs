@@ -40,7 +40,7 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
 		
-		startPosition = Layer.Cursor.position.Round();
+		startPosition = Layer.WorldCursorTarget.Round();
 		currentDirection = (startPosition - (Vector2)transform.position).normalized;
 		currentPosition = (Vector2)transform.position + currentDirection * distance;
 		currentChargeLevel = level1;
@@ -67,7 +67,7 @@ public class SpellMirrorCastCasting : State, IInputListener {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		endPosition = Layer.Cursor.position.Round();
+		endPosition = Layer.WorldCursorTarget.Round();
 		
 		UpdateCastZone();
 	}
@@ -131,7 +131,7 @@ public class SpellMirrorCastCasting : State, IInputListener {
 		
 		currentCharge = 0;
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerCharge * currentChargeLevel.level;
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerCharge * currentChargeLevel.level);
 		Layer.AudioPlayer.Play("SpellCastMirror");
 	}
 }

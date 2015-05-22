@@ -227,6 +227,22 @@ namespace Magicolo {
 			return Quaternion.AngleAxis(-angle, axis) * vector;
 		}
 		
+		public static Vector3 ClampMagnitude(this Vector3 vector, float min, float max) {
+			Vector3 clamped = vector;
+			float sqrMagniture = vector.sqrMagnitude;
+			float sqrMin = min * min;
+			float sqrMax = max * max;
+			
+			if (sqrMagniture < sqrMin) {
+				clamped = vector.normalized * min;
+			}
+			else if (sqrMagniture > sqrMax) {
+				clamped = vector.normalized * max;
+			}
+			
+			return clamped;
+		}
+		
 		public static Vector3 SquareClamp(this Vector3 vector, float size) {
 			return vector.RectClamp(size, size);
 		}

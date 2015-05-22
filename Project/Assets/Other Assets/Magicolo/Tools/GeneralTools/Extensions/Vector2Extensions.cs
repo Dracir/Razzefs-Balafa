@@ -188,8 +188,24 @@ namespace Magicolo {
 			return ((Vector3)vector).Rotate(angle);
 		}
 	
+		public static Vector2 ClampMagnitude(this Vector2 vector, float min, float max) {
+			Vector2 clamped = vector;
+			float sqrMagniture = vector.sqrMagnitude;
+			float sqrMin = min * min;
+			float sqrMax = max * max;
+			
+			if (sqrMagniture < sqrMin) {
+				clamped = vector.normalized * min;
+			}
+			else if (sqrMagniture > sqrMax) {
+				clamped = vector.normalized * max;
+			}
+			
+			return clamped;
+		}
+		
 		public static Vector2 SquareClamp(this Vector2 vector, float size = 1) {
-			return ((Vector3)vector).SquareClamp(size);
+			return vector.RectClamp(size, size);
 		}
 	
 		public static Vector2 RectClamp(this Vector2 vector, float width = 1, float height = 1) {

@@ -151,7 +151,10 @@ namespace Magicolo.AudioTools {
 		
 		public void Play() {
 			volumeTweener.Kill();
-			StopCoroutine(stopRoutine);
+			
+			if (stopRoutine != null) {
+				StopCoroutine(stopRoutine);
+			}
 			
 			InitializeSource();
 			
@@ -168,8 +171,11 @@ namespace Magicolo.AudioTools {
 			}
 
 			Source.Play();
-			stopRoutine = StopAfterDelay(Length - FadeOut);
-			StartCoroutine(stopRoutine);
+			
+			if (!Source.loop) {
+				stopRoutine = StopAfterDelay(Length - FadeOut);
+				StartCoroutine(stopRoutine);
+			}
 			
 			if (onPlayCallback != null) {
 				onPlayCallback();

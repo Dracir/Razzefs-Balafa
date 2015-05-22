@@ -6,6 +6,7 @@ using Magicolo;
 public class CharacterTemperature : StateLayer {
 	
 	[Min] public float fadeSpeed = 3;
+	[Min] public float heatSpeedBoost = 4;
 
 	//To calculate temperature increase from collisions, we find the force of collision, subtract the forceTemperatureThreshold (to a minimum of 0), then divide by forceToTemperatureRatio.
 	public float forceTemperatureThreshold = 25;
@@ -138,7 +139,7 @@ public class CharacterTemperature : StateLayer {
 			Debug.Log("velocity before subtraction: " + collision.relativeVelocity.magnitude * otherMass);
 		}
 		
-		temperatureInfo.Temperature += damages; 
+		temperatureInfo.Heat(damages);
 		hasCollidedThisFrame = true;
 	}
 	

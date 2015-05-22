@@ -33,6 +33,11 @@ public class GameLoadingLevel : State {
 			makeCamera();
 			moveBackground();
 			makeAndSetGametGui();
+			
+			if (!MusicPlayer.IsPlaying(Music.Level1)) {
+				MusicPlayer.Play(Music.Level1);
+			}
+			
 			SwitchState<GamePlaying>();
 		}
 	}
@@ -72,7 +77,7 @@ public class GameLoadingLevel : State {
 	}
 
 	void makeAndSetGametGui() {
-		if(Layer.useGui){
+		if (Layer.useGui) {
 			Layer.guiGameObject = GameObjectExtend.createClone(Layer.GuiPrefab);
 		}
 	}

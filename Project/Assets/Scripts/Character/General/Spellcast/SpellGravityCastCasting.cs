@@ -31,7 +31,11 @@ public class SpellGravityCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").AddListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").AddListener(this);
-		startPosition = Layer.Cursor.position.Round();
+		Layer.MaxCursorRange = maxSize;
+		Layer.CursorOffset = Layer.LocalCursorTarget;
+		Layer.LocalCursorTarget = Vector2.zero;
+		
+		startPosition = (Layer.WorldCursorTarget + Layer.CursorOffset).Round();
 		
 		castZone = (Instantiate(Layer.castZone, startPosition, Quaternion.identity) as GameObject).transform;
 		castZoneSprite = castZone.FindChild("Sprite");
@@ -48,6 +52,9 @@ public class SpellGravityCastCasting : State, IInputListener {
 		
 		Layer.InputSystem.GetKeyboardInfo("Controller").RemoveListener(this);
 		Layer.InputSystem.GetJoystickInfo("Controller").RemoveListener(this);
+		Layer.MaxCursorRange = Layer.maxCursorRange;
+		Layer.LocalCursorTarget = Layer.CursorOffset;
+		Layer.CursorOffset = Vector2.zero;
 		
 		castZone.gameObject.Remove();
 	}
@@ -55,7 +62,7 @@ public class SpellGravityCastCasting : State, IInputListener {
 	public override void OnUpdate() {
 		base.OnUpdate();
 		
-		endPosition = Layer.Cursor.position.Round();
+		endPosition = (Layer.WorldCursorTarget + Layer.CursorOffset).Round();
 		
 		UpdateCastZone();
 	}
@@ -95,7 +102,7 @@ public class SpellGravityCastCasting : State, IInputListener {
 		activeGravityWell.Angle = currentAngle;
 		activeGravityWell.Length = currentSize;
 		
-		Layer.TemperatureInfo.Temperature += baseHeatCost + heatCostPerSize * currentSize;
+		Layer.TemperatureInfo.Heat(baseHeatCost + heatCostPerSize * currentSize);
 		Layer.AudioPlayer.Play("SpellCastGravity");
 	}
 }

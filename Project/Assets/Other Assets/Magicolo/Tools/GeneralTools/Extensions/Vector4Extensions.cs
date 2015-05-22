@@ -226,5 +226,21 @@ namespace Magicolo {
 		public static float Average(this Vector4 vector) {
 			return ((Vector4)vector).Average(Axes.XYZW);
 		}
+		
+		public static Vector4 ClampMagnitude(this Vector4 vector, float min, float max) {
+			Vector4 clamped = vector;
+			float sqrMagniture = vector.sqrMagnitude;
+			float sqrMin = min * min;
+			float sqrMax = max * max;
+			
+			if (sqrMagniture < sqrMin) {
+				clamped = vector.normalized * min;
+			}
+			else if (sqrMagniture > sqrMax) {
+				clamped = vector.normalized * max;
+			}
+			
+			return clamped;
+		}
 	}
 }
