@@ -26,27 +26,10 @@ public class EnemisBuzzboy : StateLayer {
 	
 	public float movementSpeed;
 	[Disable] public TemperatureInfo temperature;
-	[Disable] public string lastStateTypeName;
 	
 	public override void OnEnter() {
 		base.OnEnter();
 		temperature = GetComponent<TemperatureInfo>();
 		
-	}
-	
-	public override void OnExit() {
-		base.OnExit();
-		
-	}
-	
-	public override void OnUpdate() {
-		base.OnUpdate();
-		if(temperature.IsFreezing && !StateIsActive<EnemisBuzzboyFrozen>()){
-			lastStateTypeName = GetActiveState().GetType().Name;
-			SwitchState<EnemisBuzzboyFrozen>();
-		}else if(temperature.IsBlazing && !StateIsActive<EnemisBuzzboyBlazed>()){
-			lastStateTypeName = GetActiveState().GetType().Name;
-			SwitchState<EnemisBuzzboyBlazed>();
-		}
 	}
 }

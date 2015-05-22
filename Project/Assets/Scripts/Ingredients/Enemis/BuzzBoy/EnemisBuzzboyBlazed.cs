@@ -27,10 +27,10 @@ public class EnemisBuzzboyBlazed : State {
 		base.OnUpdate();
 		if( Layer.temperature.IsBlazing ){
 			if(Layer.temperature.wasBlazed){
-				SwitchState<EnemisBuzzboyDying>();
+				//SwitchState<EnemisBuzzboyDying>();
 			}
 		}else{
-			SwitchState(Layer.lastStateTypeName);
+			SwitchState<EnemisBuzzboyActive>();
 		}
 	}
 }
