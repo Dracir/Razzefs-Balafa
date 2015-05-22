@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Magicolo;
 
 public class CameraFollowMany : MonoBehaviour {
 	
 	public List<Transform> follow;
+	float minZoom = 20;
+	float maxZoom = 75;
 	
 	GameObject flag;
 	
@@ -53,6 +56,7 @@ public class CameraFollowMany : MonoBehaviour {
 		average /= follow.Count;
 
 		transform.position = Vector3.Lerp(transform.position, new Vector3(average.x, average.y, init.z), lerpAmount);
+		transform.SetPosition(Mathf.Clamp(transform.position.z, -maxZoom, -minZoom), Axes.Z);
 	}
 
 	public void SetFollowing(GameObject[] players) {
@@ -62,9 +66,9 @@ public class CameraFollowMany : MonoBehaviour {
 				continue;
 			dudes.Add(go.transform);
 		}
-		if (flag){
-			dudes.Add(flag.transform);
-		}
+//		if (flag){
+//			dudes.Add(flag.transform);
+//		}
 		follow = dudes;
 		
 	}
