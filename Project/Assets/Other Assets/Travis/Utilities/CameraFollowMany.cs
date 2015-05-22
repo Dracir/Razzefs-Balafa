@@ -6,41 +6,40 @@ using Magicolo;
 public class CameraFollowMany : MonoBehaviour {
 	
 	public List<Transform> follow;
-	float minZoom = 20;
-	float maxZoom = 75;
-	
-	GameObject flag;
-	
-	Vector3 init;
-
-	float lerpAmount = 0.1f;
-	
-	float zoomOutAmount = 0.3f;
 	
 	//how much of the screen do I want between the players and the flag?
-	float zoomMarginPercentage = 0.7f;
+	[Disable] public float zoom;
 	
-	void Start () {
-		init = transform.position;
-		
+	float minZoomMargin = 0.65F;
+	float maxZoomMargin = 0.75F;
+	float zoomThreshold = 50;
+	float minZoom = 15;
+	float maxZoom = 25;
+	float lerpAmount = 3;
+	float zoomOutAmount = 0.5F;
+	
+	void Start() {
+		zoom = transform.position.z;
 	}
 	
-	void Update () {
-		Vector3 average = Vector3.zero;
-		if (follow == null || follow.Count == 0)
+	void Update() {
+		if (follow == null || follow.Count == 0) {
 			return;
+		}
 		
 		//determine new position based on follow things
+		Vector3 average = Vector3.zero;
 		float smallestX = Mathf.Infinity;
 		float largestX = Mathf.NegativeInfinity;
 		float smallestY = Mathf.Infinity;
 		float largestY = Mathf.NegativeInfinity;
 		
-		for (int i = 0; i < follow.Count; i ++) {
-			if (follow[i] == null){
+		for (int i = 0; i < follow.Count; i++) {
+			if (follow[i] == null) {
 				follow.Remove(follow[i]);
 				continue;
 			}
+			
 			average += follow[i].position;
 			
 			smallestX = Mathf.Min(smallestX, Camera.main.WorldToScreenPoint(follow[i].position).x);
@@ -50,27 +49,37 @@ public class CameraFollowMany : MonoBehaviour {
 			
 		}
 		
-		if (largestX - smallestX > Screen.width * zoomMarginPercentage || largestY - smallestY > Screen.height * zoomMarginPercentage){
-			init -= Vector3.forward * zoomOutAmount;
-		}
 		average /= follow.Count;
-
-		transform.position = Vector3.Lerp(transform.position, new Vector3(average.x, average.y, init.z), lerpAmount);
-		transform.SetPosition(Mathf.Clamp(transform.position.z, -maxZoom, -minZoom), Axes.Z);
+		
+		float maxDifferenceX = (largestX - smallestX) - (Screen.width / 2) * maxZoomMargin;
+		float maxDifferenceY = (largestY - smallestY) - (Screen.height / 2) * maxZoomMargin;
+		float minDifferenceX = (largestX - smallestX) - (Screen.width / 2) * minZoomMargin;
+		float minDifferenceY = (largestY - smallestY) - (Screen.height / 2) * minZoomMargin;
+		
+		if (maxDifferenceX > zoomThreshold || maxDifferenceY > zoomThreshold) {
+			zoom -= zoomOutAmount;
+		}
+		else if (minDifferenceX < -zoomThreshold || minDifferenceY < -zoomThreshold) {
+			zoom += zoomOutAmount;
+		}
+		
+		zoom = Mathf.Clamp(zoom, -maxZoom, -minZoom);
+		transform.TranslateTowards(average, lerpAmount, Axes.XY);
+		transform.TranslateTowards(zoom, lerpAmount, Axes.Z);
 	}
 
 	public void SetFollowing(GameObject[] players) {
 		List<Transform> dudes = new List<Transform>();
-		foreach(GameObject go in players){
-			if (go == null)
+		
+		foreach (GameObject go in players) {
+			if (go == null) {
 				continue;
+			}
+			
 			dudes.Add(go.transform);
 		}
-//		if (flag){
-//			dudes.Add(flag.transform);
-//		}
+
 		follow = dudes;
-		
 	}
 	
 }

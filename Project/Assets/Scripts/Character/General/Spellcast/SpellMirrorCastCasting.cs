@@ -10,8 +10,8 @@ public class SpellMirrorCastCasting : State, IInputListener {
 	[Min] public float distance = 2;
 	[Min] public float fadeSpeed = 5;
 	public SpellMirrorChargeLevel level1 = new SpellMirrorChargeLevel(1, 15f, 150f, 1f, 0.1f, 0, 0, -1, new Color(0.48f, 0.67f, 0.75f, 1f));
-	public SpellMirrorChargeLevel level2 = new SpellMirrorChargeLevel(2, 25f, 150f, 1.5f, 0.15f, 1, 7, 5, new Color(0.43f, 0.43f, 0.51f, 1f));
-	public SpellMirrorChargeLevel level3 = new SpellMirrorChargeLevel(3, 35f, 150f, 1.5f, 0.2f, 2, 10, 3, new Color(0.28f, 0.28f, 0.28f, 1f));
+	public SpellMirrorChargeLevel level2 = new SpellMirrorChargeLevel(2, 25f, 150f, 1.5f, 0.15f, 1, 7, 10, new Color(0.43f, 0.43f, 0.51f, 1f));
+	public SpellMirrorChargeLevel level3 = new SpellMirrorChargeLevel(3, 35f, 150f, 1.5f, 0.2f, 2, 10, 5, new Color(0.28f, 0.28f, 0.28f, 1f));
 	[Min] public float maxCharge = 5;
 	
 	[Disable] public Vector2 startPosition;
