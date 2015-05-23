@@ -43,6 +43,11 @@ public class Game : StateLayer {
 		SwitchState<GameNextLevel>();
 	}
 	
+	public void restartMap(){
+		levelCycle.currentMapIndex--;
+		SwitchState<GameNextLevel>();
+	}
+	
 	public override void OnEnter() {
 		base.OnEnter();
 		
