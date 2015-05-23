@@ -15,12 +15,12 @@ public class EnemisBuzzboyFrozen : State {
 	
 	public override void OnEnter() {
 		base.OnEnter();
-		
+		Layer.Rotating = false;
 	}
 	
 	public override void OnExit() {
 		base.OnExit();
-		
+		Layer.Rotating = true;
 	}
 	
 	public override void OnUpdate() {

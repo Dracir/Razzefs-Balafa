@@ -23,7 +23,7 @@ public class EnemisBuzzboyActive : State {
 			SwitchState<EnemisBuzzboyFrozen>();
 			
 		}else if(Layer.temperature.IsBlazing){
-			SwitchState<EnemisBuzzboyBlazed>();
+			//SwitchState<EnemisBuzzboyBlazed>();
 			
 		}else if (!Layer.stationnary) {
 			transform.parent.position += transform.parent.right * Time.deltaTime * Layer.movementSpeed;

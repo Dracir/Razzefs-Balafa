@@ -33,4 +33,6 @@ public class EnemisBuzzboyBlazed : State {
 			SwitchState<EnemisBuzzboyActive>();
 		}
 	}
+	
+	
 }
