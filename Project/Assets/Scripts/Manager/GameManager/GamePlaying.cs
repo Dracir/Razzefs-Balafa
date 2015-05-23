@@ -36,6 +36,10 @@ public class GamePlaying : State {
 		
 		if(Input.GetKeyDown(KeyCode.F8)){
 			Layer.nextMap();
+		} else if(Input.GetKeyDown(KeyCode.R)){
+			Layer.restartMap();
+		}else if(Input.GetKeyDown(KeyCode.F8)){
+			Application.Quit();
 		}
 		
 	}

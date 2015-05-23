@@ -12,7 +12,9 @@ public class BOGButton : MonoBehaviour {
 		
 		actionCommand = command;
 		
+		#if UNITY_EDITOR
 		UnityEditor.Events.UnityEventTools.AddVoidPersistentListener(button.onClick, () => panel.handleCommand(actionCommand));
+		#endif
 	}
 	
 	void Start () {

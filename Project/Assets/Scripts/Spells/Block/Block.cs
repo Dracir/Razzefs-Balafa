@@ -35,7 +35,7 @@ public class Block : MonoBehaviourExtended, Recyclable {
 		set {
 			size = value;
 			Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
-			rigidbody.mass = 2.Pow(size);
+			rigidbody.mass = size * size;
 			spriteTransform.SetLocalScale(size, Axes.XY);
 			spriteAnimator.SetFloat(sizeHash, value);
 			GetComponentInChildren<TemperatureInfo>().resistance *= rigidbody.mass;

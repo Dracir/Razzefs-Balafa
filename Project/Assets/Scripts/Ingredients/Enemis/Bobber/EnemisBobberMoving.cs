@@ -59,7 +59,7 @@ public class EnemisBobberMoving : State {
 	}
 	
 	public override void CollisionEnter2D(Collision2D collision) {
-		SwitchState<EnemisBobberActivating>();
+		SwitchState<EnemisBobberExplosing>();
 	}
 	
 	

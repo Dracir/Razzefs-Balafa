@@ -16,7 +16,8 @@ public class EnemisBobberExplosing : State {
 	public override void OnEnter() {
 		transform.parent.GetComponent<Collider2D>().enabled = false;
 		GetComponent<SpriteRenderer>().enabled = false;
-		//GetComponent<Animator>().SetTrigger("Activating");
+		
+	 	transform.parent.GetComponent<Rigidbody2D>().isKinematic = true;
 		
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.parent.position, Layer.explosionRadius, Layer.damageLayers.value);
 		foreach (var otherCollider in colliders) {

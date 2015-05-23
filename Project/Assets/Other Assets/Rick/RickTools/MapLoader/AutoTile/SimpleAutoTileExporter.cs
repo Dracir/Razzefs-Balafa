@@ -1,7 +1,5 @@
 ﻿#if UNITY_EDITOR 
 using System;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using UnityEngine;
 using System.IO;
@@ -57,7 +55,10 @@ namespace RickTools.MapLoader{
 				createAndAppendInputRegion(i);
 			}
 			for (int i = 0; i < maxVariation; i++) {
-				createAndAppendNotInputRegion(i);
+				createAndAppendInputRemoverStuffRegion(i);
+			}
+			for (int i = 0; i < maxVariation; i++) {
+				//createAndAppendNotInputRegion(i);
 			}
 			for (int i = 0; i < maxVariation; i++) {
 				createAndAppendOutputRegion(i);
@@ -95,7 +96,7 @@ namespace RickTools.MapLoader{
 			XmlNode NoOverlappingRules = doc.CreateElement("property");
 			properties.AppendChild(NoOverlappingRules);
 			NoOverlappingRules.Attributes.Append(createAttribut(doc,"name","NoOverlappingRules"));
-			NoOverlappingRules.Attributes.Append(createAttribut(doc,"value","True"));
+			NoOverlappingRules.Attributes.Append(createAttribut(doc,"value","False"));
 			
 		}	
 
@@ -106,6 +107,23 @@ namespace RickTools.MapLoader{
 			tileset.Attributes.Append(createAttribut(doc,"source",sourceTileSet));
 		}
 
+		void createAndAppendInputRemoverStuffRegion(int i) {
+			createAndAppendInputRemoverStuffRegion(idsCornerIn, i);
+			createAndAppendInputRemoverStuffRegion(idsCornerOut, i);
+			createAndAppendInputRemoverStuffRegion(idsSide, i);
+			
+		}
+		
+		void createAndAppendInputRemoverStuffRegion(List<int> list, int variation) {
+			currentDataNode = createAndAppendLayerReturnDataNode("input_Tiles", "3", "3", "0");
+			
+			
+			appendCurrentDataNodeLine(format(list,variation,0), 0, format(list,variation,90));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(list,variation,180), 0, format(list,variation,270));
+			
+			fixCurrentDataEndLine();
+		}
 		
 		XmlNode currentDataNode;
 		void createAndAppendRegionsLayer() {
@@ -169,7 +187,10 @@ namespace RickTools.MapLoader{
 		void createAndAppendOutputRegion(int i) {
 			currentDataNode = createAndAppendLayerReturnDataNode("output_Tiles", "3", "43", "0");
 			
-			appendEmptyLines(4);
+			appendCurrentDataNodeLine(format(idsCenter,0,0), 0, format(idsCenter,0,0));
+			appendCurrentDataNodeLine(0, 0, 0);
+			appendCurrentDataNodeLine(format(idsCenter,0,0), 0, format(idsCenter,0,0));
+			appendCurrentDataNodeLine(0, 0, 0);
 			
 			//CornerOUT
 			appendCurrentDataNodeLine(0, 0, 0);

@@ -71,22 +71,16 @@ public class MasterVolume : MonoBehaviour {
 		}
 	}
 	
-	public void SetMusicSliderVolume(float volume) {
-		float difference = (volume - Music.Volume);
-		
-		Music.Volume = Music.Volume + (Math.Abs(difference) < 0.001F ? 0 : difference.Sign());
+	public void SetMusicVolume(float volume) {
+		Music.Volume = volume;
 	}
 	
-	public void SetSFXSliderVolume(float volume) {
-		float difference = (volume - SFX.Volume);
-		
-		SFX.Volume = SFX.Volume + (Math.Abs(difference) < 0.001F ? 0 : difference.Sign());
+	public void SetSFXVolume(float volume) {
+		SFX.Volume = volume;
 	}
 	
-	public void SetVoiceSliderVolume(float volume) {
-		float difference = (volume - Voice.Volume);
-		
-		Voice.Volume = Voice.Volume + (Math.Abs(difference) < 0.001F ? 0 : difference.Sign());
+	public void SetVoiceVolume(float volume) {
+		Voice.Volume = volume;
 	}
 	
 	void Start() {
