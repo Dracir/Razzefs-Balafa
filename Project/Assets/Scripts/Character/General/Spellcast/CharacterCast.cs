@@ -103,7 +103,7 @@ public class CharacterCast : StateLayer, IInputListener {
 		switch (input.InputName) {
 			case "Cycle":
 				if (input.State == ButtonStates.Down) {
-					NextSpell();
+//					NextSpell();
 				}
 				break;
 		}
